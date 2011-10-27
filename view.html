@@ -521,7 +521,11 @@ Textfile.open = function (url) {
             if (x.status == 200 ||
                 // for supporting local file:// URLs:
                 x.status == 0 && x.responseText && x.responseText.length) {
-                Textfile.view(url, x.responseText);
+                if (x.responseText.length) {
+                    Textfile.view(url, x.responseText);
+                } else {
+                    alert("File " + url + " is empty");
+                }
             } else {
                 alert("File " + url + " not found");
             }
