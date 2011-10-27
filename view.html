@@ -635,6 +635,19 @@ Textfile.prototype.parse_data = function (data) {
     }
     old_block = block = null;
 };
+Textfile.prototype.go_to_line = function (line) {
+    line = parseInt(line, 10);
+    if (line <= 0) {
+        line = 1;
+    }
+    var line_elm = document.getElementById(this.prefix + "L" + line);
+    if (line_elm) {
+        line_elm.scrollIntoView();
+    } else {
+        // line is larger than the number of lines, just go to the bottom
+        this.container.scrollIntoView(false);
+    }
+};
 var LevelParser = function (lines) {
     if (this == window)
         throw new Error("LevelParser is not a function");
@@ -740,6 +753,7 @@ var Openfile = {
             open_file_selector.value = textfile ? textfile.md5sum : "";
         }
         document.getElementById("close-file").disabled = !textfile;
+        document.getElementById("go-to-line").disabled = !textfile;
         if (textfile) {
             textfile.show();
         }
@@ -840,6 +854,20 @@ var Infobox = new (function () {
         DragDrop.init(infobox, infobox_drag, {
             "persistent_location": true
         });
+
+        var btnGotoLine = document.createElement("button");
+        btnGotoLine.disabled = true;
+        btnGotoLine.id = "go-to-line";
+        btnGotoLine.title = "Goto line";
+        btnGotoLine.addEventListener("click", function () {
+            if (Openfile.open_file) {
+                var line = prompt("Go to line", "");
+                if (line) {
+                    Openfile.open_file.go_to_line(line);
+                }
+            }
+        }, false);
+        buttons_bar.appendChild(btnGotoLine).textContent = "Line";
 
         var btnUndo = document.createElement("button");
         btnUndo.disabled = true;
