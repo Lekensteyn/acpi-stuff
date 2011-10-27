@@ -599,7 +599,7 @@ Textfile.prototype.close = function () {
 };
 Textfile.prototype.parse_data = function (data) {
     var lines = data.split("\n");
-    var line, line_no = 0, last_line, block_closed = false;
+    var line, line_no = 0, last_line;
     var block = this.container, block_no = 0;
     var level_parser = new LevelParser(data);
     while (lines.length) {
