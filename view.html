@@ -376,18 +376,33 @@ Folder.prototype.collapse_blocks = function (blocks) {
     }
     this.history.add("collapse", collapsed_ids);
 };
-function Textfile(file, data) {
+
+function Data(data) {
+    if (this == window)
+        throw new Error("Data is not a function");
+    // do not calculate the md5sum immediately if not necessary
+    var _md5sum;
+    this.md5sum = function () {
+        if (!_md5sum) {
+            _md5sum = md5(data);
+        }
+        return _md5sum;
+    };
+    this.data = data;
+}
+
+function Textfile(filename, data_obj) {
     if (this == window)
         throw new Error("Textfile is not a function");
     var that = this;
     this.file = file;
     this.id = Textfile.next_id++;
-    this.md5sum = md5(data);
+    this.md5sum = data_obj.md5sum();
     // the prefix used for IDs of DOM elements
     this.prefix = this.id + "_";
     this.container = document.createElement("pre");
     this.container.className = "file";
-    this.parse_data(data);
+    this.parse_data(data_obj.data);
     this.folder = new Folder(file, this.container, this.md5sum);
     this.folder.set_id_prefix(this.prefix + "block-");
     document.getElementById("files").appendChild(this.container);
@@ -443,23 +458,53 @@ Textfile.infobox_updater = function (target, delay) {
     document.getElementById("current-position").textContent = current_location;
 };
 Textfile.open_files = [];
-Textfile.next_id = 0;
-Textfile.open = function (file) {
+/**
+ * Finds an open file by md5sum
+ * @param {String} md5sum The md5sum of the file to be found
+ * @returns {Textfile} An open file
+ */
+Textfile.find_open_file = function (md5sum) {
     for (var i=0; i<Textfile.open_files.length; i++) {
-        if (Textfile.open_files[i].file == file) {
+        if (Textfile.open_files[i].md5sum == md5sum) {
             // already opened
-            Openfile.set_open_file(Textfile.open_files[i]);
-            return 0;
+            return Textfile.open_files[i];
         }
     }
+    return null;
+};
+Textfile.next_id = 0;
+/**
+ * Displays data on the screen
+ * @param {String} filename A label for displaying purposes
+ * @param {String} text The data to be displayed
+ */
+Textfile.view = function (filename, text) {
+    var data_obj = new Data(text);
+
+    var textfile = Textfile.find_open_file(data_obj.md5sum());
+    if (textfile) {
+        filename = textfile.filename;
+    }
+    document.title = filename + " - FoldedViewer";
+
+    if (!textfile) {
+        textfile = new Textfile(filename, data_obj)
+        Textfile.open_files.push(textfile);
+    }
+    Openfile.set_open_file(textfile);
+};
+/**
+ * Opens a remote or local file by URL
+ * @param {String} file The URL of the file to be opened
+ */
+Textfile.open = function (file) {
     var x = new XMLHttpRequest();
     x.onreadystatechange = function () {
         if (x.readyState == 4) {
             if (x.status == 200 ||
+                // for supporting local file:// URLs:
                 x.status == 0 && x.responseText && x.responseText.length) {
-                document.title = file + " - FoldedViewer";
-                Textfile.open_files.push(new Textfile(file, x.responseText));
-                Openfile.set_open_file(Textfile.open_files.slice(-1)[0]);
+                Textfile.view(file, x.responseText);
             } else {
                 alert("File " + file + " not found");
             }
@@ -467,7 +512,6 @@ Textfile.open = function (file) {
     };
     x.open("get", file, true);
     x.send(null);
-    return 1;
 };
 Textfile.prototype.close = function () {
     this.folder.save_fold_state();
