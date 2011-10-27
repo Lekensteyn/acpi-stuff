@@ -397,7 +397,13 @@ function Data(data) {
     var _md5sum;
     this.md5sum = function () {
         if (!_md5sum) {
-            _md5sum = md5(data);
+            var sum_data = data;
+            // skip the comments and parse errors before DefinitionBlock
+            var start_data = sum_data.search(/^\s*DefinitionBlock/im);
+            if (start_data > 0) {
+                sum_data = sum_data.substr(start_data);
+            }
+            _md5sum = md5(sum_data);
         }
         return _md5sum;
     };
