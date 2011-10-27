@@ -868,6 +868,13 @@ var Infobox = new (function () {
         var openFileSelector = document.createElement("select");
         openFileSelector.id = "open-file-selector";
         openFileSelector.add(new Option("Opened files...", ""));
+        openFileSelector.addEventListener("mouseover", function () {
+            if (this.value) {
+                this.title = this.options[this.selectedIndex].label;
+            } else {
+                this.title = "";
+            }
+        }, false);
         openFileSelector.addEventListener("change", function () {
             if (this.value) {
                 Textfile.view_md5(this.value);
