@@ -395,7 +395,7 @@ function Textfile(filename, data_obj) {
     if (this == window)
         throw new Error("Textfile is not a function");
     var that = this;
-    this.file = file;
+    this.filename = filename;
     this.id = Textfile.next_id++;
     this.md5sum = data_obj.md5sum();
     // the prefix used for IDs of DOM elements
@@ -403,7 +403,7 @@ function Textfile(filename, data_obj) {
     this.container = document.createElement("pre");
     this.container.className = "file";
     this.parse_data(data_obj.data);
-    this.folder = new Folder(file, this.container, this.md5sum);
+    this.folder = new Folder(filename, this.container, this.md5sum);
     this.folder.set_id_prefix(this.prefix + "block-");
     document.getElementById("files").appendChild(this.container);
     this.folder.restore_last();
@@ -495,22 +495,22 @@ Textfile.view = function (filename, text) {
 };
 /**
  * Opens a remote or local file by URL
- * @param {String} file The URL of the file to be opened
+ * @param {String} url The URL of the file to be opened
  */
-Textfile.open = function (file) {
+Textfile.open = function (url) {
     var x = new XMLHttpRequest();
     x.onreadystatechange = function () {
         if (x.readyState == 4) {
             if (x.status == 200 ||
                 // for supporting local file:// URLs:
                 x.status == 0 && x.responseText && x.responseText.length) {
-                Textfile.view(file, x.responseText);
+                Textfile.view(url, x.responseText);
             } else {
-                alert("File " + file + " not found");
+                alert("File " + url + " not found");
             }
         }
     };
-    x.open("get", file, true);
+    x.open("get", url, true);
     x.send(null);
 };
 Textfile.prototype.close = function () {
@@ -649,8 +649,8 @@ LevelParser.prototype.set_strategy_indent = function () {
 };
 var Openfile = {
     open_file: null,
-    set_open_file: function (file) {
-        Openfile.open_file = file;
+    set_open_file: function (textfile) {
+        Openfile.open_file = textfile;
     },
     undo: function () {
         var open_file = Openfile.open_file;
@@ -794,7 +794,7 @@ addEventListener("load", function () {
         }
     }
     if (!found) {
-        Infobox.message("Usage: ?url=file");
+        Infobox.message("Usage: ?url=filename");
     }
 }, false);
 addEventListener("unload", function () {
