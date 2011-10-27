@@ -531,6 +531,26 @@ Textfile.view_md5 = function (md5sum) {
     }
 };
 /**
+ * Reads the content of a file an displays it in the viewer
+ * @param {File} file An object from a fileupload field or drag operation
+ */
+Textfile.open_file = function (file) {
+    var fileReader = new FileReader();
+    fileReader.onload = function (ev) {
+        var text = ev.target.result;
+        if (text.length) {
+            Textfile.view(file.name, text);
+        } else {
+            alert("File " + file.name + " is empty");
+        }
+    };
+    try {
+        fileReader.readAsText(file);
+    } catch (ex) {
+        alert("File " + file.name + " could not be opened.\n" + ex.message);
+    }
+};
+/**
  * Opens a remote or local file by URL
  * @param {String} url The URL of the file to be opened
  */
@@ -854,6 +874,33 @@ var Infobox = new (function () {
             }
         }, false);
         buttons_bar.appendChild(openFileSelector);
+
+        // local file selection functionality is only available if this page
+        // was opened locally or if the HTML5 File API is available
+        if (location.protocol == "file:" || typeof FileReader != "undefined") {
+            init_local_file_buttons(buttons_bar);
+        }
+    };
+    // should be called from init()
+    var init_local_file_buttons = function (buttons_bar) {
+        // hidden file upload field
+        var select_file = document.createElement("input");
+        select_file.type = "file";
+        select_file.addEventListener("change", function (ev) {
+            // if the HTML5 File API is available, use that
+            if (typeof FileReader != "undefined") {
+                Textfile.open_file(this.files[0]);
+            } else {// fallback to using XMLHttpRequest
+                Textfile.open(this.value);
+            }
+        }, false);
+
+        var btnFileSelect = document.createElement("button");
+        btnFileSelect.addEventListener("click", function () {
+            select_file.click();
+        }, false);
+        btnFileSelect.title = "Load a file from your computer";
+        buttons_bar.appendChild(btnFileSelect).textContent = "Open...";
 
         var btnClose = document.createElement("button");
         btnClose.disabled = true;
