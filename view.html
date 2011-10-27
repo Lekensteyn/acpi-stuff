@@ -535,11 +535,24 @@ Textfile.open = function (url) {
     x.send(null);
 };
 Textfile.prototype.close = function () {
+    var open_file_selector = document.getElementById("open-file-selector");
     this.folder.save_fold_state();
     for (var i=Textfile.open_files.length-1; i>=0; i--) {
         if (Textfile.open_files[i] == this) {
             Textfile.open_files.splice(i, 1);
+            if (open_file_selector) {
+                var i = open_file_selector.options.length;
+                // loop from the last element to the second option, skipping
+                // the first "Select file"
+                while (--i) {
+                    if (open_file_selector.options[i].value == this.md5sum) {
+                        open_file_selector.remove(i);
+                        break;
+                    }
+                }
+            }
             Openfile.set_open_file(null);
+            document.title = "FoldedViewer";
             break;
         }
     }
