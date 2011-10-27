@@ -104,6 +104,12 @@ body {
 #open-file-selector {
     width: 100px;
 }
+.file.active {
+    display: block;
+}
+.file.inactive {
+    display: none;
+}
 </style>
 <title>FoldedViewer</title>
 <script src="md5.js"></script>
@@ -403,8 +409,9 @@ function Textfile(filename, data_obj) {
     this.md5sum = data_obj.md5sum();
     // the prefix used for IDs of DOM elements
     this.prefix = this.id + "_";
-    this.container = document.createElement("pre");
-    this.container.className = "file";
+    var container = this.container = document.createElement("pre");
+    this.container.id = "file-" + this.id;
+    this.container.className = "file inactive";
     this.parse_data(data_obj.data);
     this.folder = new Folder(filename, this.container, this.md5sum);
     this.folder.set_id_prefix(this.prefix + "block-");
@@ -433,6 +440,15 @@ function Textfile(filename, data_obj) {
         }
         target && Textfile.infobox_updater(target, true);
     }, false);
+
+    this.show = function () {
+        container.className = container.className
+            .replace(/\binactive\b/g, "") + " active";
+    };
+    this.hide = function () {
+        container.className = container.className
+            .replace(/\bactive\b/g, "") + " inactive";
+    };
 }
 Textfile.infobox_updater = function (target, delay) {
     clearTimeout(Textfile.infobox_updater_timer);
@@ -684,10 +700,17 @@ LevelParser.prototype.set_strategy_indent = function () {
 var Openfile = {
     open_file: null,
     set_open_file: function (textfile) {
+        if (Openfile.open_file) {
+            Openfile.open_file.hide();
+        }
         Openfile.open_file = textfile;
         var open_file_selector = document.getElementById("open-file-selector");
         if (open_file_selector) {
             open_file_selector.value = textfile ? textfile.md5sum : "";
+        }
+        document.getElementById("close-file").disabled = !textfile;
+        if (textfile) {
+            textfile.show();
         }
     },
     undo: function () {
@@ -697,6 +720,10 @@ var Openfile = {
     redo: function () {
         var open_file = Openfile.open_file;
         open_file && open_file.folder.history.redo();
+    },
+    close: function() {
+        var open_file = Openfile.open_file;
+        open_file && open_file.close();
     }
 };
 var DragDrop = new (function () {
@@ -823,6 +850,12 @@ var Infobox = new (function () {
             }
         }, false);
         buttons_bar.appendChild(openFileSelector);
+
+        var btnClose = document.createElement("button");
+        btnClose.disabled = true;
+        btnClose.id = "close-file";
+        btnClose.addEventListener("click", Openfile.close, false);
+        buttons_bar.appendChild(btnClose).textContent = "Close";
     };
     this.message = function (msg) {
         document.getElementById("infobox-data").textContent = msg;
