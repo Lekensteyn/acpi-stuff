@@ -1,0 +1,752 @@
+<!doctype html>
+<html>
+<head>
+<meta name="author" content="Lekensteyn, lekensteyn@gmail.com">
+<style>
+body {
+    padding-top: 1em;
+}
+#current-position-container {
+    background-color: #ccf;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 2em;
+    width: 100%;
+    padding: 0 1em;
+    z-index: 2;
+}
+#current-position-container > span {
+    display: table-cell;
+    vertical-align: middle;
+    height: 2em;
+}
+.block {
+    position: relative;
+    border-top: 1px solid #999;
+    margin-top: -1px;
+}
+.block:hover {
+    outline: 2px solid #9cc;
+}
+.line:hover {
+    outline: 2px solid #ccc;
+}
+.block:before {
+    content: " ";
+    margin-right: -1em;
+    float: left;
+    font-weight: bold;
+    /*outline: 1px solid #000;*/
+    width: 1em;
+    background-color: #3cc;
+    border-radius: 10px;
+}
+.collapsed:before {
+    background-color: #66f;
+}
+.collapsed {
+    background-color: #c99;
+}
+.collapsed > *:nth-child(n + 2) {
+    display: none;
+}
+.line:before {
+    content: attr(data-lineno);
+    border-right: 1px solid #000;
+    display: inline-block;
+    text-align: right;
+    width: 4em;
+    padding-right: 2px;
+    margin-right: 1px;
+}
+#infobox {
+    position: fixed;
+    top: 3px;
+    background-color: #ff9;
+    outline: 1px solid #666;
+    width: 30em;
+    height: 4.5em;
+    overflow: hidden;
+    z-index: 3;
+}
+#infobox-drag {
+    cursor: move;
+    width: 30em;
+    height: 1em;
+    background-color: #3c3;
+}
+#infobox-data {
+    height: 2em;
+}
+#infobox-buttons {
+    height: 1.5em;
+    background-color: #9cc;
+}
+#files {
+    margin-top: 2em;
+}
+#curtain {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 4096px;
+    height: 4096px;
+    z-index: 3;
+    -moz-user-select: none;
+    user-select: none;
+    background: #eee;
+    opacity: .5;
+}
+#curtain.hidden {
+    visibility: hidden;
+}
+</style>
+<title>FoldedViewer</title>
+<script>
+var ASL = {
+    parse_location: function (lines) {
+        // XXX: the dumb indentation+curly_brackets-based parser does not
+        // recognize multi-line operators like If
+        // read 5.3 ACPI Namespace on page 160
+        var position = [];
+        process_lines:
+        for (var i=0; i<lines.length; i++) {
+            if (/^ *(DefinitionBlock|\/\*)/.test(lines[i])) continue;
+            // By definition, a name should match [A-Z_][A-Z0-9_]*, but we
+            // should take predefined objects like \_SB into account
+            var line_match = lines[i].match(/^ *([a-zA-Z]+) *\(([\\^]*[A-Z0-9_.]*)/);
+            if (line_match) {
+                var id = line_match[2];
+                var operator = line_match[1];
+                var unknown_operator = false;
+
+                switch (operator) {
+                // taken from 18.4 ASL Operator Summary By Type, page 576,
+                // Miscellaneous named object creation
+                case "Alias":
+                case "Buffer":
+                case "Device":
+                case "Function":
+                case "Method":
+                case "Name":
+                case "Package":
+                case "PowerResource":
+                case "Processor":
+                case "Scope":
+                case "ThermalZone":
+                    break;
+                case "If":
+                case "Else":
+                    // quit the loop, the scope cannot easily be detected
+                    break process_lines;
+                default:
+                    unknown_operator = true;
+                    break;
+                }
+
+                switch (id.charAt(0)) {
+                case "\\":
+                    // reset to root
+                    position = [];
+                    break;
+                case "^":
+                    // jump to parent
+                    var go_to_parent_times = id.match(/^\^+/)[0].length;
+                    for (var j=0; j<go_to_parent_times; j++) {
+                        position.pop();
+                    }
+                    break;
+                default:
+                    // XXX: this function is currently not aware of other
+                    // methods in its context. It should not matter for named
+                    // objects creation though
+                    if (id.indexOf(".") == -1) {
+                        // search rules apply
+                    } else {
+                        // search rules do not apply
+                    }
+                    break;
+                }
+
+                if (unknown_operator) {
+                    id = "[" + operator + "/" + id + "]";
+                }
+
+                position = position.concat(id.replace(/^\^+/, "").split("."));
+                // \.STH is wrong, it should be \STH
+                position = position.join(".").replace(/^\\\./, "\\").split(".");
+            } else {
+                position.push(" ? ");
+            }
+        }
+        return position.join(".");
+    }
+};
+</script>
+<script>
+function Folder(id, container) {
+    if (this == window)
+        throw new Error("Folder is not a function");
+    this.id = id;
+    this.container = container;
+    this.fold_state = {};
+    this.id_prefix = "";
+    this.strip_id_prefix = 0;
+    this.history = new (function (folder) {
+        var entries = [];
+        // the current history position will contain the next action
+        var history_pos = 0;
+        this.update_buttons = function () {
+            document.getElementById("history-back").disabled = !history_pos;
+            document.getElementById("history-forward").disabled = history_pos >= entries.length;
+        };
+        this.add = function (action, data) {
+            if (!data.length) return;
+            entries[history_pos++] = {
+                action: action,
+                data: data instanceof Array ? data : [data]
+            };
+            entries.splice(history_pos + 1, entries.length - history_pos - 1);
+            this.update_buttons();
+        };
+        this.undo = function () {
+            if (history_pos >= 0) {
+                var entry = entries[--history_pos];
+                var history_action = entry.action;
+                var action;
+                switch (history_action) {
+                case "expand":
+                    action = "collapse";
+                    break;
+                case "collapse":
+                    action = "expand";
+                    break;
+                }
+                if (action) {
+                    action = folder[action];
+                    var data = entry.data;
+                    var id_prefix = folder.id_prefix;
+                    for (var i=data.length-1; i>=0; i--) {
+                        var element = document.getElementById(id_prefix + data[i]);
+                        element && action(element, true);
+                    }
+                    this.history_pos--;
+                }
+            }
+            this.update_buttons();
+        };
+        this.redo = function () {
+            if (history_pos < entries.length) {
+                var entry = entries[history_pos++];
+                var action = entry.action;
+                if (action == "expand" || action == "collapse") {
+                    action = folder[action];
+                    var data = entry.data;
+                    var id_prefix = folder.id_prefix;
+                    for (var i=data.length-1; i>=0; i--) {
+                        var element = document.getElementById(id_prefix + data[i]);
+                        element && action(element, true);
+                    }
+                    this.history_pos++;
+                }
+            }
+            this.update_buttons();
+        };
+        this.update_buttons();
+    })(this);
+}
+Folder.prototype.set_id_prefix = function (id_prefix) {
+    this.id_prefix = id_prefix;
+    this.strip_id_prefix = id_prefix.length;
+};
+Folder.prototype.restore_last = function () {
+    var fold_state = localStorage.getItem("view_folder-state_" + this.id);
+    if (fold_state) {
+        fold_state = fold_state.split(",");
+        while (fold_state.length) {
+            var block = document.getElementById(this.id_prefix + parseInt(fold_state.pop(), 36));
+            this.collapse(block, true);
+        }
+        return true;
+    }
+    return false;
+};
+Folder.prototype.save_fold_state = function () {
+    var fold_state = [];
+    var collapsed = this.container.getElementsByClassName("collapsed");
+    for (var i=0; i<collapsed.length; i++) {
+        fold_state.push( (1 * collapsed[i].id.substr(this.strip_id_prefix)).toString(36) );
+    }
+    localStorage.setItem("view_folder-state_" + this.id, fold_state.join(","));
+};
+Folder.prototype.is_collapsed = function (element) {
+    return /\bcollapsed\b/.test(element.className);
+};
+Folder.prototype.toggle_collapse = function (element) {
+    if (this.is_collapsed(element)) {
+        this.expand(element);
+    } else {
+        this.collapse(element);
+    }
+};
+Folder.prototype.toggle_collapse_childs = function (element) {
+    var current_level = 1 * element.className.match(/level-(-?\d+)/)[1];
+    var blocks = element.getElementsByClassName("level-" + (current_level + 1));
+    for (var i=0; i<blocks.length; i++) {
+        if (!this.is_collapsed(blocks[i])) {
+            this.collapse_childs(element);
+            return;
+        }
+    }
+    // if all blocks are collapsed, expand
+    this.expand_childs(element);
+};
+Folder.prototype.expand = function (element, skip_history) {
+    element.className = element.className.replace(/\bcollapsed\b/g, "");
+    if (!skip_history) {
+        this.history.add("expand", element.id.substr(this.strip_id_prefix));
+    }
+};
+Folder.prototype.collapse = function (element, skip_history) {
+    element.className += " collapsed";
+    if (!skip_history) {
+        this.history.add("collapse", element.id.substr(this.strip_id_prefix));
+    }
+};
+Folder.prototype.expand_all = function () {
+    this.expand_blocks(this.container.getElementsByClassName("collapsed"));
+};
+Folder.prototype.expand_childs = function (element) {
+    // match a minus sign as well in case something goes wrong with indentation
+    var current_level = 1 * element.className.match(/level-(-?\d+)/)[1];
+    this.expand_blocks(element.getElementsByClassName("level-" + (current_level + 1)));
+};
+Folder.prototype.expand_blocks = function (blocks) {
+    var re_collapse = /\bcollapsed\b/g;
+    var expanded_ids = [];
+    for (var i=blocks.length-1; i>=0; i--) {
+        if (this.is_collapsed(blocks[i])) {
+            expanded_ids.push( (1 * blocks[i].id.substr(this.strip_id_prefix)).toString(36) );
+            blocks[i].className = blocks[i].className.replace(re_collapse, "");
+        }
+    }
+    this.history.add("expand", expanded_ids);
+};
+Folder.prototype.collapse_all = function () {
+    this.collapse_blocks(this.container.getElementsByClassName("block"));
+};
+Folder.prototype.collapse_childs = function (element) {
+    // match a minus sign as well in case something goes wrong with indentation
+    var current_level = 1 * element.className.match(/level-(-?\d+)/)[1];
+    this.collapse_blocks(element.getElementsByClassName("level-" + (current_level + 1)));
+};
+Folder.prototype.collapse_blocks = function (blocks) {
+    var collapsed_ids = [];
+    for (var i=blocks.length-1; i>=0; i--) {
+        if (!this.is_collapsed(blocks[i])) {
+            collapsed_ids.push( (1 * blocks[i].id.substr(this.strip_id_prefix)).toString(36) );
+            blocks[i].className += " collapsed";
+        }
+    }
+    this.history.add("collapse", collapsed_ids);
+};
+function Textfile(file, data) {
+    if (this == window)
+        throw new Error("Textfile is not a function");
+    var that = this;
+    this.file = file;
+    this.id = Textfile.next_id++;
+    this.prefix = this.id + "_";
+    this.container = document.createElement("pre");
+    this.container.className = "file";
+    this.parse_data(data);
+    this.folder = new Folder(file, this.container);
+    this.folder.set_id_prefix(this.prefix + "block-");
+    document.getElementById("files").appendChild(this.container);
+    this.folder.restore_last();
+    var toggle_fold = function (ev) {
+        if (!ev.ctrlKey) return;
+        var target = ev.target;
+        if (/\bline\b/.test(target.className)) {
+            target = target.parentNode;
+        }
+        if (target && /\bblock\b/.test(target.className)) {
+            // collapse all direct child blocks
+            if (ev.shiftKey) {
+                that.folder.toggle_collapse_childs(target);
+            } else {
+                that.folder.toggle_collapse(target);
+            }
+        }
+    };
+    this.container.addEventListener("click", toggle_fold, false);
+    this.container.addEventListener("mouseover", function (ev) {
+        var target = ev.target;
+        if (/\bline\b/.test(target.className)) {
+            target = target.parentNode;
+        }
+        target && Textfile.infobox_updater(target, true);
+    }, false);
+}
+Textfile.infobox_updater = function (target, delay) {
+    clearTimeout(Textfile.infobox_updater_timer);
+    if (delay) {
+        Textfile.infobox_updater_timer = setTimeout(Textfile.infobox_updater, 300, target, false);
+        return;
+    }
+    var collapsed = target.getElementsByClassName("collapsed").length;
+    var total_blocks = target.getElementsByClassName("block").length;
+    var total_lines = target.getElementsByClassName("line").length;
+    var first_line = target.firstChild.getAttribute("data-lineno");
+    Infobox.message("Child blocks: " + total_blocks +
+                    " (" + collapsed + " collapsed)" +
+                    "; lines: " + first_line + " - " +
+                    (1*first_line + total_lines - 1) +
+                    " (total lines: " + total_lines + ")");
+
+    var current_elm = target;
+    var lines = [];
+    do {
+        // XXX: the first element may be a block, need to check for a line
+        lines.unshift(current_elm.firstChild.textContent);
+    } while ((current_elm=current_elm.parentNode) &&
+             /\bblock\b/.test(current_elm.className));
+    var current_location = ASL.parse_location(lines);
+    document.getElementById("current-position").textContent = current_location;
+};
+Textfile.open_files = [];
+Textfile.next_id = 0;
+Textfile.open = function (file) {
+    for (var i=0; i<Textfile.open_files.length; i++) {
+        if (Textfile.open_files[i].file == file) {
+            // already opened
+            Openfile.set_open_file(Textfile.open_files[i]);
+            return 0;
+        }
+    }
+    var x = new XMLHttpRequest();
+    x.onreadystatechange = function () {
+        if (x.readyState == 4) {
+            if (x.status == 200) {
+                document.title = file + " - FoldedViewer";
+                Textfile.open_files.push(new Textfile(file, x.responseText));
+                Openfile.set_open_file(Textfile.open_files.slice(-1)[0]);
+            } else {
+                alert("File " + file + " not found");
+            }
+        }
+    };
+    x.open("get", file, true);
+    x.send(null);
+    return 1;
+};
+Textfile.prototype.close = function () {
+    this.folder.save_fold_state();
+    for (var i=Textfile.open_files.length-1; i>=0; i--) {
+        if (Textfile.open_files[i] == this.file) {
+            Textfile.open_files.splice(i, 1);
+            Openfile.set_open_file(null);
+            break;
+        }
+    }
+};
+Textfile.prototype.parse_data = function (data) {
+    var lines = data.split("\n");
+    var line, line_no = 0, last_line, block_closed = false;
+    var block = this.container, block_no = 0;
+    var level_parser = new LevelParser(data);
+    while (lines.length) {
+        line = lines.shift();
+        line_no++;
+        var matched_startblock = level_parser.is_start_block(line, line_no);
+        if (!block.parentNode || matched_startblock) {
+            level_parser.new_level(line, line_no);
+            var old_block = block;
+            block = block.appendChild(document.createElement("div"));
+            block.className = "block level-" + level_parser.level;
+            if (matched_startblock && last_line) {
+                block.appendChild(last_line);
+            }
+            block.id = this.prefix + "block-" + ++block_no;
+        }
+        var line_elm = document.createElement("div");
+        line_elm.className = "line";
+        line_elm.setAttribute("data-lineno", line_no);
+        line_elm.id = this.prefix + "L" + line_no;
+        block.appendChild(line_elm).textContent = line;
+        if (level_parser.is_block_finished(line, line_no)) {
+            block = block.parentNode;
+        }
+        last_line = line_elm;
+    }
+    old_block = block = null;
+};
+var LevelParser = function (lines) {
+    if (this == window)
+        throw new Error("LevelParser is not a function");
+
+    var strategy = "indent";
+
+    this.level = 0;
+    
+    switch (strategy) {
+    case "brackets":
+        break;
+    case "indent":
+        this.set_strategy_indent();
+        break;
+    }
+    this.init(lines);
+};
+LevelParser.prototype.init = function (lines) {
+    // also matches: { // comment
+    this.re_startblock = /^ *\{/;
+    this.re_endblock = /^ *\}/;
+};
+LevelParser.prototype.is_start_block = function (line, line_no) {
+    if (this.re_startblock.test(line)) {
+        this.level++;
+        return true;
+    }
+    return false;
+};
+LevelParser.prototype.new_level = function (line, line_no) {};
+LevelParser.prototype.is_block_finished = function (line, line_no) {
+    if (this.re_endblock.test(line)) {
+        this.level--;
+        return true;
+    }
+    return false;
+};
+LevelParser.prototype.set_strategy_indent = function () {
+    this.init = function (lines) {
+        this.re_startblock = /^ *\{/;
+        this.re_endblock = /^ *}/;
+
+        this.end_of_block = false;
+        this.level_indent_count = [0];
+
+        var whitespace_match = lines.match(/^ */mg);
+        var nonempty_lines_match = lines.replace(/ +/g, "").match(/^.?/mg);
+
+        var whitespace_length = [];
+        var line_is_empty = [];
+
+        // hack to supress errors when i=0 and the first line is empty
+        whitespace_length[0] = 0;
+        for (var i=0; i<whitespace_match.length; i++) {
+            whitespace_length[i + 1] = whitespace_match[i].length ||
+                whitespace_length[i];
+            line_is_empty[i] = !nonempty_lines_match[i];
+        }
+
+        this.whitespace_length = whitespace_length;
+        this.line_is_empty = line_is_empty;
+    };
+    this.is_start_block = function (line, line_no) {
+        if (this.re_startblock.test(line) &&
+            this.whitespace_length[line_no + 1] > this.whitespace_length[line_no]) {
+            this.level++;
+            return true;
+        }
+        return false;
+    };
+    this.new_level = function (line, line_no) {
+        this.level_indent_count.push(this.whitespace_length[line_no + 1]);
+    };
+    this.is_block_finished = function (line, line_no) {
+        // note: the current line is already processed, true will make the next
+        // line be put in a new block
+        if (this.re_endblock.test(line) &&
+            this.whitespace_length[line_no] < this.level_indent_count.slice(-1) - 1) {
+            // if the next line is empty, don't finish the block yet
+            this.end_of_block = true;
+        }
+        if (this.line_is_empty[line_no]) {
+            return false;
+        }
+        if (this.end_of_block) {
+            this.level--;
+            this.end_of_block = false;
+            this.level_indent_count.pop();
+            return true;
+        }
+        return false;
+    };
+};
+var Openfile = {
+    open_file: null,
+    set_open_file: function (file) {
+        Openfile.open_file = file;
+    },
+    undo: function () {
+        var open_file = Openfile.open_file;
+        open_file && open_file.folder.history.undo();
+    },
+    redo: function () {
+        var open_file = Openfile.open_file;
+        open_file && open_file.folder.history.redo();
+    }
+};
+var DragDrop = new (function () {
+    var dragging = false;
+    var posX, posY;
+    var location_of_ids = JSON.parse(localStorage.getItem("dragdrop-location")) || {};
+    this.init = function (elm, btn, options) {
+        options = options || {};
+        btn.style.MozUserSelect = btn.style.userSelect = "none";
+        if (elm) {
+            btn.dragDropWhat = elm;
+            elm.style.MozUserSelect = elm.style.userSelect = "none";
+        }
+        btn.addEventListener("mousedown", this.dragStart, false);
+        document.getElementById("curtain").className = "hidden";
+        if (options.persistent_location) {
+            this.restore_location(elm);
+            this.set_save_location(elm);
+        }
+    };
+    this.dragStart = function (ev) {
+        DragDrop.dragStop();
+        if (ev.button == 0) {
+            posX = ev.clientX;
+            posY = ev.clientY;
+            var elm = this;
+            do {
+                posX -= elm.offsetLeft || 0;
+                posY -= elm.offsetTop  || 0;
+            } while((elm=elm.parentNode));
+            dragging = this.dragDropWhat || this;
+            addEventListener("mousemove", DragDrop.dragMove, false);
+            addEventListener("mouseup", DragDrop.dragStop, false);
+            document.getElementById("curtain").className = "";
+        }
+    };
+    this.dragMove = function (ev) {
+        dragging.style.left = ev.clientX - posX + "px";
+        dragging.style.top  = ev.clientY - posY + "px";
+    };
+    this.dragStop = function (ev) {
+        removeEventListener("mouseup", DragDrop.dragStop, false);
+        removeEventListener("mousemove", DragDrop.dragMove, false);
+        document.getElementById("curtain").className = "hidden";
+    };
+    this.release = function (btn) {
+        delete btn.dragDropWhat;
+        btn.removeEventListener("mousedown", this.dragStart, false);
+    };
+    addEventListener("unload", function () {
+        for (var id in location_of_ids) {
+            var elm = document.getElementById(id);
+            if (elm) {
+                location_of_ids[id] = [0, 0];
+                do {
+                    location_of_ids[id][0] += elm.offsetTop;
+                    location_of_ids[id][1] += elm.offsetLeft;
+                } while ((elm=elm.parentNode) && elm != document);
+            }
+        }
+        localStorage.setItem("dragdrop-location", JSON.stringify(location_of_ids));
+    }, false);
+    this.restore_location = function (elm) {
+        if (location_of_ids.hasOwnProperty(elm.id) && location_of_ids[elm.id]) {
+            var locations = location_of_ids[elm.id];
+            var topPos = Math.max(0, Math.min(self.innerHeight - elm.offsetHeight, locations[0]));
+            var leftPos = Math.max(0, Math.min(self.innerWidth - elm.offsetWidth, locations[1]));
+            elm.style.top = topPos + "px";
+            elm.style.left = leftPos + "px";
+        }
+    };
+    this.set_save_location = function (elm) {
+        if (!location_of_ids.hasOwnProperty(elm.id)) {
+            location_of_ids[elm.id] = null;
+        }
+    };
+});
+var Infobox = new (function () {
+    this.init = function () {
+        var infobox = document.getElementById("infobox");
+        var infobox_drag = document.getElementById("infobox-drag");
+        var buttons_bar = document.getElementById("infobox-buttons");
+        DragDrop.init(infobox, infobox_drag, {
+            "persistent_location": true
+        });
+
+        var btnUndo = document.createElement("button");
+        btnUndo.disabled = true;
+        btnUndo.id = "history-back";
+        btnUndo.addEventListener("click", Openfile.undo, false);
+        buttons_bar.appendChild(btnUndo).textContent = "Undo";
+
+        var btnRedo = document.createElement("button");
+        btnUndo.disabled = true;
+        btnRedo.id = "history-forward";
+        btnRedo.addEventListener("click", Openfile.redo, false);
+        buttons_bar.appendChild(btnRedo).textContent = "Redo";
+
+        var btnHelp = document.createElement("button");
+        btnHelp.addEventListener("click", function () {
+            alert("Ctrl + Click: Collapse / expand single block\n" +
+                  "Ctrl + Shift + Click: Collapse / expand direct child blocks");
+        }, false);
+        buttons_bar.appendChild(btnHelp).textContent = "?";
+
+        var btnCollapse_all = document.createElement("button");
+        btnCollapse_all.addEventListener("click", function () {
+            Openfile.open_file && Openfile.open_file.folder.collapse_all();
+        }, false);
+        buttons_bar.appendChild(btnCollapse_all).textContent = "Collapse all";
+
+        var btnExpand_all = document.createElement("button");
+        btnExpand_all.addEventListener("click", function () {
+            Openfile.open_file && Openfile.open_file.folder.expand_all();
+        }, false);
+        buttons_bar.appendChild(btnExpand_all).textContent = "Expand all";
+    };
+    this.message = function (msg) {
+        document.getElementById("infobox-data").textContent = msg;
+    };
+});
+addEventListener("load", function () {
+    Infobox.init();
+    var components = location.search.substr(1).split("&");
+    var found = false;
+    for (var i=components.length-1; i>=0; i--) {
+        var key_value = components[i].split("=");
+        if (key_value[0] == "url") {
+            key_value.shift();
+            Textfile.open(decodeURIComponent(key_value.join("=")));
+            found = true;
+            break;
+        }
+    }
+    if (!found) {
+        Infobox.message("Usage: ?url=file");
+    }
+}, false);
+addEventListener("unload", function () {
+//window.onbeforeunload = function () {
+    for (var i=Textfile.open_files.length-1; i>=0; i--) {
+        Textfile.open_files[i].close();
+    }
+//};
+}, false);
+</script>
+</head>
+<body>
+<div id="curtain"></div>
+<div id="current-position-container">
+    <span>Location: </span>
+    <span id="current-position">?</span>
+</div>
+<div id="infobox" class="left transparent">
+    <div id="infobox-drag"></div>
+    <div id="infobox-data"></div>
+    <div id="infobox-buttons"></div>
+</div>
+<div id="files">
+    
+</div>
+</body>
+</html>

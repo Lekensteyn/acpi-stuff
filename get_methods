@@ -1,0 +1,2 @@
+#!/bin/sh
+acpiexec -b methods "$@" | awk '/^$/{s=0};s==1{print $1};/^Objects of type \[Method\]/{s=1}'

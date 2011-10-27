@@ -1,0 +1,166 @@
+#!/usr/bin/php
+<?php
+class Format {
+    public static function method($prefix, $method) {
+        return sprintf('<div class="line method"><span class="prefix">%s</span>%s</div>' . "\n", $prefix, $method);
+    }
+    public static function initTree($tree) {
+        return sprintf('<div class="line tree-init">%s</div>' . "\n", $tree);
+    }
+    public static function main($data) {
+        echo <<<HTML
+<style>
+.methods {
+    font-family: monospace;
+}
+.prefix {
+    color: grey;
+}
+.line {
+}
+.line:before {
+    content: attr(data-line-no);
+    width: 4em;
+    margin-right: .5em;
+    padding-right: .5em;
+    text-align: right;
+    display: inline-block;
+    border-right: 1px solid black;
+}
+.collapsed {
+    display: none;
+}
+.collapsed-childs {
+    background-color: pink;
+}
+</style>
+<div class="methods">
+HTML;
+echo $data;
+echo <<<'HTML'
+</div>
+<script>
+function toggleChildTree(elm, kill_id, should_expand) {
+    if (!elm) return;
+    if ((elm.textContent + ".").indexOf(kill_id + ".") == 0) {
+        if (elm.textContent.split(".").length-1 == kill_id.split(".").length) {
+            toggleTree.call(elm);
+        }
+        toggleChildTree(findNextTree(elm), kill_id, should_expand);
+    }
+}
+function findNextTree(elm) {
+    do {
+        elm = elm.nextElementSibling;
+    } while (elm && !/\btree-init\b/.test(elm.className));
+    return elm;
+}
+function collapse(elm) {
+    elm.className = elm.className.replace(/\bcollapsed(-childs)?\b/g, "") + " collapsed";
+}
+function expand(elm) {
+    elm.className = elm.className.replace(/\bcollapsed(-childs)?\b/g, "");
+}
+function toggleNext(elm, kill_id, should_expand){
+    if (!elm) return;
+    if (kill_id == "\\" || (elm.textContent + ".").indexOf(kill_id + ".") == 0) {
+        should_expand ? expand(elm) : collapse(elm);
+        toggleNext(elm.nextElementSibling, kill_id, should_expand);
+    }
+}
+function toggleTree(ev) {
+    if (ev && ev.ctrlKey) {
+        var next = findNextTree(this);
+        if (next) {
+            var collapsed = /\bcollapsed-childs\b/.test(next);
+            toggleChildTree(next, this.textContent, collapsed);
+        }
+    } else {
+        var collapsed = /\bcollapsed\b/.test(this.className);
+        if (collapsed) {
+            expand(this);
+        } else {
+            this.className += " collapsed-childs";
+        }
+        toggleNext(this.nextElementSibling, this.textContent, collapsed);
+    }
+}
+var trees = document.getElementsByClassName("tree-init");
+Array.apply(null, trees).forEach(function (tree) {
+    tree.addEventListener('click', toggleTree, false);
+});
+var lines = document.getElementsByClassName("line");
+Array.apply(null, lines).forEach(function (line, index) {
+    line.setAttribute("data-line-no", index + 1);
+});
+</script>
+HTML;
+    }
+}
+class Method {
+    private $method;
+
+    public function __construct($method) {
+        $this->method = $method;
+    }
+
+    public function __toString() {
+        return $this->method;
+    }
+}
+class Node {
+    private $name;
+    private $level;
+    private $childs = array();
+
+    public function __construct($name, Node $parent=null) {
+        $this->name = $name;
+        $this->parent = $parent;
+    }
+    public function add($elm) {
+        $parts = explode('.', $elm, 2);
+        $first = $parts[0];
+        if (count($parts) == 2) {
+            if (!isset( $this->childs[$first] )) {
+                $this->childs[$first] = new Node($first, $this);
+            }
+            $this->childs[$first]->add($parts[1]);
+        } else {
+            $this->childs[] = new Method($first);
+        }
+    }
+    public function __toString() {
+        $data = '';
+        $prefix = $this->getPrefix();
+        $data .= Format::initTree($prefix == '\\'
+            ? $prefix
+            : substr($prefix, 0, -1));
+        foreach ($this->childs as $child) {
+            if ($child instanceof Method) {
+                $data .= Format::method($prefix, $child);
+            } else {
+                $data .= $child;
+            }
+        }
+        return $data;
+    }
+    public function getPrefix() {
+        $prefix = '';
+        if ($this->parent) {
+            $prefix .= $this->parent->getPrefix() . $this->name . '.';
+        } else {
+            $prefix .= $this->name;
+        }
+        //$prefix .= $this->name == '\\' ? '\\' : $this->name . '.';
+        return $prefix;
+    }
+}
+$tree = new Node('\\');
+while ($method=fgets(STDIN)) {
+    $method = trim($method);
+    if ($method[0] != '\\') {
+        die("Parse error: expected \\ before method $method\n");
+    }
+    $tree->add(substr($method, 1));
+}
+Format::main($tree);
