@@ -101,6 +101,9 @@ body {
 #curtain.hidden {
     visibility: hidden;
 }
+#open-file-selector {
+    width: 100px;
+}
 </style>
 <title>FoldedViewer</title>
 <script src="md5.js"></script>
@@ -480,6 +483,7 @@ Textfile.next_id = 0;
  */
 Textfile.view = function (filename, text) {
     var data_obj = new Data(text);
+    var open_file_selector = document.getElementById("open-file-selector");
 
     var textfile = Textfile.find_open_file(data_obj.md5sum());
     if (textfile) {
@@ -490,8 +494,21 @@ Textfile.view = function (filename, text) {
     if (!textfile) {
         textfile = new Textfile(filename, data_obj)
         Textfile.open_files.push(textfile);
+        if (open_file_selector) {
+            open_file_selector.add(new Option(filename, data_obj.md5sum()));
+        }
     }
     Openfile.set_open_file(textfile);
+};
+/**
+ * Sets the active text file by md5 sum
+ * @param {String} md5sum The md5sum of the file
+ */
+Textfile.view_md5 = function (md5sum) {
+    var textfile = Textfile.find_open_file(md5sum);
+    if (textfile) {
+        Openfile.set_open_file(textfile);
+    }
 };
 /**
  * Opens a remote or local file by URL
@@ -651,6 +668,10 @@ var Openfile = {
     open_file: null,
     set_open_file: function (textfile) {
         Openfile.open_file = textfile;
+        var open_file_selector = document.getElementById("open-file-selector");
+        if (open_file_selector) {
+            open_file_selector.value = textfile ? textfile.md5sum : "";
+        }
     },
     undo: function () {
         var open_file = Openfile.open_file;
@@ -775,6 +796,16 @@ var Infobox = new (function () {
             Openfile.open_file && Openfile.open_file.folder.expand_all();
         }, false);
         buttons_bar.appendChild(btnExpand_all).textContent = "Expand all";
+
+        var openFileSelector = document.createElement("select");
+        openFileSelector.id = "open-file-selector";
+        openFileSelector.add(new Option("Opened files...", ""));
+        openFileSelector.addEventListener("change", function () {
+            if (this.value) {
+                Textfile.view_md5(this.value);
+            }
+        }, false);
+        buttons_bar.appendChild(openFileSelector);
     };
     this.message = function (msg) {
         document.getElementById("infobox-data").textContent = msg;
