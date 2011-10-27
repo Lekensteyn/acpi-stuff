@@ -306,8 +306,12 @@ Folder.prototype.save_fold_state = function () {
     for (var i=0; i<collapsed.length; i++) {
         fold_state.push( (1 * collapsed[i].id.substr(this.strip_id_prefix)).toString(36) );
     }
-    localStorage.setItem("view_folder-state_" + this.persistence_id,
-                         fold_state.join(","));
+    if (fold_state.length) {
+        localStorage.setItem("view_folder-state_" + this.persistence_id,
+                             fold_state.join(","));
+    } else {
+        localStorage.removeItem("view_folder-state_" + this.persistence_id);
+    }
 
     // remove legacy crap
     if (localStorage.getItem("view_folder-state_" + this.filename)) {
