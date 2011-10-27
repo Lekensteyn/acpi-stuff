@@ -103,6 +103,17 @@ body {
 }
 </style>
 <title>FoldedViewer</title>
+<script src="md5.js"></script>
+<script>
+try {
+    if (md5("hello") != "5d41402abc4b2a76b9719d911017c592") {
+        // generate an error
+        throw 1;
+    }
+} catch (e) {
+    alert("The md5 library cannot be loaded.");
+}
+</script>
 <script>
 var ASL = {
     parse_location: function (lines) {
@@ -185,11 +196,13 @@ var ASL = {
 };
 </script>
 <script>
-function Folder(id, container) {
+function Folder(filename, container, persistence_id) {
     if (this == window)
         throw new Error("Folder is not a function");
-    this.id = id;
+    this.filename = filename;
     this.container = container;
+    this.persistence_id = persistence_id;
+
     this.fold_state = {};
     this.id_prefix = "";
     this.strip_id_prefix = 0;
@@ -261,7 +274,13 @@ Folder.prototype.set_id_prefix = function (id_prefix) {
     this.strip_id_prefix = id_prefix.length;
 };
 Folder.prototype.restore_last = function () {
-    var fold_state = localStorage.getItem("view_folder-state_" + this.id);
+    var fold_state = localStorage.getItem("view_folder-state_" +
+                                          this.persistence_id);
+    // legacy storage method using filename
+    if (!fold_state) {
+        fold_state = localStorage.getItem("view_folder-state_" +
+                                          this.filename);
+    }
     if (fold_state) {
         fold_state = fold_state.split(",");
         while (fold_state.length) {
@@ -278,7 +297,13 @@ Folder.prototype.save_fold_state = function () {
     for (var i=0; i<collapsed.length; i++) {
         fold_state.push( (1 * collapsed[i].id.substr(this.strip_id_prefix)).toString(36) );
     }
-    localStorage.setItem("view_folder-state_" + this.id, fold_state.join(","));
+    localStorage.setItem("view_folder-state_" + this.persistence_id,
+                         fold_state.join(","));
+
+    // remove legacy crap
+    if (localStorage.getItem("view_folder-state_" + this.filename)) {
+        localStorage.removeItem("view_folder-state_" + this.filename);
+    }
 };
 Folder.prototype.is_collapsed = function (element) {
     return /\bcollapsed\b/.test(element.className);
@@ -357,11 +382,13 @@ function Textfile(file, data) {
     var that = this;
     this.file = file;
     this.id = Textfile.next_id++;
+    this.md5sum = md5(data);
+    // the prefix used for IDs of DOM elements
     this.prefix = this.id + "_";
     this.container = document.createElement("pre");
     this.container.className = "file";
     this.parse_data(data);
-    this.folder = new Folder(file, this.container);
+    this.folder = new Folder(file, this.container, this.md5sum);
     this.folder.set_id_prefix(this.prefix + "block-");
     document.getElementById("files").appendChild(this.container);
     this.folder.restore_last();
