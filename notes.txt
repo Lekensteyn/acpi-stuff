@@ -1,0 +1,196 @@
+The GNVS field in DSDT possibly groups registers for nVidia graphics stuff
+
+
+ACPI-WMI thing calls
+\_SB.PCI0.P0P2.PEGP._DSM calls
+\_SB.PCI0.GFX0._DSM (MUID, REVS, SFNC, ARGD)
+    (note: arg names come from SSDT table)
+    MUID - Buffer containing UUID
+    REVS - Integer containing revision ID (specific to UUID)
+    SFNC - Integer containing Function index (should start at 1)
+    ARGD - Package that contains function-specific arguments
+
+Terminology
+- KBC - Keyboard Controller
+- EC - Embedded Controller
+- GNVS - Global Non-Volatile Storage (guessed)
+- PEGP - PCI Express Graphics Port (guessed)
+
+\_SB.PCI0.LPCB.EC.RINF
+- \ - Root
+- _SB - System Bus
+- PCI0 - PCI Bus
+- LPCB - Low Pin Count bus, see http://www.intel.com/design/chipsets/industry/lpc.htm
+- EC - Embedded Controller (I/O slave, Bus Master)
+- RINF - ??? redundancy information signal ???
+
+Documentation on EC fields (also describing device names) with sample ASL:
+http://www.baldwin.cx/~phoenix/reference/docs/acpi_impguide.pdf
+page 27
+
+Some documentation on the GNVS fields:
+http://review.coreboot.org/gitweb?p=coreboot.git;a=blob_plain;f=src/southbridge/intel/sch/acpi/globalnvs.asl
+
+
+
+P80D - 32-bit in GNVS, debug port (IO 0x80) value (src: coreboot globalnvs.asl)
+P80H - 32-bit in PRT0 which is at address 0x80-0x83 in SystemIO
+
+Method PX8H accepts two arguments:
+- arg0: the byte in P80D to be modified, start counting at 0 from the right.
+        If the value is not 0x0-0x3 (inclusive), nothing is modified
+- arg1: the new 8-bit data to be inserted at position arg0
+After the argument processing above, P80D is stored into P80H
+
+
+
+\_SB.LID0._LID // line 6870
+if \_SB.PCI0.LPCB.EC.ECOK
+    return \_SB.PCI0.LPCB.EC.LIDS
+else
+    return 1
+According to the acpi spec page 343, non-zero = open lid, zero = closed lid
+\_SB.LID0._PSW // DSDT line 6887
+    if \_SB.PCI0.LPCB.EC.ECOK
+        Store Arg0 in \_SB.PCI0.LPCB.EC.LWKE
+_PSW 1 = enable device wake capabilities, 0 = disable
+
+
+It looks like \_SB.PCI0.LPCB.EC.ECOK checks whether the embedded controller is
+available. From my DSDT, ECOK is set to One when calling
+\_SB.PCI0.LPCB.EC._REG 0x3 0x1. According to the spec, _REG is called for
+indicating that an OperationRegion is ready (or not)
+
+
+\_SB.PCI0.GFX0._DSM // line 515
+
+My Clevo B7130 accepts two possible values for MUID.
+
+If there is no match, the below is returned:
+    0x02, 0x00, 0x00, 0x80
+
+If MUID matches:
+{ 0xD3, 0x73, 0xD8, 0x7E, 0xD0, 0xC2, 0x4F, 0x4E,
+  0xA8, 0x54, 0x0F, 0x13, 0x17, 0xB0, 0x1C, 0x2C }
+then One is always returned
+
+===================================================
+If MUID matches:
+{ 0xF8, 0xD8, 0x86, 0xA4, 0xDA, 0x0B, 0x1B, 0x47,
+  0xA7, 0x2B, 0x60, 0x42, 0xA6, 0xB5, 0xBE, 0xE0 }
+then
+
+If REVS does not match 0x0100, then the below is returned:
+{ 0x02, 0x00, 0x00, 0x80 }
+(observation: perhaps it means "invalid argument"?)
+
+
+My SSDT aliases SFNC (Arg2) as _T_0
+If SFNC matches Zero, then it returns:
+    { 0x01, 0x00, 0x03, 0x04 }
+
+If SFNC matches 0x11, the if-conditions are skipped and the above
+"If there is no match, ..." is applied, meaning that the below is returned:
+{ 0x02, 0x00, 0x00, 0x80 }
+
+If SFNC matches 0x10, then
+    ARGD (Arg3) is aliased as NVVK
+    If ARGD equals 0x564B, then it returns something based on the 32-bit
+    register \NVID. If the \NVID register value does not match one of the
+    comparisons, the buffer from "If there is no match, ..." is returned:
+    { 0x02, 0x00, 0x00, 0x80 }
+    Otherwise, a buffer of size 226 (0xE2) or 230 (0xE6) is returned which may
+    also be based on \_SB.PCI0.P0P2.SSID
+
+**possible power management stuff ahead**
+If SFNC matches 0x1A, then // line 596
+    If And(\OEMF, One), then // register OEMF is in field GNVS in SystemMemory
+    (I now consider ARGD[n] as the n-th element in buff ARGD (Arg3) with n>=0)
+        UPFG = ARGD[1]
+        OPCE = ARGD[3]
+        if And(UPFG, One) OPCE = And(OPD3, One) // store right-most bit of OPD3
+                                                // in OPCE
+        TEMP = { 0x01, 0x00, 0x00, 0x09 }
+        if And(\OEMF, 0x10), then
+            if \_SB.PCI0.LPCB.EC.ECOK // whether the EC is available (ready)
+                if And(\_SB.PCI0.LPCB.EC.RINF, 0x02)// XXX what field is it?
+                    // not sure what field it is, but it contains 0x2 for me
+                    TEMP[0] = 0x19
+                else
+                    TEMP[0] = One
+        else
+            TEMP[3] = Zero
+        return TEMP
+    else
+        return { 0x00 } // note, buffer size is 4, so {0x00,0x00,0x00,x00}
+
+===================================================
+
+Analysis against Asus UL30VT
+The Asus UL30VT has a _DSM method that turns devices on/off.
+
+The UUID is different too:
+0xA0,0xA0,0x95,0x9D,0x60,0x00,0x48,0x4D,0xB3,0x4D,0x7E,0x5F,0xEA,0x12,0x9F,0xD4
+
+The SFNC is different too: 0x03 instead of 0x1A
+
+ARGD is read as a little-endian number and stored in Local0
+If it equals 1 (ARGD={0x1,0x0,0x0,0x0}, the device is turned on and One is
+returned.
+If it equals 2 (ARGD={0x2,0x0,0x0,0x0}, the device is turned off and Zero is
+returned.
+Otherwise, the status is returned (result of calling \_SB.PCI0.P0P1.VGA._STA)
+
+\_SB.PCI0.P0P1.VGA._STA
+If all bits in \_SB.PCI0.REG0 equals to 1, Zero is returned. Otherwise, 0x0F is
+returned. REG0 is a 32-bit field in HOSG which is a field in the PCI_Config
+space, starting at address Zero.
+
+===================================================
+
+
+Windows Instrumentation: WMI and ACPI, sample ASL code
+http://msdn.microsoft.com/en-us/windows/hardware/gg463463#E6OAC
+
+Devices with _HID PNP0C14 (case-insensitive) are used for WMI.
+ACPI methods (xx is object ID):
+
+- _WDG - returns a buffer containing a mapping for data blocks, events and WMI
+         methods. See also http://lwn.net/Articles/391230/ and below
+- WQxx - returns a data block, optional arg0 for index (if multiple instances)
+- WSxx - Set the data block, arg0 is index, arg1 is data
+- WMxx - arg0 is instance index to be executed, arg1 method ID and arg2 a
+         buffer containing input for the method call
+- WExx - optional method that should be supported if keeping an event incurs
+         significant overhead. If arg0 is 0, disable event, otherwise enable
+- WCxx - optional method that should be supported if collecting data incurs
+         significant overhead. If arg0 is 0, disable data block collection, 0
+         otherwise
+- _WED - results are passed as part of WMI event information, this allows data
+         to be included with an event. Arg0 is notification code that caused
+         the notification to occur
+
+_WDG
+A multiple of 16 + 2 + 1 + 1 (=20) bytes:
+- first 14 bytes: GUID for the WMI method
+- 15: notification value (used for ACPI Notify)
+- 16: Reserved
+- 17-18: Object ID. This is appended to the string "WM" to get the ACPI method
+         example: 0x42 0x42 are ASCII values for BB, so the method becomes WMBB
+- 19: Instance count (??)
+- 20: Flags (taken from iksaif's wmidump.c and the msdn link above):
+    0x1: ACPI_WMI_EXPENSIVE - run when the first data consumer is interested in
+         collecting the data block and run when the last data consumer is not
+         interested anymore
+    0x2: ACPI_WMI_METHOD - is a method, not a data block
+    0x4: ACPI_WMI_STRING - is a Unicode string
+    0x8: ACPI_WMI_EVENT - is an event, not a data block or method
+
+
+WMMX
+This was found on both a Clevo B7130 and W150HRM
+- arg0: ignored
+- arg1: if equals 0x1C, return result of _DSM method, otherwise return 0
+- arg2: FUNC + MUID + REVI + SFNC + ARGD
+    - FUNC: if 32-bit field matches 0x4D53445F, the _DSM is performed with
+            given arguments MUID, REVI, SFNC and ARGD (see beginning)
