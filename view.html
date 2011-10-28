@@ -634,18 +634,37 @@ Textfile.prototype.parse_data = function (data) {
         last_line = line_elm;
     }
     old_block = block = null;
+    this.last_line = line_no;
 };
 Textfile.prototype.go_to_line = function (line) {
     line = parseInt(line, 10);
     if (line <= 0) {
         line = 1;
+    } else if (line > this.last_line) {
+        line = this.last_line;
     }
     var line_elm = document.getElementById(this.prefix + "L" + line);
     if (line_elm) {
-        line_elm.scrollIntoView();
-    } else {
-        // line is larger than the number of lines, just go to the bottom
-        this.container.scrollIntoView(false);
+        var expand_blocks = [];
+        var block = line_elm;
+        while (/\bblock\b/.test((block=block.parentNode).className)) {
+            // add in reverse order since the blocks would usually be opened
+            // from the outer to the inner
+            expand_blocks.unshift(block);
+        }
+        this.folder.expand_blocks(expand_blocks);
+
+        var scroll_pos = 0;
+        var offset_elm = line_elm;
+        do {
+            scroll_pos += offset_elm.offsetTop;
+        } while ((offset_elm=offset_elm.offsetParent));
+
+        // don't hide under the current position display
+        scroll_pos -= document.getElementById("current-position-container")
+            .offsetHeight;
+
+        window.scrollTo(0, scroll_pos);
     }
 };
 var LevelParser = function (lines) {
