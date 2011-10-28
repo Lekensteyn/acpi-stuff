@@ -891,12 +891,14 @@ var Infobox = new (function () {
         var btnUndo = document.createElement("button");
         btnUndo.disabled = true;
         btnUndo.id = "history-back";
+        btnUndo.title = "Undo collapse / expand action";
         btnUndo.addEventListener("click", Openfile.undo, false);
         buttons_bar.appendChild(btnUndo).textContent = "Undo";
 
         var btnRedo = document.createElement("button");
-        btnUndo.disabled = true;
+        btnRedo.disabled = true;
         btnRedo.id = "history-forward";
+        btnRedo.title = "Redo collapse / expand action";
         btnRedo.addEventListener("click", Openfile.redo, false);
         buttons_bar.appendChild(btnRedo).textContent = "Redo";
 
