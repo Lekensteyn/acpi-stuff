@@ -469,10 +469,12 @@ function Textfile(filename, data_obj) {
     }, false);
 
     this.show = function () {
+        document.title = this.filename + " - FoldedViewer";
         container.className = container.className
             .replace(/\binactive\b/g, "") + " active";
     };
     this.hide = function () {
+        document.title = "FoldedViewer";
         container.className = container.className
             .replace(/\bactive\b/g, "") + " inactive";
     };
@@ -532,7 +534,6 @@ Textfile.view = function (filename, text) {
     if (textfile) {
         filename = textfile.filename;
     }
-    document.title = filename + " - FoldedViewer";
 
     if (!textfile) {
         textfile = new Textfile(filename, data_obj)
@@ -615,7 +616,6 @@ Textfile.prototype.close = function () {
                 }
             }
             Openfile.set_open_file(null);
-            document.title = "FoldedViewer";
             break;
         }
     }
