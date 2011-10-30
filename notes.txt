@@ -138,6 +138,22 @@ Calls:
 
 ===================================================
 
+When turning off (_PS3):
+Zero is written to \_SB.PCI0.LPCB.EC.FDAT
+0xBF is written to \_SB.PCI0.LPCB.EC.FCMD
+
+When turning on (_PS0):
+One  is written to \_SB.PCI0.LPCB.EC.FDAT
+0xBF is written to \_SB.PCI0.LPCB.EC.FCMD 
+
+This is observed for Clevo B7130 which has an ITE 8518 embedded controller
+(KBC-ITE IT8502E according to the Mainboard Overview of the B7130 Service
+Manual)
+It's also observed for the Clevo W150HRM (although it's called through SGOF
+(off) and SGON (on).
+
+===================================================
+
 Analysis against Asus UL30VT
 The Asus UL30VT has a _DSM method that turns devices on/off.
 
