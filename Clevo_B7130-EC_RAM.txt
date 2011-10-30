@@ -1,0 +1,97 @@
+NMSG,    8,    // byte 0x00  bit 0  
+SLED,    4,    // byte 0x01  bit 0  
+Offset (0x02), // byte 0x02  bit 0  
+MODE,    1,    // byte 0x02  bit 0  
+FAN0,    1,    // byte 0x02  bit 1  
+TME0,    1,    // byte 0x02  bit 2  
+TME1,    1,    // byte 0x02  bit 3  
+FAN1,    1,    // byte 0x02  bit 4  
+    ,    2,    // byte 0x02  bit 5  
+Offset (0x03), // byte 0x03  bit 0  
+LIDS,    1,    // byte 0x03  bit 0  lid status, 0 = closed, 1 = open
+LSW0,    1,    // byte 0x03  bit 1  
+LWKE,    1,    // byte 0x03  bit 2  
+WAKF,    1,    // byte 0x03  bit 3  
+    ,    2,    // byte 0x03  bit 4  
+PWKE,    1,    // byte 0x03  bit 6  
+MWKE,    1,    // byte 0x03  bit 7  
+ AC0,   16,    // byte 0x04  bit 0  
+ PSV,   16,    // byte 0x06  bit 0  
+ CRT,   16,    // byte 0x08  bit 0  
+ TMP,   16,    // byte 0x0A  bit 0  Temperature (dunno what kind, it's of TZ0)
+ AC1,   16,    // byte 0x0C  bit 0  
+SLPT,    8,    // byte 0x0E  bit 0  
+SWEJ,    1,    // byte 0x0F  bit 0  
+SWCH,    1,    // byte 0x0F  bit 1  
+Offset (0x10), // byte 0x10  bit 0  
+ ADP,    1,    // byte 0x10  bit 0  1 = battery is charging, 0 = discharging
+AFLT,    1,    // byte 0x10  bit 1  
+BAT0,    1,    // byte 0x10  bit 2  1 = battery 0 present
+BAT1,    1,    // byte 0x10  bit 3  
+    ,    3,    // byte 0x10  bit 4  
+PWOF,    1,    // byte 0x10  bit 7  
+WFNO,    8,    // byte 0x11  bit 0  
+BPU0,   32,    // byte 0x12  bit 0  
+BDC0,   32,    // byte 0x16  bit 0  The first 16 bits are design capacity (little endian)
+BFC0,   32,    // byte 0x1A  bit 0  The first 16 bits are last full charge capacity (little endian)
+BTC0,   32,    // byte 0x1E  bit 0  
+BDV0,   32,    // byte 0x22  bit 0  The first 16 bits are design voltage (little endian)
+BST0,   32,    // byte 0x26  bit 0  If the second bit is set, the battery is not full (not sure)
+BPR0,   32,    // byte 0x2A  bit 0  The first 16 bits are present rate (mW or mA)
+BRC0,   32,    // byte 0x2E  bit 0  The first 16 bits are remaining capacity (mWh or mAh)
+BPV0,   32,    // byte 0x32  bit 0  The first 16 bits are present voltage (mV)
+BTP0,   16,    // byte 0x36  bit 0  
+BRS0,   16,    // byte 0x38  bit 0  
+BCW0,   32,    // byte 0x3A  bit 0  The first 16 bits are design capacity of warning (little endian)
+BCL0,   32,    // byte 0x3E  bit 0  The first 16 bits are design capacity of low (little endian)
+BCG0,   32,    // byte 0x42  bit 0  
+BG20,   32,    // byte 0x46  bit 0  
+BMO0,   64,    // byte 0x4A  bit 0  
+BIF0,   64,    // byte 0x52  bit 0  
+BSN0,   32,    // byte 0x5A  bit 0  
+BTY0,   64,    // byte 0x5E  bit 0  
+BCC0,   16,    // byte 0x66  bit 0  
+ECOS,    8,    // byte 0x68  bit 0  
+REV0,    8,    // byte 0x69  bit 0  
+REV1,   32,    // byte 0x6A  bit 0  
+BAE0,   16,    // byte 0x6E  bit 0  
+BAF0,   16,    // byte 0x70  bit 0  
+BPU1,   32,    // byte 0x72  bit 0  
+BDC1,   32,    // byte 0x76  bit 0  
+BFC1,   32,    // byte 0x7A  bit 0  
+BTC1,   32,    // byte 0x7E  bit 0  
+BDV1,   32,    // byte 0x82  bit 0  
+BST1,   32,    // byte 0x86  bit 0  
+BPR1,   32,    // byte 0x8A  bit 0  
+BRC1,   32,    // byte 0x8E  bit 0  
+BPV1,   32,    // byte 0x92  bit 0  
+BTP1,   16,    // byte 0x96  bit 0  
+BRS1,   16,    // byte 0x98  bit 0  
+BCW1,   32,    // byte 0x9A  bit 0  
+BCL1,   32,    // byte 0x9E  bit 0  
+BCG1,   32,    // byte 0xA2  bit 0  
+BG21,   32,    // byte 0xA6  bit 0  
+BMO1,   64,    // byte 0xAA  bit 0  
+BIF1,   64,    // byte 0xB2  bit 0  
+BSN1,   32,    // byte 0xBA  bit 0  
+BTY1,   64,    // byte 0xBE  bit 0  
+BCC1,   16,    // byte 0xC6  bit 0  
+OEM1,    8,    // byte 0xC8  bit 0  
+OEM2,    8,    // byte 0xC9  bit 0  brightness level 0-7
+OEM3,   16,    // byte 0xCA  bit 0  
+OEM4,    8,    // byte 0xCC  bit 0  
+Offset (0xD4), // byte 0xD4  bit 0  
+HDDT,    8,    // byte 0xD4  bit 0  
+Offset (0xD7), // byte 0xD7  bit 0  
+DTHL,    8,    // byte 0xD7  bit 0  
+BRTS,    8,    // byte 0xD8  bit 0  
+Offset (0xDA), // byte 0xDA  bit 0  
+WINF,    8,    // byte 0xDA  bit 0  
+RINF,    8,    // byte 0xDB  bit 0  
+Offset (0xDD), // byte 0xDD  bit 0  
+INF2,    8,    // byte 0xDD  bit 0  
+MUTE,    1,    // byte 0xDE  bit 0  
+DLED,    1,    // byte 0xDE  bit 1  
+Offset (0xF8), // byte 0xF8  bit 0  
+FCMD,    8,    // byte 0xF8  bit 0  command for the instruction fetch bus (not sure)
+FDAT,    8,    // byte 0xF9  bit 0  data for the instruction fetch bus (not sure)
