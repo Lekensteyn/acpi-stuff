@@ -176,6 +176,40 @@ space, starting at address Zero.
 
 ===================================================
 
+Short analysis for Asus Aspire 5742G (not tested, theoretical analysis).
+The 1-bit field GP36 is Zero if disabled. _PS0 only disabled the card if GP36
+is Zero. _PS3 only disables the card if OMPR is 0x03. OMPR can be set using
+_DSM.
+
+Arg3 for _DSM:
+
+- if function is 0x1B, indices 0, 1, 2, 3 are used to construct Local0
+- if function is 0x10, Arg3 is passed to \_SB.PCI0.P0P2.VGA.GOBT
+- if function is 0x1A, the first two bits of index 3 is used for OPCE which
+  will be written to OMPR if the first bit of index Zero (name: FLCH) equals 1
+
+So, since OMPR should be 0x3 (binary 11) and OPCE is only written to OMPR if
+OPCE is not equal to OMPR and FLCH is 1, Arg3 should be: {0x1,0x0,0x0,0x3}
+
+Possible call for disabling the card:
+
+    \_SB.PCI0.P0P2.VGA._DSM {0xF8,0xD8,0x86,0xA4,0xDA,0x0B,0x1B,0x47,0xA7,0x2B,0x60,0x42,0xA6,0xB5,0xBE,0xE0} 0x100 0x1A {1,0,0,3}
+    \_SB.PCI0.P0P2.VGA._PS3
+Possible call for enabling the card:
+
+    \_SB.PCI0.P0P2.VGA._PS0
+
+===================================================
+
+The UUID
+0xF8,0xD8,0x86,0xA4,0xDA,0x0B,0x1B,0x47,0xA7,0x2B,0x60,0x42,0xA6,0xB5,0xBE,0xE0
+was found for:
+
+- Clevo B7130 (works, see above)
+- Asus Aspire 5742G (see above, same _DSM params as Clevo B7130)
+
+===================================================
+
 
 Windows Instrumentation: WMI and ACPI, sample ASL code
 http://msdn.microsoft.com/en-us/windows/hardware/gg463463#E6OAC
