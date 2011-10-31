@@ -176,6 +176,37 @@ space, starting at address Zero.
 
 ===================================================
 
+The Dell Vostro 3500 has the same _DSM layout as the Asus UL30VT (see above)
+and uses the same UUID and SFNC,
+The SSDT2.dsl file contains syntax errors on the P8XH function though which
+makes analysis a bit harder). Again, Arg3 is converted to an Integer (little
+endian of course, stored in Local0). In this case, the last two bits are
+significant (AND (Local0, 0x3)). Values for Local0:
+
+- 0 - calls \_SB.PCI0.P0P1.PEGP._STA
+- 1 - calls \_SB.PCI0.P0P1.PEGP._ON
+- 2 - calls \_SB.PCI0.P0P1.PEGP._OFF
+
+The 1-bit field PO36 is One if the device is disabled and Zero if enabled
+
+Buffer TMP2 contains four Zeros: {0x00, 0x00, 0x00, 0x00}. The first byte is
+aliased to STS2. If \_SB.PCI0.P0P1.PEGP.PO36 equals Zero, the right-most bit of
+STS2 is set to One (Or (STS2, One)).
+
+The return result of \_SB.PCI0.GFX0._DSM for Arg2 = 3 is buffer TMP2. More
+precisely, if the device is enabled, the return result is {0x1,0x0,0x0,0x0}. If
+the device is disabled, the result is {0x0,0x0,0x0,0x0}
+
+ACPI call for disable card:
+
+    \_SB.PCI0.P0P1.PEGP._DSM {0xA0,0xA0,0x95,0x9D,0x60,0x00,0x48,0x4D,0xB3,0x4D,0x7E,0x5F,0xEA,0x12,0x9F,0xD4} 0x102 0x3 {2,0,0,0}
+
+ACPI call for enable card:
+
+    \_SB.PCI0.P0P1.PEGP._DSM {0xA0,0xA0,0x95,0x9D,0x60,0x00,0x48,0x4D,0xB3,0x4D,0x7E,0x5F,0xEA,0x12,0x9F,0xD4} 0x102 0x3 {1,0,0,0}
+
+===================================================
+
 Short analysis for Asus Aspire 5742G (not tested, theoretical analysis).
 The 1-bit field GP36 is Zero if disabled. _PS0 only disabled the card if GP36
 is Zero. _PS3 only disables the card if OMPR is 0x03. OMPR can be set using
