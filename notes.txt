@@ -162,6 +162,8 @@ The UUID is different too:
 
 The SFNC is different too: 0x03 instead of 0x1A
 
+The revision number (second argument, Arg1) is ignored.
+
 ARGD is read as a little-endian number and stored in Local0
 If it equals 1 (ARGD={0x1,0x0,0x0,0x0}, the device is turned on and One is
 returned.
