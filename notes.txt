@@ -207,6 +207,9 @@ ACPI call for enable card:
 
     \_SB.PCI0.P0P1.PEGP._DSM {0xA0,0xA0,0x95,0x9D,0x60,0x00,0x48,0x4D,0xB3,0x4D,0x7E,0x5F,0xEA,0x12,0x9F,0xD4} 0x102 0x3 {1,0,0,0}
 
+The above calls should theoretically work, but it didn't. vga_switcheroo works
+here (reported by Samsagax)
+
 ===================================================
 
 Short analysis for Asus Aspire 5742G (not tested, theoretical analysis).
