@@ -136,6 +136,9 @@ Calls:
 
     \_SB.PCI0.P0P2.PEGP._PS0
 
+The _DSM function was also found on the Clevo W150HRM, but LLStarks reported
+that the driver did not recognize the device even after _PS0 has been called.
+
 ===================================================
 
 When turning off (_PS3):
@@ -175,6 +178,10 @@ Otherwise, the status is returned (result of calling \_SB.PCI0.P0P1.VGA._STA)
 If all bits in \_SB.PCI0.REG0 equals to 1, Zero is returned. Otherwise, 0x0F is
 returned. REG0 is a 32-bit field in HOSG which is a field in the PCI_Config
 space, starting at address Zero.
+
+The same function was found on Clevo W150HRM which expects the same arguments
+and returns the same values. 0x00 means that the device is off, 0x0F means that
+it's on.
 
 ===================================================
 
