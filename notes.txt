@@ -113,8 +113,8 @@ If SFNC matches 0x1A, then // line 596
         TEMP = { 0x01, 0x00, 0x00, 0x09 }
         if And(\OEMF, 0x10), then
             if \_SB.PCI0.LPCB.EC.ECOK // whether the EC is available (ready)
-                if And(\_SB.PCI0.LPCB.EC.RINF, 0x02)// XXX what field is it?
-                    // not sure what field it is, but it contains 0x2 for me
+                if And(\_SB.PCI0.LPCB.EC.RINF, 0x02)// the device is on if 0x2
+                    // and 0x0 if off
                     TEMP[0] = 0x19
                 else
                     TEMP[0] = One

@@ -87,11 +87,11 @@ DTHL,    8,    // byte 0xD7  bit 0
 BRTS,    8,    // byte 0xD8  bit 0  
 Offset (0xDA), // byte 0xDA  bit 0  
 WINF,    8,    // byte 0xDA  bit 0  
-RINF,    8,    // byte 0xDB  bit 0  
+RINF,    8,    // byte 0xDB  bit 0  ? 0x2 if the discrete GPU is on, 0x0 if off
 Offset (0xDD), // byte 0xDD  bit 0  
 INF2,    8,    // byte 0xDD  bit 0  
 MUTE,    1,    // byte 0xDE  bit 0  
-DLED,    1,    // byte 0xDE  bit 1  
+DLED,    1,    // byte 0xDE  bit 1  1 if the Discrete GPU LED on the keyboard is on and the iGPU LED is off, 0 if the opposite
 Offset (0xF8), // byte 0xF8  bit 0  
 FCMD,    8,    // byte 0xF8  bit 0  command for the instruction fetch bus (not sure)
 FDAT,    8,    // byte 0xF9  bit 0  data for the instruction fetch bus (not sure)
