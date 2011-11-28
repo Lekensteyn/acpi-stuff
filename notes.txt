@@ -242,6 +242,34 @@ Possible call for enabling the card:
 
     \_SB.PCI0.P0P2.VGA._PS0
 
+Lenovo Thinkpad W520
+--------------------
+The MUID, REVS and SFNC arguments match the \_SB.PCI0.PEG.VID.NVOP function
+of a Lenovo Thinkpad W520 (called through \_SB.PCI0.PEG.VID._DSM). This was
+found in the DSDT. The 0x1A function looks similar to the Acer Aspire 5472G
+above, there is also a FLCH and OMPR. The return value of the card is always
+the same, if I've calculated it correctly: {0x91,0x0,0x0,0x1} (if it returns
+{0x81,0x0,0x0,0x1} then it's off, but the _STA function hardcodes 0x0F, so
+this will probably not happen). On calling the 0x1A DSM function, 0x02 is
+stored in HDAC. The behavior with OMPR is the same as the with the Aspire
+5472G above.
+Function 0x1B and 0x10 returns values only and do not perform an action on
+themselves.
+\_SB.PCI0.PEG.VID.ISOP (IS OPtimus?) seems to check whether the discrete video
+card is available (judging from the names VDSP, VIGD and VDSC). _PS0 and _PS3
+don't do anything if ISOP returns a zero value. _PS3 only works if OMPR equals
+0x3. After a successful call of _PS3, OMPR becomes 0x02 and DGOS becomes One.
+_PS0 only tries to enable the card if ISOP returns non-zero and DGOS is
+non-zero as well.
+
+Possible call for disabling the card:
+
+    \_SB.PCI0.PEG.VID._DSM {0xF8,0xD8,0x86,0xA4,0xDA,0x0B,0x1B,0x47,0xA7,0x2B,0x60,0x42,0xA6,0xB5,0xBE,0xE0} 0x100 0x1A {1,0,0,3}
+    \_SB.PCI0.PEG.VID._PS3
+Possible call for enabling the card:
+
+    \_SB.PCI0.PEG.VID._PS0
+
 ===================================================
 
 The UUID
