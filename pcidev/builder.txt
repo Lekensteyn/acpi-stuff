@@ -1,0 +1,11 @@
+// apply on http://lxr.linux.no/#linux+v3.1.5/include/linux/pci.h#L236
+var a = [], b=[];
+$("output").value=preg_replace($('REPatt').value, $('By').value, $('input').value, $('REMod').value);var i=0;
+var o=JSON.parse("["+$("output").value.slice(0, -1)+"]"),l=0;
+o.forEach(function (e) {l = Math.max(l, e.length)});
+o.forEach(function (e) {
+   a.push('"' + ((new Array(l)).join(" ")+e).substr(-l) + ': %02X\\n"');
+   b.push("pdev->"+e+(++i%3?", ":",\n"))
+});
+"\n"+a.join("\n") + ",\n" + b.join("").replace(/,\s*$/, "")
+
