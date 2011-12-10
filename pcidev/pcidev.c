@@ -21,6 +21,9 @@ static void get_info(void) {
 
     while ((pdev = pci_get_class(class, pdev)) != NULL) {
         if (pdev->vendor != PCI_VENDOR_ID_INTEL) {
+            u32 cfg_word;
+            // read first config word which contains Vendor and Device ID
+            pci_read_config_dword(pdev, 0, &cfg_word);
             snprintf(buf, BUFSIZE,
 "pdev information from PCI device %s:\n"
 // begin
@@ -69,7 +72,9 @@ static void get_info(void) {
 "           is_virtfn: %02X\n"
 "            reset_fn: %02X\n"
 "   is_hotplug_bridge: %02X\n"
-"           dev_flags: %02X\n",
+"           dev_flags: %02X\n"
+
+"Config word at pos 1: %04X\n",
 
 dev_name(&pdev->dev),
 
@@ -90,6 +95,7 @@ pdev->needs_freset, pdev->state_saved, pdev->is_physfn,
 pdev->is_virtfn, pdev->reset_fn, pdev->is_hotplug_bridge,
 pdev->dev_flags
 // end
+, cfg_word
 );
             break;
         }
