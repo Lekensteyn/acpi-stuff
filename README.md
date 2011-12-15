@@ -50,3 +50,18 @@ Used for dumping the contents of an Embedded Controller which can be done with:
 Getting the register value at a certain position:
 
     ./acer_ec.pl ?= [hexadecimal index of register]
+    
+### bbswitch/bbswitch.c
+Compile the bbswitch kernel module and enable/disable the card:
+
+	make
+	
+Load the kernel module
+
+	sudo insmod bbswitch.ko
+	
+Switch to root shell (sudo won't work) and do your thing
+
+	sudo -s
+	echo OFF > /proc/acpi/bbswitch
+	echo ON > /proc/acpi/bbswitch
