@@ -15,15 +15,32 @@ extern struct proc_dir_entry *acpi_root_dir;
 #define BUFSIZE 10240
 static char buf[BUFSIZE];
 
+// <space> <HEX*4> <space> <HEX*4> <NEWLINE>
+#define CFG_SPACE_LINE_LEN (1 + 4 + 1 + 4 + 1)
+#define CFG_SPACE_LINES 16
+
+static void read_saved_cfg_space(struct pci_dev *pdev, char *buffer) {
+    int i;
+    for (i=0; i<CFG_SPACE_LINES; i++) {
+        snprintf(buffer + CFG_SPACE_LINE_LEN * i,
+            CFG_SPACE_LINE_LEN + 1, " %04X %04X\n",
+            pdev->saved_config_space[i] >> 0x10,
+            pdev->saved_config_space[i] & 0xFFFF);
+    }
+}
+
 static void get_info(void) {
     struct pci_dev *pdev = NULL;
     int class = PCI_CLASS_DISPLAY_VGA << 8;
+    // including null byte
+    char saved_config_space[CFG_SPACE_LINES * CFG_SPACE_LINE_LEN + 1];
 
     while ((pdev = pci_get_class(class, pdev)) != NULL) {
         if (pdev->vendor != PCI_VENDOR_ID_INTEL) {
             u32 cfg_word;
             // read first config word which contains Vendor and Device ID
             pci_read_config_dword(pdev, 0, &cfg_word);
+            read_saved_cfg_space(pdev, saved_config_space);
             snprintf(buf, BUFSIZE,
 "pdev information from PCI device %s:\n"
 // begin
@@ -74,6 +91,7 @@ static void get_info(void) {
 "   is_hotplug_bridge: %02X\n"
 "           dev_flags: %02X\n"
 
+"Saved PCI config space:\n%s"
 "Config word at pos 1: %04X\n",
 
 dev_name(&pdev->dev),
@@ -95,6 +113,7 @@ pdev->needs_freset, pdev->state_saved, pdev->is_physfn,
 pdev->is_virtfn, pdev->reset_fn, pdev->is_hotplug_bridge,
 pdev->dev_flags
 // end
+, saved_config_space
 , cfg_word
 );
             break;
