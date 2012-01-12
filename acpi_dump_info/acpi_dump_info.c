@@ -49,7 +49,7 @@ static struct file_operations fops = {
 static int __init meh_init(void) {
 	struct proc_dir_entry *acpi_entry;
 	acpi_entry = proc_create(DEVNAME, 0444, acpi_root_dir, &fops);
-	if (acpi_entry) {
+	if (acpi_entry == NULL) {
 		printk(KERN_ERR DEVNAME ": could not create proc/acpi entry\n");
 		return -ENOMEM;
 	}
