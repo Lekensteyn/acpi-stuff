@@ -24,6 +24,7 @@ static int meh_show(struct seq_file *seqfp, void *p) {
 
 		handle = DEVICE_ACPI_HANDLE(&pdev->dev);
 		seq_printf(seqfp, "%s ", dev_name(&pdev->dev));
+		seq_printf(seqfp, "%06x ", pdev->class);
 		if (handle) {
 			acpi_get_name(handle, ACPI_FULL_PATHNAME, &buf);
 			seq_printf(seqfp, "%s\n", (char *)buf.pointer);
