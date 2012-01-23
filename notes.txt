@@ -325,5 +325,16 @@ This was found on both a Clevo B7130 and W150HRM
 - arg0: ignored
 - arg1: if equals 0x1C, return result of _DSM method, otherwise return 0
 - arg2: FUNC + MUID + REVI + SFNC + ARGD
-    - FUNC: if 32-bit field matches 0x4D53445F, the _DSM is performed with
-            given arguments MUID, REVI, SFNC and ARGD (see beginning)
+    - MUID: 16 BYTES (= 128 bits), the right-most 4 bytes (32 bits) are
+      interpreted as a function number (little-endian) for WMI. 0x4D53445F is
+      the NVIDIA _DSM call. The remaining values in arg2 are passed to this _DSM
+      method.
+    - REVID: 4 bytes
+    - SFNC: 4 bytes
+    - ARGD: 4 bytes (0x20 / 32 bits / DWORD). Also known as XRG0 and YARG.
+
+This method was found on many machines and seems the only way to call the _DSM
+method on Lenovo Y570. Most machines require Arg2 for FUNC == 0x4D53445F have
+a size of at least 0x1C bytes (7 DWORDs). Some allow 6 DWORDs too which means
+that it's not verified that ARGD exist. The ACPI spec requires the bits to be
+exist in the source (Arg2) so you should always pass 7 DWORDs.
