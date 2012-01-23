@@ -305,7 +305,9 @@ ACPI methods (xx is object ID):
 
 _WDG
 A multiple of 16 + 2 + 1 + 1 (=20) bytes:
-- first 14 bytes: GUID for the WMI method
+- first 14 bytes: GUID for the WMI method, split in groups of 4, 2, 2 and 6
+  bytes. Each group is read in reverse order, so {AA,BB,CC,DD} is read as
+  DDCCBBAA.
 - 15: notification value (used for ACPI Notify)
 - 16: Reserved
 - 17-18: Object ID. This is appended to the string "WM" to get the ACPI method
@@ -338,3 +340,6 @@ method on Lenovo Y570. Most machines require Arg2 for FUNC == 0x4D53445F have
 a size of at least 0x1C bytes (7 DWORDs). Some allow 6 DWORDs too which means
 that it's not verified that ARGD exist. The ACPI spec requires the bits to be
 exist in the source (Arg2) so you should always pass 7 DWORDs.
+
+The WMI GUID for this is F6CB5C3C-9CAE-4EBD-B577-931EA32A2CC0
+
