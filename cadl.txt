@@ -1,0 +1,187 @@
+P80H (SystemIO 0x80) = debug port, can be ignored http://stackoverflow.com/a/6796109/427545
+SSMP (SystemIO 0xB2) = SMI Command Port http://blogs.phoenix.com/phoenix_technologies_bios/2008/12/bios-undercover-writing-a-software-smi-handler.html
+
+http://kerneltrap.org/mailarchive/git-commits-head/2008/2/7/766374
+ba5e1223422368fd2f4dbb0745f5fbb5fe9a65f1
+ACPI: video: delete unused display switch on hotkey event code
+^--- this disables _DSS (acpi_video_device_set_state)
+
+Method (_DGS, 0, NotSerialized) {// Query Device State
+	If (And(NSTE, 0x0101)) {// Device CRT0
+	If (And(NSTE, 0x0202)) {// Device HDMI
+	If (And(NSTE, 0x0808)) {// Device LCD0
+		Return (One)//Next desired state is active
+	}
+	Return (Zero)// Next desired state is inactive
+}
+Method (_DSS) {// Device Set State
+	If (LEqual (And (Arg0, 0xC0000000), 0xC0000000)) {
+		Store (NSTE, CSTE)
+	}
+}
+Method (_DCS) {// Status of Output Device
+	Return (CDDS (0x0100))// CRT0
+	Return (CDDS (0x0300))// HDMI
+	Return (CDDS (0x0400))// LCD0
+}
+Method (CDDS) {
+	Store (And (Arg0, 0x0F0F), Local0)
+	if (LEqual(Local0, Zero)) {Return (0x1D)} // invalid param, return "inactivated"
+	if (Lequal(And(CAD#, 0xF0F), Local0)) {// # can be 'L', 2, 3, ..., 8
+		// if currently activated display equals Local0, return "activated"
+		Return (0x1F)
+	}
+	Return(0x1D) // return "inactivated"
+}
+
+// possibly returns "true" if a display is attached
+Method (PDDS) {
+	Store (And (Arg0, 0x0F0F), Local0)
+	if (LEqual(Local0, Zero)) {Return (Zero)} // "false"
+	// name "CPL" is possibly "CPDL" in IGD OpRegion, 3.1.5 Currently
+	// Attached Display Devices List
+	if (Lequal(And(CPL#, 0xF0F), Local0)) {// # can be 'L', 2, 3, ..., 8
+		Return (One) // "true"
+	}
+	Return(Zero) // "false"
+}
+/*
+NSTE = next device to be switched to?
+CSTE = current device to show?
+D2F0 is the second bit on offset 0x54, is "device 2 function 0" enabled.
+Possibly "is the intel chip responsible for the LCD". Anyway, if D2F0 is true,
+LIDS ("lid state from EC") is stored into GFX0.CLID ("Current LID state") when
+_WAK is called (wakeup)
+*/
+// methods in the \_SB.PCI0.EC a.k.a. embedded controller
+Method (_Q10, 0, NotSerialized) {// Fn + F7 (switch between displays)
+	Store (0x10, P80H)
+	If (LEqual (OSYS, 0x03E8)) {//if Linux
+		If (D2F0) {// see above
+			// Cycle Output Device
+			Notify (GFX0, 0x80)
+		}
+	} Else {
+		If (D2F0) {
+			// if BIOS should not automatically switch the active
+			// display output, but instead just save the desired
+			// state change for the display output devices in
+			// variables associated with each display output, and
+			// generate the display switch event. OSPM can query
+			// these state changes by calling the _DGS method.
+			// (ACPI5, B3.1. _DOS Enable/Disable Output Switching)
+			// (DSEN is set in _DOS as And(Arg0, 0x7))
+			If (LEqual (Zero, And (0x03, DSEN))) {
+				^^^GFX0.SWIT () // determine new activated devices
+				// if target device does not equal current device
+				If (LNotEqual (CSTE, NSTE)) {
+					// Current Event -  1 = Display Switch Hotkey Press Event
+					Store (One, ^^^GFX0.CEVT)
+					// Notification Status: 3 - Dispatched, Transaction (ASL)
+					Store (0x03, ^^^GFX0.CSTS)
+					If (LGreater (OSYS, 0x07D0)) {}
+					Else {//if Linux or unknown _OSI (not windows)
+						// Bus Check - OSPM needs to perform PnP re-enumeration
+						Notify (GFX0, Zero)
+					}
+
+					Sleep (0x02EE)
+					// Cycle Output Device
+					Notify (GFX0, 0x80)
+				}
+			}
+		}
+	}
+}
+Method (_Q11, 0, NotSerialized) { // Fn + F8 key
+	Store (0x11, P80H)
+	If (And (WINF, One)) {
+		If (LEqual (OSYS, 0x03E8)) { // if Linux
+			Notify (^^^GFX0.LCD0, 0x87)
+		} Else {
+			If (LEqual (^^^GFX0.CDDS (0x0410), 0x1F)) {// if LCD is activated?
+				If (LEqual (OEM2, Zero)) {
+					If (^^^^WMI.HKDR) {
+						Store (0xE0, ^^^^WMI.EVNT)
+						Notify (WMI, 0xD0)
+					}
+				} Else {
+					// Decrease brightness
+					Notify (^^^GFX0.LCD0, 0x87)
+				}
+			}
+		}
+	}
+}
+// _Q12 is same, but for increasing brightness (Fn + F9 key), difference:
+// Store (0x12, P80H) and Notify(LCD0, 0x86)
+
+Method (_DOD, 0, NotSerialized)
+{
+	Return (Package (0x03) {
+		0x80010100, // CRT0
+		0x80010300, // HDMI
+		0x80010410  // LCD0
+	})
+}
+
+// Returns next state based on activated and connected devices
+Method (GNAD) {
+	Arg0 = Activated and connected devices
+	Local1 = Connected devices (assigned from Arg1)
+	NewState = Arg0
+	do {
+		OldState = NewState
+		LCD        -> CRT
+		CRT        -> HDMI        if not condition
+		HDMI       -> LCD         if not condition
+		LCD + HDMI -> CRT  + HDMI
+		HDMI       -> LCD  + HDMI if     condition
+		CRT        -> LCD  + CRT  if     condition
+		// condition is check whether EmbeddedController.FLG1 ("FLAG
+		// 1") has bit 7 set (bitwise AND on 0x80). Possibly a check
+		// whether there is enough power to power two outputs?
+	} while (new state has more than Local1 connected devices on)
+	// continue to next state if a state would have an unconnected device
+
+	Return (NewState)
+}
+
+// changes CSTE and NSTE
+Method (SWIT, 0, NotSerialized) {
+	// ...1 CRT0 is activated
+	// ..1. HDMI is activated
+	// 1... LCD0 is activated
+	Store (Zero, Local0)
+	Store (Zero, Local1) // temp var
+	// ...1 CRT0 is attached
+	// ..1. HDMI is attached
+	// 1... LCD0 is attached (always, duh!)
+	Store (0x08, Local2)
+	If (LEqual (CDDS (0x0100), 0x1F)) { // if CRT0 is activated
+		Or (One, Local0, Local0)
+	}     
+
+	If (LEqual (CDDS (0x0300), 0x1F)) { // if HDMI is activated
+		Or (0x02, Local0, Local0)
+	}     
+
+	If (LEqual (CDDS (0x0410), 0x1F)) { // if LCD0 is activated
+		Or (0x08, Local0, Local0)
+	}     
+
+	If (PDDS (0x0100)) { // if CRT0 is attached
+		Or (One, Local2, Local2)
+	}     
+
+	If (PDDS (0x0300)) { // if HDMI is attached
+		Or (0x02, Local2, Local2)
+	}     
+
+	And (Local0, Local2, Local1)// only take attached devices into account for switching
+	Store (Local0, CSTE) // save currently active devices
+	Store (GNAD (Local1, Local2), Local1)// some switch logic/magic
+	Store (Local1, NSTE) // next state of (in)actived devices
+	// P80H := "new activated devices" . "old activated devices"
+	Store (Or (Local0, ShiftLeft (Local1, 0x04)), P80H) 
+}
