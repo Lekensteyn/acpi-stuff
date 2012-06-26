@@ -1,0 +1,9 @@
+system-manufacturer   : CLEVO CO.                       
+system-product-name   : B7130                           
+system-version        : Not Applicable                  
+baseboard-manufacturer: CLEVO CO.                       
+baseboard-product-name: B7130                           
+baseboard-version     : Not Applicable                  
+bios-vendor           : Phoenix Technologies LTD
+bios-version          : 6.00
+bios-release-date     : 08/27/2010

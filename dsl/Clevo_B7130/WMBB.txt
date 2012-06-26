@@ -1,0 +1,437 @@
+Method (WMBB, 3, NotSerialized)
+{
+    Name (_T_1, Zero)
+    Name (_T_0, Zero)
+    P8XH (Zero, Arg1)
+    If (SizeOf (Arg2))
+    {
+        CreateByteField (Arg2, Zero, ARGS)
+    }
+    Store (Zero, Local0)
+    Store (Arg1, _T_0)
+    If (LEqual (_T_0, One))
+    {
+        If (HKDR)
+        {
+            Store (EVNT, Local0)
+        }
+    }
+    Else
+    {
+        If (LEqual (_T_0, 0x10))
+        {
+            If (^^PCI0.LPCB.EC.SFEC)
+            {
+                Or (Local0, One, Local0)
+            }
+            If (\_TZ.TZ0.PPFG)
+            {
+                Or (Local0, 0x02, Local0)
+            }
+        }
+        Else
+        {
+            If (LEqual (_T_0, 0x11))
+            {
+                If (^^PCI0.LPCB.EC.ECOK)
+                {
+                    If (And (^^PCI0.LPCB.EC.OEM3, 0x1000))
+                    {
+                        Store (Zero, Local0)
+                    }
+                    Else
+                    {
+                        Store (One, Local0)
+                    }
+                }
+                Else
+                {
+                    Store (0xFFFF, Local0)
+                }
+            }
+            Else
+            {
+                If (LEqual (_T_0, 0x12))
+                {
+                    If (^^PCI0.LPCB.EC.ECOK)
+                    {
+                        If (And (^^PCI0.LPCB.EC.OEM3, 0x0800))
+                        {
+                            Store (One, Local0)
+                        }
+                        Else
+                        {
+                            Store (Zero, Local0)
+                        }
+                    }
+                    Else
+                    {
+                        Store (0xFFFF, Local0)
+                    }
+                }
+                Else
+                {
+                    If (LEqual (_T_0, 0x13))
+                    {
+                        If (^^PCI0.LPCB.EC.ECOK)
+                        {
+                            Store (^^PCI0.LPCB.EC.BFC0, Local0)
+                        }
+                        Else
+                        {
+                            Store (0xFFFF, Local0)
+                        }
+                    }
+                    Else
+                    {
+                        If (LEqual (_T_0, 0x32))
+                        {
+                            If (^^PCI0.LPCB.EC.ECOK)
+                            {
+                                Store (^^PCI0.LPCB.EC.BDC0, Local0)
+                            }
+                            Else
+                            {
+                                Store (0xFFFF, Local0)
+                            }
+                        }
+                        Else
+                        {
+                            If (LEqual (_T_0, 0x33))
+                            {
+                                If (^^PCI0.LPCB.EC.ECOK)
+                                {
+                                    Store (^^PCI0.LPCB.EC.BAF0, Local0)
+                                }
+                                Else
+                                {
+                                    Store (0xFFFF, Local0)
+                                }
+                            }
+                            Else
+                            {
+                                If (LEqual (_T_0, 0x34))
+                                {
+                                    If (^^PCI0.LPCB.EC.ECOK)
+                                    {
+                                        Store (^^PCI0.LPCB.EC.BAE0, Local0)
+                                    }
+                                    Else
+                                    {
+                                        Store (0xFFFF, Local0)
+                                    }
+                                }
+                                Else
+                                {
+                                    If (LEqual (_T_0, 0x3B))
+                                    {
+                                        Noop
+                                    }
+                                    Else
+                                    {
+                                        If (LEqual (_T_0, 0x3C))
+                                        {
+                                            If (^^PCI0.GFX0.PDDS (0x0300))
+                                            {
+                                                Store (One, Local0)
+                                            }
+                                            Else
+                                            {
+                                                Store (Zero, Local0)
+                                            }
+                                        }
+                                        Else
+                                        {
+                                            If (LEqual (_T_0, 0x3F))
+                                            {
+                                                Store (Zero, Local0)
+                                            }
+                                            Else
+                                            {
+                                                If (LEqual (_T_0, 0x51))
+                                                {
+                                                    Noop
+                                                }
+                                                Else
+                                                {
+                                                    If (LEqual (_T_0, 0x52))
+                                                    {
+                                                        Store (0x25, Local0)
+                                                    }
+                                                    Else
+                                                    {
+                                                        If (LEqual (_T_0, 0x1D))
+                                                        {
+                                                            If (^^PCI0.LPCB.EC.ECOK)
+                                                            {
+                                                                If (ARGS)
+                                                                {
+                                                                    Store (One, ^^PCI0.LPCB.EC.SFEC)
+                                                                    Store (0xDD, P80H)
+                                                                }
+                                                                Else
+                                                                {
+                                                                    Store (Zero, ^^PCI0.LPCB.EC.SFEC)
+                                                                    Store (0x5D, P80H)
+                                                                }
+                                                                If (LEqual (\_TZ.TZ0.PPFG, Zero))
+                                                                {
+                                                                    If (LNotEqual (And (OEMF, 0x06), 0x02))
+                                                                    {
+                                                                        If (^^PCI0.LPCB.EC.SFEC)
+                                                                        {
+                                                                            ^^AC.ADJP (Zero)
+                                                                        }
+                                                                        Else
+                                                                        {
+                                                                            If (^^AC.B15C ())
+                                                                            {
+                                                                                ^^AC.ADJP (One)
+                                                                            }
+                                                                            Else
+                                                                            {
+                                                                                ^^AC.ADJP (^^PCI0.LPCB.EC.ADP)
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                        Else
+                                                        {
+                                                            If (LEqual (_T_0, 0x1E))
+                                                            {
+                                                                If (^^PCI0.LPCB.EC.ECOK)
+                                                                {
+                                                                    If (ARGS)
+                                                                    {
+                                                                        Store (Zero, ^^PCI0.LPCB.EC.FDAT)
+                                                                        Store (0xDE, P80H)
+                                                                    }
+                                                                    Else
+                                                                    {
+                                                                        Store (One, ^^PCI0.LPCB.EC.FDAT)
+                                                                        Store (0x5E, P80H)
+                                                                    }
+                                                                    Store (0xA1, ^^PCI0.LPCB.EC.FCMD)
+                                                                }
+                                                            }
+                                                            Else
+                                                            {
+                                                                If (LEqual (_T_0, 0x1F))
+                                                                {
+                                                                    If (^^PCI0.LPCB.EC.ECOK)
+                                                                    {
+                                                                        If (ARGS)
+                                                                        {
+                                                                            Store (One, ^^PCI0.LPCB.EC.FDAT)
+                                                                            Store (0xDF, P80H)
+                                                                        }
+                                                                        Else
+                                                                        {
+                                                                            Store (Zero, ^^PCI0.LPCB.EC.FDAT)
+                                                                            Store (0x5F, P80H)
+                                                                        }
+                                                                        Store (0xA4, ^^PCI0.LPCB.EC.FCMD)
+                                                                    }
+                                                                }
+                                                                Else
+                                                                {
+                                                                    If (LEqual (_T_0, 0x26))
+                                                                    {
+                                                                        Noop
+                                                                    }
+                                                                    Else
+                                                                    {
+                                                                        If (LEqual (_T_0, 0x2A))
+                                                                        {
+                                                                            Noop
+                                                                        }
+                                                                        Else
+                                                                        {
+                                                                            If (LEqual (_T_0, 0x2C))
+                                                                            {
+                                                                                If (^^PCI0.LPCB.EC.ECOK)
+                                                                                {
+                                                                                    Store (ARGS, ^^PCI0.LPCB.EC.HDDT)
+                                                                                }
+                                                                            }
+                                                                            Else
+                                                                            {
+                                                                                If (LEqual (_T_0, 0x46))
+                                                                                {
+                                                                                    Store (One, HKDR)
+                                                                                    If (And (OEMF, 0x20))
+                                                                                    {
+                                                                                        Store (0x05, Local0)
+                                                                                    }
+                                                                                    Else
+                                                                                    {
+                                                                                        Store (One, Local0)
+                                                                                    }
+                                                                                }
+                                                                                Else
+                                                                                {
+                                                                                    If (LEqual (_T_0, 0x47))
+                                                                                    {
+                                                                                        Noop
+                                                                                    }
+                                                                                    Else
+                                                                                    {
+                                                                                        If (LEqual (_T_0, 0x4E))
+                                                                                        {
+                                                                                            Noop
+                                                                                        }
+                                                                                        Else
+                                                                                        {
+                                                                                            If (LEqual (_T_0, 0x4F))
+                                                                                            {
+                                                                                                Store (ARGS, _T_1)
+                                                                                                If (LEqual (_T_1, Zero))
+                                                                                                {
+                                                                                                    Store (0x4F, P80H)
+                                                                                                    If (^^PCI0.LPCB.EC.ECOK)
+                                                                                                    {
+                                                                                                        And (OEMF, 0xF9, OEMF)
+                                                                                                        If (And (CFGD, 0x80)) {}
+                                                                                                        If (LAnd (LEqual (\_TZ.TZ0.PPFG, Zero), LEqual (^^PCI0.LPCB.EC.SFEC, Zero)))
+                                                                                                        {
+                                                                                                            ^^AC.ADJP (One)
+                                                                                                        }
+                                                                                                    }
+                                                                                                }
+                                                                                                Else
+                                                                                                {
+                                                                                                    If (LEqual (_T_1, One))
+                                                                                                    {
+                                                                                                        Store (0x5F, P80H)
+                                                                                                        If (^^PCI0.LPCB.EC.ECOK)
+                                                                                                        {
+                                                                                                            Or (And (OEMF, 0xF9), 0x02, OEMF)
+                                                                                                            If (And (CFGD, 0x80)) {}
+                                                                                                            If (LAnd (LEqual (\_TZ.TZ0.PPFG, Zero), LEqual (^^PCI0.LPCB.EC.SFEC, Zero)))
+                                                                                                            {
+                                                                                                                ^^AC.ADJP (Zero)
+                                                                                                            }
+                                                                                                        }
+                                                                                                    }
+                                                                                                    Else
+                                                                                                    {
+                                                                                                        If (LEqual (_T_1, 0x02))
+                                                                                                        {
+                                                                                                            Store (0x6F, P80H)
+                                                                                                            If (^^PCI0.LPCB.EC.ECOK)
+                                                                                                            {
+                                                                                                                Or (And (OEMF, 0xF9), 0x04, OEMF)
+                                                                                                                If (And (CFGD, 0x80))
+                                                                                                                {
+                                                                                                                    If (^^PCI0.LPCB.EC.ADP) {}
+                                                                                                                    Else
+                                                                                                                    {
+                                                                                                                    }
+                                                                                                                }
+                                                                                                                If (LAnd (LEqual (\_TZ.TZ0.PPFG, Zero), LEqual (^^PCI0.LPCB.EC.SFEC, Zero)))
+                                                                                                                {
+                                                                                                                    ^^AC.ADJP (^^PCI0.LPCB.EC.ADP)
+                                                                                                                }
+                                                                                                            }
+                                                                                                        }
+                                                                                                    }
+                                                                                                }
+                                                                                            }
+                                                                                            Else
+                                                                                            {
+                                                                                                If (LEqual (_T_0, 0x55))
+                                                                                                {
+                                                                                                    Store (0x55, P80H)
+                                                                                                    If (^^PCI0.LPCB.EC.ECOK)
+                                                                                                    {
+                                                                                                        Or (^^PCI0.LPCB.EC.INF2, 0x02, ^^PCI0.LPCB.EC.INF2)
+                                                                                                    }
+                                                                                                }
+                                                                                                Else
+                                                                                                {
+                                                                                                    If (LEqual (_T_0, 0x56))
+                                                                                                    {
+                                                                                                        If (^^PCI0.LPCB.EC.ECOK)
+                                                                                                        {
+                                                                                                            If (And (ARGS, One))
+                                                                                                            {
+                                                                                                                Store (Zero, ^^PCI0.LPCB.EC.FDAT)
+                                                                                                                Store (0xBE, ^^PCI0.LPCB.EC.FCMD)
+                                                                                                            }
+                                                                                                            Else
+                                                                                                            {
+                                                                                                                Store (One, ^^PCI0.LPCB.EC.FDAT)
+                                                                                                                Store (0xBE, ^^PCI0.LPCB.EC.FCMD)
+                                                                                                            }
+                                                                                                            If (LEqual (And (OEMF, 0x40), Zero))
+                                                                                                            {
+                                                                                                                If (And (ARGS, 0x02))
+                                                                                                                {
+                                                                                                                    Store (One, ^^PCI0.LPCB.EC.DLED)
+                                                                                                                }
+                                                                                                                Else
+                                                                                                                {
+                                                                                                                    Store (Zero, ^^PCI0.LPCB.EC.DLED)
+                                                                                                                }
+                                                                                                            }
+                                                                                                            If (And (ARGS, 0x04))
+                                                                                                            {
+                                                                                                                Store (One, ^^PCI0.LPCB.EC.MUTE)
+                                                                                                            }
+                                                                                                            Else
+                                                                                                            {
+                                                                                                                Store (Zero, ^^PCI0.LPCB.EC.MUTE)
+                                                                                                            }
+                                                                                                        }
+                                                                                                    }
+                                                                                                    Else
+                                                                                                    {
+                                                                                                        If (LEqual (_T_0, 0x57))
+                                                                                                        {
+                                                                                                            If (^^PCI0.LPCB.EC.ECOK)
+                                                                                                            {
+                                                                                                                If (ARGS)
+                                                                                                                {
+                                                                                                                    Store (0x57, P80H)
+                                                                                                                    Store (One, ^^PCI0.LPCB.EC.MUTE)
+                                                                                                                }
+                                                                                                                Else
+                                                                                                                {
+                                                                                                                    Store (0xD7, P80H)
+                                                                                                                    Store (Zero, ^^PCI0.LPCB.EC.MUTE)
+                                                                                                                }
+                                                                                                            }
+                                                                                                        }
+                                                                                                        Else
+                                                                                                        {
+                                                                                                            Store (0xFFFFFFFF, Local0)
+                                                                                                        }
+                                                                                                    }
+                                                                                                }
+                                                                                            }
+                                                                                        }
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    Return (Local0)
+}

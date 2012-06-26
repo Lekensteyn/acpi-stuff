@@ -1,0 +1,83 @@
+\_SB.WMI.WMBB
+GUID: ABBC0F6D-8EA1-11D1-00A0-C90629100000:
+notify_id: 42
+reserved: 42
+instance_count: 1
+
+Arg0: instance index (ignored by this WMBB)
+Arg1: function index FUNC
+Arg2: if non-empty, stored in byte field ARGS
+
+Abbreviations below:
+- Ret = return (integer type). Bits start counting from left at 0
+- tag "[EE]" means that 0xFFFF is returned if the embedded controller is not
+  accessible
+- noop = "No operation", default is to return 0
+- OEMF = OEM flags (?). See more after the functions table
+
+FUNC
+0x01	Ret EVNT which is the last occured WMI event
+0x10	if SFEC (?), set ret bit 0. if waiting for temperature to drop below a
+	passive temp minus buffer threshold (PASV-DTHL), set ret bit 1
+0x11	if OEM3 & 0x1000, ret 0. Else ret 1 [EE]
+0x12	if OEM3 & 0x0800, ret 0. Else ret 1 [EE]
+0x13	ret last full charge capacity [EE]
+0x32	ret design capacity [EE]
+0x33	ret EC.BAF0 (???) [EE]
+0x34	ret EC.BAE0 (???) [EE]
+0x3B	noop
+0x3C	if HDMI is attached, return 1. Else 0
+0x3F	ret 0
+0x51	noop
+0x52	ret 0x25
+0x1D	if ARGS, SFEC = 1, Else SFEC = 0. If waiting for temperature to exceed a
+	passive temperature threshold (PASV) and if OEMF & 6 != 2, also update
+	the CPU performance as needed
+0x1E	if ARGS, store Zero in EC.FDAT. Else store One in FDAT. After that,
+	store 0xA1 in EC.FCMD
+0x1F	if ARGS, store Zero in EC.FDAT. Else store One in FDAT. After that,
+	store 0xA4 in EC.FCMD
+0x26	noop
+0x2A	noop
+0x2C	EC.HDDT = ARGS
+0x46	Enable WMI events (WMI.HKDR = 1). If OEMF & 0x20, ret 5. Else ret 1
+0x47	noop
+0x4E	noop
+0x4F	Action is taken if ARGS is 0, 1 or 2. Something with adjusting OEMF bits
+	1 and 2, and adjusting CPU performance (???). 0 = High performance, 1 =
+	Save energy, 2 = automatic (?) (???)
+0x55	enable bit 1 in EC.INF2 (bitwise OR)
+0x56	if ARGS & 1, EC.FDAT=0, else EC.FDAT=1. Store 0xBE in EC.FCMD.
+	If bit 7 in OEMF is enabled: if ARGS & 2, EC.DLED=1, else EC.DLED=0.
+	if ARGS & 4, EC.MUTE=1, else EC.MUTE=0
+0x57	if ARGS, EC.MUTE=1, else EC.MUTE=0
+****	invalid FUNC returns 0xFFFFFFFF
+
+\OEMF (OEM flags?) 8-bit
+bit	description
+7 80	whether this machine has a Sentelic Finger Sensing Pad touchpad
+6 40	Whether a LED exists for indicating iGPU/dGPU? (EC.DLED)
+5 20	whether USB host controllers need a wakeup notification? (or sth with
+	Plug and Play)
+4 10	1 if there is a discrete video card?
+3 08	sth with \_SB_.PCI0.RP02.J380, whether the JMicron SD/MMC reader exists?
+2 04	sth with temperature? see below
+1 02	sth with temperature? see below
+0 01	??? whether this machine has Optimus? Whether there is a dGPU (less
+	likely)
+
+bits 1 and 2 combined ([2:1]):
+00	Highest CPU performance, highest power use?
+01	Adjust CPU performance to workload??
+10	Lowest CPU performance, highest power saving?
+11	impossible?
+
+EC.SILF returns 1 if SFEC or if in lowest CPU performance
+SFEC ???
+
+EC.OEM3 16-bit
+bits
+0x8000	??? if difference performance levels are supported?
+0x2000	if _PSS is supported?
+0x1000	???
+

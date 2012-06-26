@@ -16,9 +16,9 @@ WAKF,    1,    // byte 0x03  bit 3
 PWKE,    1,    // byte 0x03  bit 6  
 MWKE,    1,    // byte 0x03  bit 7  
  AC0,   16,    // byte 0x04  bit 0  
- PSV,   16,    // byte 0x06  bit 0  
- CRT,   16,    // byte 0x08  bit 0  
- TMP,   16,    // byte 0x0A  bit 0  Temperature (dunno what kind, it's of TZ0)
+ PSV,   16,    // byte 0x06  bit 0  Temperature that allows for passive cooling
+ CRT,   16,    // byte 0x08  bit 0  Critical temperature (in tenths of Kelvin)
+ TMP,   16,    // byte 0x0A  bit 0  Temperature (in tenths of Kelvin)
  AC1,   16,    // byte 0x0C  bit 0  
 SLPT,    8,    // byte 0x0E  bit 0  
 SWEJ,    1,    // byte 0x0F  bit 0  
@@ -37,7 +37,7 @@ BFC0,   32,    // byte 0x1A  bit 0  The first 16 bits are last full charge capac
 BTC0,   32,    // byte 0x1E  bit 0  
 BDV0,   32,    // byte 0x22  bit 0  The first 16 bits are design voltage (little endian)
 BST0,   32,    // byte 0x26  bit 0  If the second bit is set, the battery is not full (not sure)
-BPR0,   32,    // byte 0x2A  bit 0  The first 16 bits are present rate (mW or mA)
+BPR0,   32,    // byte 0x2A  bit 0  The first 16 bits are present rate (mW or mA) (negative for discharging)
 BRC0,   32,    // byte 0x2E  bit 0  The first 16 bits are remaining capacity (mWh or mAh)
 BPV0,   32,    // byte 0x32  bit 0  The first 16 bits are present voltage (mV)
 BTP0,   16,    // byte 0x36  bit 0  
@@ -83,7 +83,7 @@ OEM4,    8,    // byte 0xCC  bit 0
 Offset (0xD4), // byte 0xD4  bit 0  
 HDDT,    8,    // byte 0xD4  bit 0  
 Offset (0xD7), // byte 0xD7  bit 0  
-DTHL,    8,    // byte 0xD7  bit 0  
+DTHL,    8,    // byte 0xD7  bit 0  If temp. falls below PSV-10*DTHL, optionally (?) change CPU performance and enter wait for temp >= PSV
 BRTS,    8,    // byte 0xD8  bit 0  
 Offset (0xDA), // byte 0xDA  bit 0  
 WINF,    8,    // byte 0xDA  bit 0  
