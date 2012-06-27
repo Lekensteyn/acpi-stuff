@@ -1,0 +1,94 @@
+..ID (display identifier stored in CADL, CPDL, etc)
+LF = LCD/LVDS? (the laptop screen for sure)
+CR = CRT
+TV = TV
+HD = HDMI
+DV = DVI
+DP = Display Port
+These names are initially initialised at 0xFFFFFFFF but are set by GOID if a
+device exists.
+
+LCDM = 0x0808 laptop LCD screen
+CRTM = 0x0101 CRT
+TVOM = 0x0202 TV output
+HDMM = 0x0404 HDMI
+DVIM = 0x4040 DVI
+DPOM = 0x8080 Display Port output
+
+
+(methods below are in context of \_SB.PCI0.GFX0 unless indicated otherwise)
+
+OA2D
+Return device ID if Arg0 matches an existing device (..ID)
+
+GOID Get Output ID?
+Checks whether Arg0 indicates a CR, TV, LF or HD device. If so, it fills in the
+..ID accordingly.
+
+SOID Set Output IDs?
+Calls GOID for all 8 items in the CPDL ("Currently Attached (or Present) Display
+Devices List", 3.1.5 of OpRegion spec)
+
+D2AF Device To Active F... ?
+Depending on Arg0, a bit is enabled and returned. If Arg0 is LCDM, then the
+first bit is set. The next bits are set when Arg0 equals CRTM, TVOM, DVIM, HDMM
+or DPOM respectively. If there is no match, the value NXTD (Next Device?,
+initially set at One = LCDM) is returned.
+
+OGCA Output Get Current Active?
+After this, the value of CPDL is checked. If this list is empty, store LCDM in
+OCAD. Otherwise, save the device ID (..ID) of the last device in this list in
+OCAD.
+
+GCAD Get Current Active Display?
+Calls OGCA and returns OCAD
+
+ADVD
+line 7812 TODO
+
+GCDS
+Calls OGCA and OGCD (not at boot because initially OEMF = 1) TODO
+Returns D2AF(CSTE)
+
+\GCDM calls GCDS if PRST() TODO
+
+variable BRNC is initially Zero.
+_DOS Disable Output Switching
+If DRDY:
+Store the first two bits in DOSF (see ACPI spec). Possibly values: 0 =
+	do not automatically toggle active display output and generate display
+	switch event. (and 1 to 3, but Linux does not use that). Initially OEMF
+	= 1 which means BIOS should automatically toggle (switch) active display
+	output without generating an event
+Bit 3 is saved into BRNC. 0 = automatic brightness control by BIOS, 1 = BIOS
+should not automatically change brightness.
+
+UPBL Increase Brightness Level
+If BRNC is set (if automatic brightness control):
+if the current device (CSTE) is not LCD, return (i.e. do not change brightness)
+If not BRNC, incremeant LBTN (brightness level) and call EC0.STBR
+
+DWBL Decrease Brightness Level
+If BRNC is set (if automatic brightness control):
+if the current device (CSTE) is not LCD, return (i.e. do not change brightness)
+If not BRNC, decremeant LBTN (brightness level) and call EC0.STBR
+
+EC0.STBR Set Brightness
+Write to a SMI port or calls GFX0.AINT if OS is not Linux.
+
+As far as I can see, this is the sequence in the kernel:
+video_detect: evaluate _DOD
+i915: set DIDL (evaluate all GFX.*._ADR methods). The _ADR methods return an
+	index number (1-8 for DD0#, special case: DD02 is named LCDD) if the
+	DIDL item is zero. Otherwise DID# & 0xFFFF is returned.
+video.c: _DOS(0)
+
+If CADL is set, then:
+OGCD sets CSTE to something other than LCDM
+
+CADL is only used in CDDS and OGCD.
+
+CDDS is only used in _DCS methods. _DCS is only called in ASL in two places in a
+embedded controller query (possibly brightness hotkeys)
+
+Possible conflict with drivers/platform/x86/asus-laptop.c?
