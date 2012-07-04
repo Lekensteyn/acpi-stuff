@@ -81,3 +81,14 @@ bits
 0x2000	if _PSS is supported?
 0x1000	???
 
+EC.OEM4 8-bit
+1100 1110  CE	after suspend/resume
+1101 1011  DB	VGA hotkey is pressed
+1111 0100  F4	WiFi disabled (Fn + F11 or WiFi button)
+1111 0101  F5	WiFi enabled (Fn + F11 or WiFi button)
+1111 0110  F6	Webcam disabled (Fn + F10 or cam button)
+1111 0111  F7	Webcam enabled (Fn + F10 or cam button)
+1111 1000  F8	Bluetooth is disabled (Fn + F12)
+1111 1001  F9	Bluetooth is enabled (Fn + F12)
+1111 1100  FC	touchpad is disabled (Fn + F1)
+1111 1101  FD	touchpad is enabled (Fn + F1)
