@@ -8,6 +8,7 @@
 #include <linux/module.h>
 #include <linux/init.h>
 #include <linux/acpi.h>
+#include <linux/suspend.h> /* for pm notifier */
 
 MODULE_AUTHOR("Peter Wu");
 MODULE_DESCRIPTION("WMI driver for Clevo B7130.");
@@ -23,6 +24,9 @@ MODULE_LICENSE("GPL");
 #define CLEVO_WMI_FUNC_ENABLE_NOTIFICATIONS	0x46
 
 //MODULE_ALIAS("wmi:" CLEVO_WMI_GUID);
+
+/* used for enabling WMI again on resume from suspend */
+static struct notifier_block nb;
 
 /**
  * call_wmbb - Calls the WMBB method.
@@ -76,7 +80,7 @@ static void clevo_wmi_notify(u32 value, void *context) {
 /**
  * Make the firmware generate WMI events.
  */
-static int __init clevo_wmi_enable(void) {
+static int clevo_wmi_enable(void) {
 	u32 result = 0;
 	if (call_wmbb(CLEVO_WMI_FUNC_ENABLE_NOTIFICATIONS,
 		0 /* args are ignored */, &result)) {
@@ -84,6 +88,18 @@ static int __init clevo_wmi_enable(void) {
 		return -ENODEV;
 	}
 	pr_debug("Enabling WMI notifications yields: %#04x\n", result);
+	return 0;
+}
+
+static int clevo_wmi_pm_handler(struct notifier_block *nbp,
+	unsigned long event_type, void *p) {
+	switch (event_type) {
+	case PM_POST_HIBERNATION:
+	case PM_POST_SUSPEND:
+	case PM_POST_RESTORE:
+		clevo_wmi_enable();
+		break;
+	}
 	return 0;
 }
 
@@ -102,12 +118,18 @@ static int __init clevo_wmi_init(void) {
 			acpi_format_exception(ret));
 		return -EINVAL;
 	}
+	nb.notifier_call = &clevo_wmi_pm_handler;
+	register_pm_notifier(&nb);
 	pr_info("Clevo WMI driver loaded.\n");
 	return 0;
 }
 
 static void __exit clevo_wmi_exit(void) {
 	wmi_remove_notify_handler(CLEVO_WMI_EVD0_GUID);
+	if (nb.notifier_call) {
+		unregister_pm_notifier(&nb);
+		nb.notifier_call = NULL;
+	}
 	pr_info("Clevo WMI driver unloaded.\n");
 }
 

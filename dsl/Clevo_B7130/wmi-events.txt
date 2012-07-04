@@ -2,7 +2,7 @@
 
 All of the notifications in DSDT.dsl are only triggered if WMI.HKDR is true.
 This is only the case after calling WMBB with function 0x46. After
-suspend/resume, HKDR is 0 again due to the GPE._L01 method.
+suspend/resume, HKDR is 0 again due to the _PTS method (=Prepare To Sleep).
 
 Keep in mind that LID0.LIDF is always Zero.
 
