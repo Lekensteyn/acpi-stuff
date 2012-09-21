@@ -75,7 +75,6 @@ static void get_info(void) {
 "            is_added: %02X\n"
 "        is_busmaster: %02X\n"
 "              no_msi: %02X\n"
-"   block_ucfg_access: %02X\n"
 "broken_parity_status: %02X\n"
 " irq_reroute_variant: %02X\n"
 "         msi_enabled: %02X\n"
@@ -106,7 +105,7 @@ pdev->d2_support, pdev->no_d1d2, pdev->mmio_always_on,
 pdev->wakeup_prepared, pdev->d3_delay, pdev->error_state,
 pdev->cfg_size, pdev->irq, pdev->transparent,
 pdev->multifunction, pdev->is_added, pdev->is_busmaster,
-pdev->no_msi, pdev->block_ucfg_access, pdev->broken_parity_status,
+pdev->no_msi, pdev->broken_parity_status,
 pdev->irq_reroute_variant, pdev->msi_enabled, pdev->msix_enabled,
 pdev->ari_enabled, pdev->is_managed, pdev->is_pcie,
 pdev->needs_freset, pdev->state_saved, pdev->is_physfn,
