@@ -104,7 +104,7 @@ static int clevo_wmi_pm_handler(struct notifier_block *nbp,
 }
 
 static int __init clevo_wmi_init(void) {
-	int ret;
+	int ret, error;
 	if (!wmi_has_guid(CLEVO_WMI_WMBB_GUID)) {
 		pr_err("Clevo WMI GUID not found\n");
 		return -ENODEV;
@@ -118,18 +118,23 @@ static int __init clevo_wmi_init(void) {
 			acpi_format_exception(ret));
 		return -EINVAL;
 	}
+
 	nb.notifier_call = &clevo_wmi_pm_handler;
-	register_pm_notifier(&nb);
+	error = register_pm_notifier(&nb);
+	if (error)
+		goto err_remove_wmi_notifier;
+
 	pr_info("Clevo WMI driver loaded.\n");
 	return 0;
+
+err_remove_wmi_notifier:
+	wmi_remove_notify_handler(CLEVO_WMI_EVD0_GUID);
+	return error;
 }
 
 static void __exit clevo_wmi_exit(void) {
+	unregister_pm_notifier(&nb);
 	wmi_remove_notify_handler(CLEVO_WMI_EVD0_GUID);
-	if (nb.notifier_call) {
-		unregister_pm_notifier(&nb);
-		nb.notifier_call = NULL;
-	}
 	pr_info("Clevo WMI driver unloaded.\n");
 }
 
