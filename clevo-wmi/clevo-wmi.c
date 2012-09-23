@@ -11,7 +11,7 @@
 #include <linux/suspend.h> /* for pm notifier */
 #include <linux/input.h>
 
-MODULE_AUTHOR("Peter Wu");
+MODULE_AUTHOR("Peter Wu <lekensteyn@gmail.com>");
 MODULE_DESCRIPTION("WMI driver for Clevo B7130.");
 MODULE_LICENSE("GPL");
 
