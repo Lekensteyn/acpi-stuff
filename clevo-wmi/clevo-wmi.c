@@ -26,6 +26,8 @@ MODULE_LICENSE("GPL");
 
 //MODULE_ALIAS("wmi:" CLEVO_WMI_GUID);
 
+#define CLEVO_WMI_KEY_VGA KEY_PROG1
+
 static struct input_dev *clevo_wmi_input_dev;
 
 /* used for enabling WMI again on resume from suspend */
@@ -88,7 +90,7 @@ static void clevo_wmi_notify(u32 value, void *context) {
 	pr_debug("Event number: %#02x\n", event);
 	switch (event) {
 	case 0xA3: /* on VGA hotkey press */
-		clevo_wmi_send_key(BTN_0);
+		clevo_wmi_send_key(CLEVO_WMI_KEY_VGA);
 		break;
 	}
 }
@@ -128,7 +130,7 @@ static int __init clevo_wmi_input_setup(void) {
 	}
 	clevo_wmi_input_dev->name = "Clevo WMI hotkeys";
 	set_bit(EV_KEY, clevo_wmi_input_dev->evbit);
-	set_bit(BTN_0, clevo_wmi_input_dev->keybit);
+	set_bit(CLEVO_WMI_KEY_VGA, clevo_wmi_input_dev->keybit);
 
 	error = input_register_device(clevo_wmi_input_dev);
 	if (error) {
