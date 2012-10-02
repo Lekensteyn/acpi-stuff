@@ -47,8 +47,9 @@ FUNC
 	1 and 2, and adjusting CPU performance (???). 0 = High performance, 1 =
 	Save energy, 2 = automatic (?) (???)
 0x55	enable bit 1 in EC.INF2 (bitwise OR)
-0x56	if ARGS & 1, EC.FDAT=0, else EC.FDAT=1. Store 0xBE in EC.FCMD.
-	If bit 7 in OEMF is enabled: if ARGS & 2, EC.DLED=1, else EC.DLED=0.
+0x56	if ARGS & 1, EC.FDAT=0 (turn VGA led GREEN), else EC.FDAT=1 (turn VGA
+	led ORANGE). Store 0xBE in EC.FCMD.
+	If bit 7 in OEMF is disabled: if ARGS & 2, EC.DLED=1, else EC.DLED=0.
 	if ARGS & 4, EC.MUTE=1, else EC.MUTE=0
 0x57	if ARGS, EC.MUTE=1, else EC.MUTE=0
 ****	invalid FUNC returns 0xFFFFFFFF
