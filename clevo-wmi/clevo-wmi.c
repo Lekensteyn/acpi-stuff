@@ -33,6 +33,12 @@ MODULE_LICENSE("GPL");
 
 #define CLEVO_WMI_KEY_VGA KEY_PROG1
 
+static int vga_hotkey_action = 1;
+module_param(vga_hotkey_action, int, 0644);
+MODULE_PARM_DESC(vga_hotkey_action, "Actions for VGA Hotkey (bitwise "
+	"combination, bit 0: toggle LED, bit 1: send key event)");
+
+
 enum {
 	CLEVO_VGA_LED_ORANGE,
 	CLEVO_VGA_LED_GREEN,
@@ -96,6 +102,9 @@ static void clevo_wmi_send_key(unsigned int code) {
 	input_sync(clevo_priv.input_dev);
 }
 
+static void clevo_vga_led_set(struct led_classdev *led_cdev,
+				enum led_brightness brightness);
+
 static void clevo_wmi_notify(u32 value, void *context) {
 	u32 event = 0;
 	if (call_wmbb(CLEVO_WMI_FUNC_GET_EVENT,
@@ -106,7 +115,11 @@ static void clevo_wmi_notify(u32 value, void *context) {
 	pr_debug("Event number: %#02x\n", event);
 	switch (event) {
 	case 0xA3: /* on VGA hotkey press */
-		clevo_wmi_send_key(CLEVO_WMI_KEY_VGA);
+		if (vga_hotkey_action & 1)
+			clevo_wmi_send_key(CLEVO_WMI_KEY_VGA);
+		if (vga_hotkey_action & 2)
+			clevo_vga_led_set(&clevo_priv.led_dev,
+				!clevo_priv.new_brightness);
 		break;
 	}
 }
