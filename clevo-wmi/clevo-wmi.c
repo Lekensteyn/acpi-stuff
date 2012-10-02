@@ -28,10 +28,13 @@ MODULE_LICENSE("GPL");
 
 #define CLEVO_WMI_KEY_VGA KEY_PROG1
 
-static struct input_dev *clevo_wmi_input_dev;
+struct clevo_wmi {
+	struct input_dev *input_dev;
+	/* used for enabling WMI again on resume from suspend */
+	struct notifier_block pm_notifier;
+};
 
-/* used for enabling WMI again on resume from suspend */
-static struct notifier_block nb;
+static struct clevo_wmi clevo_priv;
 
 /**
  * call_wmbb - Calls the WMBB method.
@@ -74,10 +77,10 @@ static int call_wmbb(int func, u8 args, u32 *result) {
 
 /* send and release a key */
 static void clevo_wmi_send_key(unsigned int code) {
-	input_report_key(clevo_wmi_input_dev, code, 1);
-	input_sync(clevo_wmi_input_dev);
-	input_report_key(clevo_wmi_input_dev, code, 0);
-	input_sync(clevo_wmi_input_dev);
+	input_report_key(clevo_priv.input_dev, code, 1);
+	input_sync(clevo_priv.input_dev);
+	input_report_key(clevo_priv.input_dev, code, 0);
+	input_sync(clevo_priv.input_dev);
 }
 
 static void clevo_wmi_notify(u32 value, void *context) {
@@ -123,22 +126,23 @@ static int clevo_wmi_pm_handler(struct notifier_block *nbp,
 
 static int __init clevo_wmi_input_setup(void) {
 	int error;
-	clevo_wmi_input_dev = input_allocate_device();
-	if (!clevo_wmi_input_dev) {
+	struct input_dev *input_dev = input_allocate_device();
+	if (!input_dev) {
 		pr_err("Not enough memory for input device.\n");
 		return -ENOMEM;
 	}
-	clevo_wmi_input_dev->name = "Clevo WMI hotkeys";
-	set_bit(EV_KEY, clevo_wmi_input_dev->evbit);
-	set_bit(CLEVO_WMI_KEY_VGA, clevo_wmi_input_dev->keybit);
 
-	error = input_register_device(clevo_wmi_input_dev);
+	input_dev->name = "Clevo WMI hotkeys";
+	set_bit(EV_KEY, input_dev->evbit);
+	set_bit(CLEVO_WMI_KEY_VGA, input_dev->keybit);
+
+	error = input_register_device(input_dev);
 	if (error) {
 		pr_err("Failed to register input device.\n");
-		input_free_device(clevo_wmi_input_dev);
+		input_free_device(input_dev);
 		return error;
 	}
-
+	clevo_priv.input_dev = input_dev;
 	return 0;
 }
 
@@ -165,8 +169,8 @@ static int __init clevo_wmi_init(void) {
 		goto err_unregister_input_dev;
 	}
 
-	nb.notifier_call = &clevo_wmi_pm_handler;
-	error = register_pm_notifier(&nb);
+	clevo_priv.pm_notifier.notifier_call = &clevo_wmi_pm_handler;
+	error = register_pm_notifier(&clevo_priv.pm_notifier);
 	if (error)
 		goto err_remove_wmi_notifier;
 
@@ -176,14 +180,14 @@ static int __init clevo_wmi_init(void) {
 err_remove_wmi_notifier:
 	wmi_remove_notify_handler(CLEVO_WMI_EVD0_GUID);
 err_unregister_input_dev:
-	input_unregister_device(clevo_wmi_input_dev);
+	input_unregister_device(clevo_priv.input_dev);
 	return error;
 }
 
 static void __exit clevo_wmi_exit(void) {
-	unregister_pm_notifier(&nb);
+	unregister_pm_notifier(&clevo_priv.pm_notifier);
 	wmi_remove_notify_handler(CLEVO_WMI_EVD0_GUID);
-	input_unregister_device(clevo_wmi_input_dev);
+	input_unregister_device(clevo_priv.input_dev);
 	pr_info("Clevo WMI driver unloaded.\n");
 }
 
