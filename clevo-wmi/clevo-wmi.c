@@ -10,6 +10,10 @@
 #include <linux/acpi.h>
 #include <linux/suspend.h> /* for pm notifier */
 #include <linux/input.h>
+#include <linux/leds.h>
+/* TODO: remove workqueue when it gets implemented in leds API
+ * http://lkml.org/lkml/2012/9/14/101 */
+#include <linux/workqueue.h>
 
 MODULE_AUTHOR("Peter Wu <lekensteyn@gmail.com>");
 MODULE_DESCRIPTION("WMI driver for Clevo B7130.");
@@ -23,13 +27,22 @@ MODULE_LICENSE("GPL");
 
 #define CLEVO_WMI_FUNC_GET_EVENT		0x01
 #define CLEVO_WMI_FUNC_ENABLE_NOTIFICATIONS	0x46
+#define CLEVO_WMI_FUNC_SET_LED			0x56
 
 //MODULE_ALIAS("wmi:" CLEVO_WMI_GUID);
 
 #define CLEVO_WMI_KEY_VGA KEY_PROG1
 
+enum {
+	CLEVO_VGA_LED_ORANGE,
+	CLEVO_VGA_LED_GREEN,
+};
+
 struct clevo_wmi {
 	struct input_dev *input_dev;
+	struct led_classdev led_dev;
+	struct work_struct led_work;
+	int new_brightness;
 	/* used for enabling WMI again on resume from suspend */
 	struct notifier_block pm_notifier;
 };
@@ -124,6 +137,54 @@ static int clevo_wmi_pm_handler(struct notifier_block *nbp,
 	return 0;
 }
 
+static void clevo_vga_led_set(struct led_classdev *led_cdev,
+				enum led_brightness brightness) {
+	clevo_priv.new_brightness = brightness;
+
+	/* put on global workqueue if not already */
+	schedule_work(&clevo_priv.led_work);
+}
+
+static void clevo_vga_led_work(struct work_struct *work) {
+	u8 args = 0;
+
+	if (clevo_priv.new_brightness == CLEVO_VGA_LED_GREEN)
+		args |= 1;
+	/* If bit 7 in OEMF is disabled: if ARGS & 2, EC.DLED=1, else
+	 * EC.DLED=0.  if ARGS & 4, EC.MUTE=1, else EC.MUTE=0.
+	 * Translated: I guess that if there is a special LED on the machine
+	 * for showing the discrete video card state (field OEMF of embedded
+	 * controller has bit 7 unset), then the DLED field of the EC will be
+	 * set to 0 or 1 depending on args & 4. As for the mute field, I do not
+	 * know what that is used for. Maybe HDMI audio? */
+
+	call_wmbb(CLEVO_WMI_FUNC_SET_LED, args, NULL);
+}
+
+static int __init clevo_vga_led_init(void) {
+	int error;
+	struct led_classdev *ldev = &clevo_priv.led_dev;
+
+	/* deliberately leave color empty, the light can ONLY be orange OR
+	 * green, not both! */
+	ldev->name		= "clevo::vga";
+
+	ldev->max_brightness	= 1;
+	ldev->brightness_set	= clevo_vga_led_set;
+	ldev->flags		= LED_CORE_SUSPENDRESUME;
+
+	INIT_WORK(&clevo_priv.led_work, clevo_vga_led_work);
+
+	error = led_classdev_register(NULL, ldev);
+	if (error)
+		return error;
+
+	/* make sure that we have a correct initial brightness field */
+	clevo_vga_led_set(ldev, ldev->brightness);
+
+	return 0;
+}
+
 static int __init clevo_wmi_input_setup(void) {
 	int error;
 	struct input_dev *input_dev = input_allocate_device();
@@ -169,6 +230,10 @@ static int __init clevo_wmi_init(void) {
 		goto err_unregister_input_dev;
 	}
 
+	error = clevo_vga_led_init();
+	if (error)
+		goto err_remove_wmi_notifier;
+
 	clevo_priv.pm_notifier.notifier_call = &clevo_wmi_pm_handler;
 	error = register_pm_notifier(&clevo_priv.pm_notifier);
 	if (error)
@@ -186,6 +251,11 @@ err_unregister_input_dev:
 
 static void __exit clevo_wmi_exit(void) {
 	unregister_pm_notifier(&clevo_priv.pm_notifier);
+
+	/* remove from global workqueue */
+	led_classdev_unregister(&clevo_priv.led_dev);
+	cancel_work_sync(&clevo_priv.led_work);
+
 	wmi_remove_notify_handler(CLEVO_WMI_EVD0_GUID);
 	input_unregister_device(clevo_priv.input_dev);
 	pr_info("Clevo WMI driver unloaded.\n");
