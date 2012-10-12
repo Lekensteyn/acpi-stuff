@@ -11,8 +11,8 @@ DSDT.dsl:5516:   OEM2 + 0xE0	LCD0._BCM: triggered on brightness write, OEM2
 DSDT.dsl:6403:   0xFB	EC._Q0C: mute volume (Fn + F3 or mute button)
 DSDT.dsl:6415:   0xC2	EC._Q0D: triggered if LID0.LIDF, otherwise SLPB (sleep
 	button?) is notified with 0x80
-DSDT.dsl:6430:   0xFA	EC._Q0E: volume up (Fn + F8)
-DSDT.dsl:6440:   0xFA	EC._Q0F: volume up (Fn + F9)
+DSDT.dsl:6430:   0xFA	EC._Q0E: volume down (Fn + F5)
+DSDT.dsl:6440:   0xFA	EC._Q0F: volume up (Fn + F6)
 DSDT.dsl:6497:   0xE0	EC._Q11: if Fn+F8 (dec.brightn) is pressed, but the
 	brightness could not be decremented further (i.e. OEM2 == 0)
 DSDT.dsl:6512:   OEM2 + 0xE0	If OS is not Windows 2006 or later, nor Linux,
@@ -34,13 +34,18 @@ DSDT.dsl:6836:   0xA3	EC._Q50: if OEM4 == 0xDB. Executed on VGA hotkey press
 SSDT1.dsl:290:   0xED	PEGP._PS0: if \OEMF & 0x10 (possibly "if there is a
 	discrete video card, OEM flag) and if \OEMF & 0x40 (possibly "if there
 	is a LED indicator available"). In addition to the notification, the
-	value One is written to EC.DLED.
+	value One is written to EC.DLED. Called after pressing the hotkey,
+	maybe it means "switch between Optimus and integrated mode"
 
 See OEM4 in wmi-methods.txt. One of the below is triggered by Fn + F1 (toggle
 touchpad).
 
-DSDT.dsl:6383:   OEM4	EC._QA0: ???
-DSDT.dsl:6393:   OEM4	EC._Q0B: ???
+DSDT.dsl:6383:   OEM4	EC._QA0: disable touchpad (guessed)
+DSDT.dsl:6393:   OEM4	EC._Q0B: enable touchpad (guessed)
+
+SSMP is the System Management Mode Port. One of them is webcam enable/disable,
+wifi enable/disable, bluetooth enable/disable.
+
 DSDT.dsl:6566:   OEM4	EC._Q13: Before the event, if OSYS is Linux, 0xB1 is
 	written to \SSMP (IO address 0xB2). ???
 DSDT.dsl:6581:   OEM4	EC._Q14: Before the event, if OSYS is Linux, 0xB1 is
