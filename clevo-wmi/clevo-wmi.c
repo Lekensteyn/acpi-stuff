@@ -39,7 +39,7 @@ MODULE_VERSION(CLEVO_WMI_VERSION);
 static int vga_hotkey_action = 1;
 module_param(vga_hotkey_action, int, 0644);
 MODULE_PARM_DESC(vga_hotkey_action, "Actions for VGA Hotkey (bitwise "
-	"combination, bit 0: toggle LED, bit 1: send key event)");
+	"combination, bit 0: send key event, bit 1: toggle LED) (default 1)");
 
 
 enum {
