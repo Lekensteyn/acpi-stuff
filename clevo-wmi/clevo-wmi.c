@@ -15,9 +15,12 @@
  * http://lkml.org/lkml/2012/9/14/101 */
 #include <linux/workqueue.h>
 
+#define CLEVO_WMI_VERSION "0.1"
+
 MODULE_AUTHOR("Peter Wu <lekensteyn@gmail.com>");
 MODULE_DESCRIPTION("WMI driver for Clevo B7130.");
 MODULE_LICENSE("GPL");
+MODULE_VERSION(CLEVO_WMI_VERSION);
 
 /* this ID seems to be used in example documents, not just Clevo ACPI */
 /* GUID for method BB */

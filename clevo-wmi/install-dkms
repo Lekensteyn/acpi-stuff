@@ -1,0 +1,16 @@
+#!/bin/bash
+set -e
+DKMS=`which dkms`
+. dkms.conf
+
+files=(Makefile dkms.conf "$PACKAGE_NAME.c")
+srcdir="/usr/src/$PACKAGE_NAME-$PACKAGE_VERSION"
+
+if [ ! -d "$srcdir" ]; then
+	install -d -m 755 "$srcdir"
+	for file in "${files[@]}"; do
+		install -m 644 "$file" "$srcdir"
+	done
+fi
+
+"$DKMS" install -m "$PACKAGE_NAME" -v "$PACKAGE_VERSION"
