@@ -25,8 +25,10 @@ DSDT.dsl:6627:   0xB7	EC._Q19: battery info becomes known (in BAT0._BIF)
 DSDT.dsl:6645:   0xC0	EC._Q1B: triggered if LID0.LIDF and lid is closed,
 	otherwise LID0 is notified with 0x80
 DSDT.dsl:6674:   0xB7	EC._Q1E: ???
-DSDT.dsl:6692:   0xDE	EC._Q35: if      OEM3 & 0x8000 , also SFEC = 1
-DSDT.dsl:6701:   0xDF	EC._Q35: if not (OEM3 & 0x8000), also SFEC = 0
+DSDT.dsl:6692:   0xDE	EC._Q35: if      OEM3 & 0x8000 , also SFEC = 1;
+	"silent mode" (something with fan?)
+DSDT.dsl:6701:   0xDF	EC._Q35: if not (OEM3 & 0x8000), also SFEC = 0;
+	"normal mode"
 DSDT.dsl:6786:   0xFE	EC._Q40: ???
 DSDT.dsl:6811:   0xBA	EC._Q4A: if OEM4 == 0xCC
 DSDT.dsl:6821:   0xBB	EC._Q4A: if OEM4 == 0xCB
