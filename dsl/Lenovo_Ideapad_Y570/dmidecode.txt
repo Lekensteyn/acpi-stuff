@@ -1,0 +1,9 @@
+system-manufacturer   : LENOVO
+system-product-name   : 20091                           
+system-version        : Lenovo IdeaPad Y570             
+baseboard-manufacturer: LENOVO
+baseboard-product-name: Base Board Product Name
+baseboard-version     : Base Board Version
+bios-vendor           : LENOVO
+bios-version          : 47CN30WW(V2.08)
+bios-release-date     : 08/01/2011
