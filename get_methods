@@ -1,2 +1,15 @@
 #!/bin/sh
-acpiexec -b methods "$@" | awk '/^$/{s=0};s==1{print $1};/^Objects of type \[Method\]/{s=1}'
+# Usage: ./get_methods dsdt.dat ssdt1.dat ... > methods.txt
+# When ran without parameters, it will read all .dat files from the current
+# directory and store a list of methods in methods.txt
+#
+# Requires `acpiexec` from ACPICA to be installed.
+
+output=
+if [ $# -eq 0 ]; then
+	set -- *.dat
+	output=methods.txt
+fi
+acpiexec -b methods "$@" | awk '/^$/{s=0};s==1{print $1};/^Objects of type \[Method\]/{s=1}' | {
+	[ -n "$output" ] && tee "$output" >/dev/null || cat
+}
