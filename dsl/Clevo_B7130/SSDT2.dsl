@@ -1,9 +1,9 @@
 /*
  * Intel ACPI Component Architecture
- * AML Disassembler version 20100528
- *
- * Disassembly of SSDT2.dat, Mon Jan 30 12:31:36 2012
- *
+ * AML Disassembler version 20121018-64 [Oct 26 2012]
+ * Copyright (c) 2000 - 2012 Intel Corporation
+ * 
+ * Disassembly of SSDT2.dat, Sat Nov 10 15:53:41 2012
  *
  * Original Table Header:
  *     Signature        "SSDT"
@@ -16,16 +16,17 @@
  *     Compiler ID      "INTL"
  *     Compiler Version 0x20050624 (537200164)
  */
+
 DefinitionBlock ("SSDT2.aml", "SSDT", 1, "PmRef", "CpuPm", 0x00003000)
 {
-    External (\_PR_.CPU7, DeviceObj)
-    External (\_PR_.CPU6, DeviceObj)
-    External (\_PR_.CPU5, DeviceObj)
-    External (\_PR_.CPU4, DeviceObj)
-    External (\_PR_.CPU3, DeviceObj)
-    External (\_PR_.CPU2, DeviceObj)
-    External (\_PR_.CPU1, DeviceObj)
     External (\_PR_.CPU0, DeviceObj)
+    External (\_PR_.CPU1, DeviceObj)
+    External (\_PR_.CPU2, DeviceObj)
+    External (\_PR_.CPU3, DeviceObj)
+    External (\_PR_.CPU4, DeviceObj)
+    External (\_PR_.CPU5, DeviceObj)
+    External (\_PR_.CPU6, DeviceObj)
+    External (\_PR_.CPU7, DeviceObj)
 
     Scope (\)
     {
@@ -60,14 +61,14 @@ DefinitionBlock ("SSDT2.aml", "SSDT", 1, "PmRef", "CpuPm", 0x00003000)
     {
         Name (HI0, Zero)
         Name (HC0, Zero)
-        Method (_PDC, 1, NotSerialized)
+        Method (_PDC, 1, NotSerialized)  // _PDC: Processor Driver Capabilities
         {
             Store (CPDC (Arg0), Local0)
             GCAP (Local0)
             Return (Local0)
         }
 
-        Method (_OSC, 4, NotSerialized)
+        Method (_OSC, 4, NotSerialized)  // _OSC: Operating System Capabilities
         {
             Store (COSC (Arg0, Arg1, Arg2, Arg3), Local0)
             GCAP (Local0)
@@ -83,13 +84,13 @@ DefinitionBlock ("SSDT2.aml", "SSDT", 1, "PmRef", "CpuPm", 0x00003000)
             CreateField (Arg0, 0x40, Multiply (Local1, 0x08), TEMP)
             Name (STS0, Buffer (0x04)
             {
-                0x00, 0x00, 0x00, 0x00
+                 0x00, 0x00, 0x00, 0x00
             })
             Concatenate (STS0, TEMP, Local2)
             Return (COSC (Buffer (0x10)
                 {
-                    /* 0000 */    0x16, 0xA6, 0x77, 0x40, 0x0C, 0x29, 0xBE, 0x47, 
-                    /* 0008 */    0x9E, 0xBD, 0xD8, 0x70, 0x58, 0x71, 0x39, 0x53
+                    /* 0000 */   0x16, 0xA6, 0x77, 0x40, 0x0C, 0x29, 0xBE, 0x47,
+                    /* 0008 */   0x9E, 0xBD, 0xD8, 0x70, 0x58, 0x71, 0x39, 0x53
                 }, REVS, SIZE, Local2))
         }
 
@@ -103,8 +104,8 @@ DefinitionBlock ("SSDT2.aml", "SSDT", 1, "PmRef", "CpuPm", 0x00003000)
             CreateDWordField (Arg0, 0x0C, IID3)
             Name (UID0, Buffer (0x10)
             {
-                /* 0000 */    0x16, 0xA6, 0x77, 0x40, 0x0C, 0x29, 0xBE, 0x47, 
-                /* 0008 */    0x9E, 0xBD, 0xD8, 0x70, 0x58, 0x71, 0x39, 0x53
+                /* 0000 */   0x16, 0xA6, 0x77, 0x40, 0x0C, 0x29, 0xBE, 0x47,
+                /* 0008 */   0x9E, 0xBD, 0xD8, 0x70, 0x58, 0x71, 0x39, 0x53
             })
             CreateDWordField (UID0, Zero, EID0)
             CreateDWordField (UID0, 0x04, EID1)
@@ -174,14 +175,14 @@ DefinitionBlock ("SSDT2.aml", "SSDT", 1, "PmRef", "CpuPm", 0x00003000)
     {
         Name (HI1, Zero)
         Name (HC1, Zero)
-        Method (_PDC, 1, NotSerialized)
+        Method (_PDC, 1, NotSerialized)  // _PDC: Processor Driver Capabilities
         {
             Store (\_PR.CPU0.CPDC (Arg0), Local0)
             GCAP (Local0)
             Return (Local0)
         }
 
-        Method (_OSC, 4, NotSerialized)
+        Method (_OSC, 4, NotSerialized)  // _OSC: Operating System Capabilities
         {
             Store (\_PR.CPU0.COSC (Arg0, Arg1, Arg2, Arg3), Local0)
             GCAP (Local0)
@@ -244,14 +245,14 @@ DefinitionBlock ("SSDT2.aml", "SSDT", 1, "PmRef", "CpuPm", 0x00003000)
 
     Scope (\_PR.CPU2)
     {
-        Method (_PDC, 1, NotSerialized)
+        Method (_PDC, 1, NotSerialized)  // _PDC: Processor Driver Capabilities
         {
             Store (\_PR.CPU0.CPDC (Arg0), Local0)
             GCAP (Local0)
             Return (Local0)
         }
 
-        Method (_OSC, 4, NotSerialized)
+        Method (_OSC, 4, NotSerialized)  // _OSC: Operating System Capabilities
         {
             Store (\_PR.CPU0.COSC (Arg0, Arg1, Arg2, Arg3), Local0)
             GCAP (Local0)
@@ -290,14 +291,14 @@ DefinitionBlock ("SSDT2.aml", "SSDT", 1, "PmRef", "CpuPm", 0x00003000)
 
     Scope (\_PR.CPU3)
     {
-        Method (_PDC, 1, NotSerialized)
+        Method (_PDC, 1, NotSerialized)  // _PDC: Processor Driver Capabilities
         {
             Store (\_PR.CPU0.CPDC (Arg0), Local0)
             GCAP (Local0)
             Return (Local0)
         }
 
-        Method (_OSC, 4, NotSerialized)
+        Method (_OSC, 4, NotSerialized)  // _OSC: Operating System Capabilities
         {
             Store (\_PR.CPU0.COSC (Arg0, Arg1, Arg2, Arg3), Local0)
             GCAP (Local0)
@@ -336,14 +337,14 @@ DefinitionBlock ("SSDT2.aml", "SSDT", 1, "PmRef", "CpuPm", 0x00003000)
 
     Scope (\_PR.CPU4)
     {
-        Method (_PDC, 1, NotSerialized)
+        Method (_PDC, 1, NotSerialized)  // _PDC: Processor Driver Capabilities
         {
             Store (\_PR.CPU0.CPDC (Arg0), Local0)
             GCAP (Local0)
             Return (Local0)
         }
 
-        Method (_OSC, 4, NotSerialized)
+        Method (_OSC, 4, NotSerialized)  // _OSC: Operating System Capabilities
         {
             Store (\_PR.CPU0.COSC (Arg0, Arg1, Arg2, Arg3), Local0)
             GCAP (Local0)
@@ -382,14 +383,14 @@ DefinitionBlock ("SSDT2.aml", "SSDT", 1, "PmRef", "CpuPm", 0x00003000)
 
     Scope (\_PR.CPU5)
     {
-        Method (_PDC, 1, NotSerialized)
+        Method (_PDC, 1, NotSerialized)  // _PDC: Processor Driver Capabilities
         {
             Store (\_PR.CPU0.CPDC (Arg0), Local0)
             GCAP (Local0)
             Return (Local0)
         }
 
-        Method (_OSC, 4, NotSerialized)
+        Method (_OSC, 4, NotSerialized)  // _OSC: Operating System Capabilities
         {
             Store (\_PR.CPU0.COSC (Arg0, Arg1, Arg2, Arg3), Local0)
             GCAP (Local0)
@@ -428,14 +429,14 @@ DefinitionBlock ("SSDT2.aml", "SSDT", 1, "PmRef", "CpuPm", 0x00003000)
 
     Scope (\_PR.CPU6)
     {
-        Method (_PDC, 1, NotSerialized)
+        Method (_PDC, 1, NotSerialized)  // _PDC: Processor Driver Capabilities
         {
             Store (\_PR.CPU0.CPDC (Arg0), Local0)
             GCAP (Local0)
             Return (Local0)
         }
 
-        Method (_OSC, 4, NotSerialized)
+        Method (_OSC, 4, NotSerialized)  // _OSC: Operating System Capabilities
         {
             Store (\_PR.CPU0.COSC (Arg0, Arg1, Arg2, Arg3), Local0)
             GCAP (Local0)
@@ -474,14 +475,14 @@ DefinitionBlock ("SSDT2.aml", "SSDT", 1, "PmRef", "CpuPm", 0x00003000)
 
     Scope (\_PR.CPU7)
     {
-        Method (_PDC, 1, NotSerialized)
+        Method (_PDC, 1, NotSerialized)  // _PDC: Processor Driver Capabilities
         {
             Store (\_PR.CPU0.CPDC (Arg0), Local0)
             GCAP (Local0)
             Return (Local0)
         }
 
-        Method (_OSC, 4, NotSerialized)
+        Method (_OSC, 4, NotSerialized)  // _OSC: Operating System Capabilities
         {
             Store (\_PR.CPU0.COSC (Arg0, Arg1, Arg2, Arg3), Local0)
             GCAP (Local0)

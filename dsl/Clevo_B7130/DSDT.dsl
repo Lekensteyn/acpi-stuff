@@ -1,9 +1,9 @@
 /*
  * Intel ACPI Component Architecture
- * AML Disassembler version 20100528
- *
- * Disassembly of DSDT.dat, Mon Jan 30 12:31:36 2012
- *
+ * AML Disassembler version 20121018-64 [Oct 26 2012]
+ * Copyright (c) 2000 - 2012 Intel Corporation
+ * 
+ * Disassembly of DSDT.dat, Sat Nov 10 15:53:41 2012
  *
  * Original Table Header:
  *     Signature        "DSDT"
@@ -16,21 +16,22 @@
  *     Compiler ID      "INTL"
  *     Compiler Version 0x20060912 (537266450)
  */
+
 DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
 {
-    External (TNOT, MethodObj)    // 0 Arguments
-    External (PDC7)
-    External (PDC6)
-    External (PDC5)
-    External (PDC4)
-    External (PDC3)
-    External (PDC2)
-    External (PDC1)
-    External (PDC0)
-    External (CFGD)
     External (\_PR_.CPU0._PPC)
     External (\_PR_.CPU0._PSS, IntObj)
     External (\_SB_.PCI0.IEIT.EITV, MethodObj)    // 0 Arguments
+    External (CFGD)
+    External (PDC0)
+    External (PDC1)
+    External (PDC2)
+    External (PDC3)
+    External (PDC4)
+    External (PDC5)
+    External (PDC6)
+    External (PDC7)
+    External (TNOT, MethodObj)    // 0 Arguments
 
     Name (SP2O, 0x4E)
     Name (SP1O, 0x164E)
@@ -150,16 +151,16 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
         DTS1,   8, 
         DTS2,   8, 
         DTSF,   8, 
-                Offset (0x25), 
+        Offset (0x25), 
         REVN,   8, 
-                Offset (0x28), 
+        Offset (0x28), 
         APIC,   8, 
         TCNT,   8, 
         PCP0,   8, 
         PCP1,   8, 
         PPCM,   8, 
         PPMF,   32, 
-                Offset (0x32), 
+        Offset (0x32), 
         NATP,   8, 
         CMAP,   8, 
         CMBP,   8, 
@@ -185,22 +186,22 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
         DID5,   32, 
         KSV0,   32, 
         KSV1,   8, 
-                Offset (0x67), 
+        Offset (0x67), 
         BLCS,   8, 
         BRTL,   8, 
         ALSE,   8, 
         ALAF,   8, 
         LLOW,   8, 
         LHIH,   8, 
-                Offset (0x6E), 
+        Offset (0x6E), 
         EMAE,   8, 
         EMAP,   16, 
         EMAL,   16, 
-                Offset (0x74), 
+        Offset (0x74), 
         MEFE,   8, 
         DSTS,   8, 
-                Offset (0x78), 
-                Offset (0x7A), 
+        Offset (0x78), 
+        Offset (0x7A), 
         MORD,   8, 
         TCGP,   8, 
         PPRP,   32, 
@@ -211,7 +212,7 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
         IDEM,   8, 
         GTF1,   56, 
         BID,    8, 
-                Offset (0xAA), 
+        Offset (0xAA), 
         ASLB,   32, 
         IBTT,   8, 
         IPAT,   8, 
@@ -239,12 +240,12 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
         NXD8,   32, 
         GSMI,   8, 
         PAVP,   8, 
-                Offset (0xE1), 
+        Offset (0xE1), 
         OSCC,   8, 
         NEXP,   8, 
         SDGV,   8, 
         SDDV,   8, 
-                Offset (0xEB), 
+        Offset (0xEB), 
         DSEN,   8, 
         ECON,   8, 
         GPIC,   8, 
@@ -252,7 +253,7 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
         L01C,   8, 
         VFN0,   8, 
         VFN1,   8, 
-                Offset (0x100), 
+        Offset (0x100), 
         NVGA,   32, 
         NVHA,   32, 
         AMDA,   32, 
@@ -272,7 +273,7 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
         OBS6,   32, 
         OBS7,   32, 
         OBS8,   32, 
-                Offset (0x157), 
+        Offset (0x157), 
         ATMC,   8, 
         PTMC,   8, 
         ATRA,   8, 
@@ -291,7 +292,7 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
         DPDM,   8, 
         ALFP,   8, 
         IMON,   8, 
-                Offset (0x17C), 
+        Offset (0x17C), 
         OEMF,   8, 
         NVID,   16, 
         FLG1,   8
@@ -3689,21 +3690,21 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
         Alias (PRSA, PRSH)
         Device (PCI0)
         {
-            Name (_HID, EisaId ("PNP0A08"))
-            Name (_CID, EisaId ("PNP0A03"))
-            Name (_ADR, Zero)
+            Name (_HID, EisaId ("PNP0A08"))  // _HID: Hardware ID
+            Name (_CID, EisaId ("PNP0A03"))  // _CID: Compatible ID
+            Name (_ADR, Zero)  // _ADR: Address
             Method (^BN00, 0, NotSerialized)
             {
                 Return (Zero)
             }
 
-            Method (_BBN, 0, NotSerialized)
+            Method (_BBN, 0, NotSerialized)  // _BBN: BIOS Bus Number
             {
                 Return (BN00 ())
             }
 
-            Name (_UID, Zero)
-            Method (_PRT, 0, NotSerialized)
+            Name (_UID, Zero)  // _UID: Unique ID
+            Method (_PRT, 0, NotSerialized)  // _PRT: PCI Routing Table
             {
                 If (PICM)
                 {
@@ -3719,45 +3720,45 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
                 EPEN,   1, 
                     ,   11, 
                 EPBR,   20, 
-                        Offset (0x08), 
+                Offset (0x08), 
                 MHEN,   1, 
                     ,   13, 
                 MHBR,   18, 
-                        Offset (0x10), 
+                Offset (0x10), 
                 IIEN,   1, 
                     ,   11, 
                 DIBI,   20, 
-                        Offset (0x28), 
+                Offset (0x28), 
                 DIEN,   1, 
                     ,   11, 
                 DIBR,   20, 
-                        Offset (0x30), 
+                Offset (0x30), 
                 IPEN,   1, 
                     ,   11, 
                 IPBR,   20, 
-                        Offset (0x62), 
+                Offset (0x62), 
                 TUUD,   16, 
-                        Offset (0x70), 
+                Offset (0x70), 
                     ,   4, 
                 TLUD,   12, 
-                        Offset (0x89), 
+                Offset (0x89), 
                     ,   3, 
                 GTSE,   1, 
-                        Offset (0x8A)
+                Offset (0x8A)
             }
 
             OperationRegion (MCHT, SystemMemory, 0xFED10000, 0x1100)
             Field (MCHT, ByteAcc, NoLock, Preserve)
             {
-                        Offset (0xD40), 
+                Offset (0xD40), 
                 ADVE,   1, 
                     ,   11, 
                 ADVT,   20, 
-                        Offset (0x101E), 
+                Offset (0x101E), 
                 T0IS,   16, 
-                        Offset (0x105E), 
+                Offset (0x105E), 
                 T1IS,   16, 
-                        Offset (0x10EF), 
+                Offset (0x10EF), 
                 ESCS,   8
             }
 
@@ -3769,7 +3770,7 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
                     0x00FE,             // Range Maximum
                     0x0000,             // Translation Offset
                     0x00FF,             // Length
-                    ,, )
+                    ,, _Y00)
                 DWordIO (ResourceProducer, MinFixed, MaxFixed, PosDecode, EntireRange,
                     0x00000000,         // Granularity
                     0x00000000,         // Range Minimum
@@ -3803,98 +3804,98 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
                     0x000C3FFF,         // Range Maximum
                     0x00000000,         // Translation Offset
                     0x00004000,         // Length
-                    ,, , AddressRangeMemory, TypeStatic)
+                    ,, _Y01, AddressRangeMemory, TypeStatic)
                 DWordMemory (ResourceProducer, PosDecode, MinFixed, MaxFixed, Cacheable, ReadWrite,
                     0x00000000,         // Granularity
                     0x000C4000,         // Range Minimum
                     0x000C7FFF,         // Range Maximum
                     0x00000000,         // Translation Offset
                     0x00004000,         // Length
-                    ,, , AddressRangeMemory, TypeStatic)
+                    ,, _Y02, AddressRangeMemory, TypeStatic)
                 DWordMemory (ResourceProducer, PosDecode, MinFixed, MaxFixed, Cacheable, ReadWrite,
                     0x00000000,         // Granularity
                     0x000C8000,         // Range Minimum
                     0x000CBFFF,         // Range Maximum
                     0x00000000,         // Translation Offset
                     0x00004000,         // Length
-                    ,, , AddressRangeMemory, TypeStatic)
+                    ,, _Y03, AddressRangeMemory, TypeStatic)
                 DWordMemory (ResourceProducer, PosDecode, MinFixed, MaxFixed, Cacheable, ReadWrite,
                     0x00000000,         // Granularity
                     0x000CC000,         // Range Minimum
                     0x000CFFFF,         // Range Maximum
                     0x00000000,         // Translation Offset
                     0x00004000,         // Length
-                    ,, , AddressRangeMemory, TypeStatic)
+                    ,, _Y04, AddressRangeMemory, TypeStatic)
                 DWordMemory (ResourceProducer, PosDecode, MinFixed, MaxFixed, Cacheable, ReadWrite,
                     0x00000000,         // Granularity
                     0x000D0000,         // Range Minimum
                     0x000D3FFF,         // Range Maximum
                     0x00000000,         // Translation Offset
                     0x00004000,         // Length
-                    ,, , AddressRangeMemory, TypeStatic)
+                    ,, _Y05, AddressRangeMemory, TypeStatic)
                 DWordMemory (ResourceProducer, PosDecode, MinFixed, MaxFixed, Cacheable, ReadWrite,
                     0x00000000,         // Granularity
                     0x000D4000,         // Range Minimum
                     0x000D7FFF,         // Range Maximum
                     0x00000000,         // Translation Offset
                     0x00004000,         // Length
-                    ,, , AddressRangeMemory, TypeStatic)
+                    ,, _Y06, AddressRangeMemory, TypeStatic)
                 DWordMemory (ResourceProducer, PosDecode, MinFixed, MaxFixed, Cacheable, ReadWrite,
                     0x00000000,         // Granularity
                     0x000D8000,         // Range Minimum
                     0x000DBFFF,         // Range Maximum
                     0x00000000,         // Translation Offset
                     0x00004000,         // Length
-                    ,, , AddressRangeMemory, TypeStatic)
+                    ,, _Y07, AddressRangeMemory, TypeStatic)
                 DWordMemory (ResourceProducer, PosDecode, MinFixed, MaxFixed, Cacheable, ReadWrite,
                     0x00000000,         // Granularity
                     0x000DC000,         // Range Minimum
                     0x000DFFFF,         // Range Maximum
                     0x00000000,         // Translation Offset
                     0x00004000,         // Length
-                    ,, , AddressRangeMemory, TypeStatic)
+                    ,, _Y08, AddressRangeMemory, TypeStatic)
                 DWordMemory (ResourceProducer, PosDecode, MinFixed, MaxFixed, Cacheable, ReadWrite,
                     0x00000000,         // Granularity
                     0x000E0000,         // Range Minimum
                     0x000E3FFF,         // Range Maximum
                     0x00000000,         // Translation Offset
                     0x00004000,         // Length
-                    ,, , AddressRangeMemory, TypeStatic)
+                    ,, _Y09, AddressRangeMemory, TypeStatic)
                 DWordMemory (ResourceProducer, PosDecode, MinFixed, MaxFixed, Cacheable, ReadWrite,
                     0x00000000,         // Granularity
                     0x000E4000,         // Range Minimum
                     0x000E7FFF,         // Range Maximum
                     0x00000000,         // Translation Offset
                     0x00004000,         // Length
-                    ,, , AddressRangeMemory, TypeStatic)
+                    ,, _Y0A, AddressRangeMemory, TypeStatic)
                 DWordMemory (ResourceProducer, PosDecode, MinFixed, MaxFixed, Cacheable, ReadWrite,
                     0x00000000,         // Granularity
                     0x000E8000,         // Range Minimum
                     0x000EBFFF,         // Range Maximum
                     0x00000000,         // Translation Offset
                     0x00004000,         // Length
-                    ,, , AddressRangeMemory, TypeStatic)
+                    ,, _Y0B, AddressRangeMemory, TypeStatic)
                 DWordMemory (ResourceProducer, PosDecode, MinFixed, MaxFixed, Cacheable, ReadWrite,
                     0x00000000,         // Granularity
                     0x000EC000,         // Range Minimum
                     0x000EFFFF,         // Range Maximum
                     0x00000000,         // Translation Offset
                     0x00004000,         // Length
-                    ,, , AddressRangeMemory, TypeStatic)
+                    ,, _Y0C, AddressRangeMemory, TypeStatic)
                 DWordMemory (ResourceProducer, PosDecode, MinFixed, MaxFixed, Cacheable, ReadWrite,
                     0x00000000,         // Granularity
                     0x000F0000,         // Range Minimum
                     0x000FFFFF,         // Range Maximum
                     0x00000000,         // Translation Offset
                     0x00010000,         // Length
-                    ,, , AddressRangeMemory, TypeStatic)
+                    ,, _Y0D, AddressRangeMemory, TypeStatic)
                 DWordMemory (ResourceProducer, PosDecode, MinFixed, MaxFixed, Cacheable, ReadWrite,
                     0x00000000,         // Granularity
                     0x00000000,         // Range Minimum
                     0xFEAFFFFF,         // Range Maximum
                     0x00000000,         // Translation Offset
                     0x00000000,         // Length
-                    ,, , AddressRangeMemory, TypeStatic)
+                    ,, _Y0E, AddressRangeMemory, TypeStatic)
                 DWordMemory (ResourceProducer, PosDecode, MinFixed, MaxFixed, Cacheable, ReadWrite,
                     0x00000000,         // Granularity
                     0xFED40000,         // Range Minimum
@@ -3903,171 +3904,171 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
                     0x00000000,         // Length
                     ,, , AddressRangeMemory, TypeStatic)
             })
-            Method (_CRS, 0, Serialized)
+            Method (_CRS, 0, Serialized)  // _CRS: Current Resource Settings
             {
-                CreateWordField (BUF0, 0x0A, PBMX)
+                CreateWordField (BUF0, \_SB.PCI0._Y00._MAX, PBMX)  // _MAX: Maximum Base Address
                 Store (Subtract (ShiftRight (PELN, 0x14), 0x02), PBMX)
-                CreateWordField (BUF0, 0x0E, PBLN)
+                CreateWordField (BUF0, \_SB.PCI0._Y00._LEN, PBLN)  // _LEN: Length
                 Store (Subtract (ShiftRight (PELN, 0x14), One), PBLN)
                 If (^^CPBG.IMCH.PM1L)
                 {
-                    CreateDWordField (BUF0, 0x7C, C0LN)
+                    CreateDWordField (BUF0, \_SB.PCI0._Y01._LEN, C0LN)  // _LEN: Length
                     Store (Zero, C0LN)
                 }
 
                 If (LEqual (^^CPBG.IMCH.PM1L, One))
                 {
-                    CreateBitField (BUF0, 0x0358, C0RW)
+                    CreateBitField (BUF0, \_SB.PCI0._Y01._RW, C0RW)  // _RW_: Read-Write Status
                     Store (Zero, C0RW)
                 }
 
                 If (^^CPBG.IMCH.PM1H)
                 {
-                    CreateDWordField (BUF0, 0x96, C4LN)
+                    CreateDWordField (BUF0, \_SB.PCI0._Y02._LEN, C4LN)  // _LEN: Length
                     Store (Zero, C4LN)
                 }
 
                 If (LEqual (^^CPBG.IMCH.PM1H, One))
                 {
-                    CreateBitField (BUF0, 0x0428, C4RW)
+                    CreateBitField (BUF0, \_SB.PCI0._Y02._RW, C4RW)  // _RW_: Read-Write Status
                     Store (Zero, C4RW)
                 }
 
                 If (^^CPBG.IMCH.PM2L)
                 {
-                    CreateDWordField (BUF0, 0xB0, C8LN)
+                    CreateDWordField (BUF0, \_SB.PCI0._Y03._LEN, C8LN)  // _LEN: Length
                     Store (Zero, C8LN)
                 }
 
                 If (LEqual (^^CPBG.IMCH.PM2L, One))
                 {
-                    CreateBitField (BUF0, 0x04F8, C8RW)
+                    CreateBitField (BUF0, \_SB.PCI0._Y03._RW, C8RW)  // _RW_: Read-Write Status
                     Store (Zero, C8RW)
                 }
 
                 If (^^CPBG.IMCH.PM2H)
                 {
-                    CreateDWordField (BUF0, 0xCA, CCLN)
+                    CreateDWordField (BUF0, \_SB.PCI0._Y04._LEN, CCLN)  // _LEN: Length
                     Store (Zero, CCLN)
                 }
 
                 If (LEqual (^^CPBG.IMCH.PM2H, One))
                 {
-                    CreateBitField (BUF0, 0x05C8, CCRW)
+                    CreateBitField (BUF0, \_SB.PCI0._Y04._RW, CCRW)  // _RW_: Read-Write Status
                     Store (Zero, CCRW)
                 }
 
                 If (^^CPBG.IMCH.PM3L)
                 {
-                    CreateDWordField (BUF0, 0xE4, D0LN)
+                    CreateDWordField (BUF0, \_SB.PCI0._Y05._LEN, D0LN)  // _LEN: Length
                     Store (Zero, D0LN)
                 }
 
                 If (LEqual (^^CPBG.IMCH.PM3L, One))
                 {
-                    CreateBitField (BUF0, 0x0698, D0RW)
+                    CreateBitField (BUF0, \_SB.PCI0._Y05._RW, D0RW)  // _RW_: Read-Write Status
                     Store (Zero, D0RW)
                 }
 
                 If (^^CPBG.IMCH.PM3H)
                 {
-                    CreateDWordField (BUF0, 0xFE, D4LN)
+                    CreateDWordField (BUF0, \_SB.PCI0._Y06._LEN, D4LN)  // _LEN: Length
                     Store (Zero, D4LN)
                 }
 
                 If (LEqual (^^CPBG.IMCH.PM3H, One))
                 {
-                    CreateBitField (BUF0, 0x0768, D4RW)
+                    CreateBitField (BUF0, \_SB.PCI0._Y06._RW, D4RW)  // _RW_: Read-Write Status
                     Store (Zero, D4RW)
                 }
 
                 If (^^CPBG.IMCH.PM4L)
                 {
-                    CreateDWordField (BUF0, 0x0118, D8LN)
+                    CreateDWordField (BUF0, \_SB.PCI0._Y07._LEN, D8LN)  // _LEN: Length
                     Store (Zero, D8LN)
                 }
 
                 If (LEqual (^^CPBG.IMCH.PM4L, One))
                 {
-                    CreateBitField (BUF0, 0x0838, D8RW)
+                    CreateBitField (BUF0, \_SB.PCI0._Y07._RW, D8RW)  // _RW_: Read-Write Status
                     Store (Zero, D8RW)
                 }
 
                 If (^^CPBG.IMCH.PM4H)
                 {
-                    CreateDWordField (BUF0, 0x0132, DCLN)
+                    CreateDWordField (BUF0, \_SB.PCI0._Y08._LEN, DCLN)  // _LEN: Length
                     Store (Zero, DCLN)
                 }
 
                 If (LEqual (^^CPBG.IMCH.PM4H, One))
                 {
-                    CreateBitField (BUF0, 0x0908, DCRW)
+                    CreateBitField (BUF0, \_SB.PCI0._Y08._RW, DCRW)  // _RW_: Read-Write Status
                     Store (Zero, DCRW)
                 }
 
                 If (^^CPBG.IMCH.PM5L)
                 {
-                    CreateDWordField (BUF0, 0x014C, E0LN)
+                    CreateDWordField (BUF0, \_SB.PCI0._Y09._LEN, E0LN)  // _LEN: Length
                     Store (Zero, E0LN)
                 }
 
                 If (LEqual (^^CPBG.IMCH.PM5L, One))
                 {
-                    CreateBitField (BUF0, 0x09D8, E0RW)
+                    CreateBitField (BUF0, \_SB.PCI0._Y09._RW, E0RW)  // _RW_: Read-Write Status
                     Store (Zero, E0RW)
                 }
 
                 If (^^CPBG.IMCH.PM5H)
                 {
-                    CreateDWordField (BUF0, 0x0166, E4LN)
+                    CreateDWordField (BUF0, \_SB.PCI0._Y0A._LEN, E4LN)  // _LEN: Length
                     Store (Zero, E4LN)
                 }
 
                 If (LEqual (^^CPBG.IMCH.PM5H, One))
                 {
-                    CreateBitField (BUF0, 0x0AA8, E4RW)
+                    CreateBitField (BUF0, \_SB.PCI0._Y0A._RW, E4RW)  // _RW_: Read-Write Status
                     Store (Zero, E4RW)
                 }
 
                 If (^^CPBG.IMCH.PM6L)
                 {
-                    CreateDWordField (BUF0, 0x0180, E8LN)
+                    CreateDWordField (BUF0, \_SB.PCI0._Y0B._LEN, E8LN)  // _LEN: Length
                     Store (Zero, E8LN)
                 }
 
                 If (LEqual (^^CPBG.IMCH.PM6L, One))
                 {
-                    CreateBitField (BUF0, 0x0B78, E8RW)
+                    CreateBitField (BUF0, \_SB.PCI0._Y0B._RW, E8RW)  // _RW_: Read-Write Status
                     Store (Zero, E8RW)
                 }
 
                 If (^^CPBG.IMCH.PM6H)
                 {
-                    CreateDWordField (BUF0, 0x019A, ECLN)
+                    CreateDWordField (BUF0, \_SB.PCI0._Y0C._LEN, ECLN)  // _LEN: Length
                     Store (Zero, ECLN)
                 }
 
                 If (LEqual (^^CPBG.IMCH.PM6H, One))
                 {
-                    CreateBitField (BUF0, 0x0C48, ECRW)
+                    CreateBitField (BUF0, \_SB.PCI0._Y0C._RW, ECRW)  // _RW_: Read-Write Status
                     Store (Zero, ECRW)
                 }
 
                 If (^^CPBG.IMCH.PM0H)
                 {
-                    CreateDWordField (BUF0, 0x01B4, F0LN)
+                    CreateDWordField (BUF0, \_SB.PCI0._Y0D._LEN, F0LN)  // _LEN: Length
                     Store (Zero, F0LN)
                 }
 
                 If (LEqual (^^CPBG.IMCH.PM0H, One))
                 {
-                    CreateBitField (BUF0, 0x0D18, F0RW)
+                    CreateBitField (BUF0, \_SB.PCI0._Y0D._RW, F0RW)  // _RW_: Read-Write Status
                     Store (Zero, F0RW)
                 }
 
-                CreateDWordField (BUF0, 0x01C2, M1MN)
-                CreateDWordField (BUF0, 0x01C6, M1MX)
-                CreateDWordField (BUF0, 0x01CE, M1LN)
+                CreateDWordField (BUF0, \_SB.PCI0._Y0E._MIN, M1MN)  // _MIN: Minimum Base Address
+                CreateDWordField (BUF0, \_SB.PCI0._Y0E._MAX, M1MX)  // _MAX: Maximum Base Address
+                CreateDWordField (BUF0, \_SB.PCI0._Y0E._LEN, M1LN)  // _LEN: Length
                 If (Or (LEqual (And (PNHM, 0x000FFFF0), 0x000106E0), LEqual (And (
                     PNHM, 0x000FFFF0), 0x000106A0)))
                 {
@@ -4093,12 +4094,12 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
 
             Name (GUID, Buffer (0x10)
             {
-                /* 0000 */    0x5B, 0x4D, 0xDB, 0x33, 0xF7, 0x1F, 0x1C, 0x40, 
-                /* 0008 */    0x96, 0x57, 0x74, 0x41, 0xC0, 0x3D, 0xD7, 0x66
+                /* 0000 */   0x5B, 0x4D, 0xDB, 0x33, 0xF7, 0x1F, 0x1C, 0x40,
+                /* 0008 */   0x96, 0x57, 0x74, 0x41, 0xC0, 0x3D, 0xD7, 0x66
             })
             Name (SUPP, Zero)
             Name (CTRL, Zero)
-            Method (_OSC, 4, Serialized)
+            Method (_OSC, 4, Serialized)  // _OSC: Operating System Capabilities
             {
                 Store (Arg3, Local0)
                 CreateDWordField (Local0, Zero, CDW1)
@@ -4381,13 +4382,13 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
 
             Device (P0P2)
             {
-                Name (_ADR, 0x00010000)
-                Name (_PRW, Package (0x02)
+                Name (_ADR, 0x00010000)  // _ADR: Address
+                Name (_PRW, Package (0x02)  // _PRW: Power Resources for Wake
                 {
                     0x09, 
                     0x03
                 })
-                Method (_PRT, 0, NotSerialized)
+                Method (_PRT, 0, NotSerialized)  // _PRT: PCI Routing Table
                 {
                     If (PICM)
                     {
@@ -4400,13 +4401,13 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
 
             Device (P0P1)
             {
-                Name (_ADR, 0x001E0000)
-                Name (_PRW, Package (0x02)
+                Name (_ADR, 0x001E0000)  // _ADR: Address
+                Name (_PRW, Package (0x02)  // _PRW: Power Resources for Wake
                 {
                     0x0B, 
                     0x03
                 })
-                Method (_PRT, 0, NotSerialized)
+                Method (_PRT, 0, NotSerialized)  // _PRT: PCI Routing Table
                 {
                     If (PICM)
                     {
@@ -4419,13 +4420,13 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
 
             Device (LPCB)
             {
-                Name (_ADR, 0x001F0000)
+                Name (_ADR, 0x001F0000)  // _ADR: Address
                 Scope (\_SB)
                 {
                     Device (TPM)
                     {
                         Name (TMPV, Zero)
-                        Method (_HID, 0, NotSerialized)
+                        Method (_HID, 0, NotSerialized)  // _HID: Hardware ID
                         {
                             If (LEqual (TPMV, One))
                             {
@@ -4465,9 +4466,9 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
                             Return (0x310CD041)
                         }
 
-                        Name (_CID, EisaId ("PNP0C31"))
-                        Name (_UID, One)
-                        Method (_STA, 0, Serialized)
+                        Name (_CID, EisaId ("PNP0C31"))  // _CID: Compatible ID
+                        Name (_UID, One)  // _UID: Unique ID
+                        Method (_STA, 0, Serialized)  // _STA: Status
                         {
                             Store (TPP3, TMPV)
                             If (And (TMPV, TPRS))
@@ -4485,7 +4486,7 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
                                 0x00005000,         // Address Length
                                 )
                         })
-                        Method (_CRS, 0, Serialized)
+                        Method (_CRS, 0, Serialized)  // _CRS: Current Resource Settings
                         {
                             Return (BUF1)
                         }
@@ -4517,24 +4518,24 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
                             Return (One)
                         }
 
-                        Method (_DSM, 4, Serialized)
+                        Method (_DSM, 4, Serialized)  // _DSM: Device-Specific Method
                         {
                             Name (TTMP, Buffer (One)
                             {
-                                0x00
+                                 0x00
                             })
                             CreateByteField (TTMP, Zero, TMPV)
                             If (LEqual (UCMP (Arg0, Buffer (0x10)
                                         {
-                                            /* 0000 */    0xA6, 0xFA, 0xDD, 0x3D, 0x1B, 0x36, 0xB4, 0x4E, 
-                                            /* 0008 */    0xA4, 0x24, 0x8D, 0x10, 0x08, 0x9D, 0x16, 0x53
+                                            /* 0000 */   0xA6, 0xFA, 0xDD, 0x3D, 0x1B, 0x36, 0xB4, 0x4E,
+                                            /* 0008 */   0xA4, 0x24, 0x8D, 0x10, 0x08, 0x9D, 0x16, 0x53
                                         }), One))
                             {
                                 If (LEqual (Arg2, Zero))
                                 {
                                     Return (Buffer (One)
                                     {
-                                        0x7F
+                                         0x7F
                                     })
                                 }
 
@@ -4818,15 +4819,15 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
 
                             If (LEqual (UCMP (Arg0, Buffer (0x10)
                                         {
-                                            /* 0000 */    0xED, 0x54, 0x60, 0x37, 0x13, 0xCC, 0x75, 0x46, 
-                                            /* 0008 */    0x90, 0x1C, 0x47, 0x56, 0xD7, 0xF2, 0xD4, 0x5D
+                                            /* 0000 */   0xED, 0x54, 0x60, 0x37, 0x13, 0xCC, 0x75, 0x46,
+                                            /* 0008 */   0x90, 0x1C, 0x47, 0x56, 0xD7, 0xF2, 0xD4, 0x5D
                                         }), One))
                             {
                                 If (LEqual (Arg2, Zero))
                                 {
                                     Return (Buffer (One)
                                     {
-                                        0x01
+                                         0x01
                                     })
                                 }
 
@@ -4871,7 +4872,7 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
 
                             Return (Buffer (One)
                             {
-                                0x00
+                                 0x00
                             })
                         }
                     }
@@ -4892,7 +4893,7 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
 
                         Name (TCGP, Buffer (0x08)
                         {
-                            /* 0000 */    0x1F, 0xE0, 0x1F, 0x01, 0x02, 0x04, 0x08, 0x10
+                             0x1F, 0xE0, 0x1F, 0x01, 0x02, 0x04, 0x08, 0x10
                         })
                         CreateByteField (TCGP, Zero, PPRQ)
                         CreateByteField (TCGP, One, PPL1)
@@ -4910,7 +4911,7 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
 
                         IndexField (TIDX, TPDA, ByteAcc, Lock, Preserve)
                         {
-                                    Offset (0x70), 
+                            Offset (0x70), 
                             TPP1,   8, 
                             PPLO,   8, 
                             TPP3,   8
@@ -4943,8 +4944,8 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
 
                         Field (SMI1, AnyAcc, NoLock, Preserve)
                         {
-                                    AccessAs (ByteAcc, 0x00), 
-                                    Offset (0x05), 
+                            AccessAs (ByteAcc, 0x00), 
+                            Offset (0x05), 
                             INF,    8
                         }
                     }
@@ -4952,12 +4953,12 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
                     OperationRegion (PCI0.LPCB.LPC1, PCI_Config, 0x40, 0xC0)
                     Field (PCI0.LPCB.LPC1, AnyAcc, NoLock, Preserve)
                     {
-                                Offset (0x20), 
+                        Offset (0x20), 
                         PARC,   8, 
                         PBRC,   8, 
                         PCRC,   8, 
                         PDRC,   8, 
-                                Offset (0x28), 
+                        Offset (0x28), 
                         PERC,   8, 
                         PFRC,   8, 
                         PGRC,   8, 
@@ -4966,19 +4967,19 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
 
                     Device (LNKA)
                     {
-                        Name (_HID, EisaId ("PNP0C0F"))
-                        Name (_UID, One)
-                        Method (_DIS, 0, Serialized)
+                        Name (_HID, EisaId ("PNP0C0F"))  // _HID: Hardware ID
+                        Name (_UID, One)  // _UID: Unique ID
+                        Method (_DIS, 0, Serialized)  // _DIS: Disable Device
                         {
                             Or (PARC, 0x80, PARC)
                         }
 
-                        Name (_PRS, ResourceTemplate ()
+                        Name (_PRS, ResourceTemplate ()  // _PRS: Possible Resource Settings
                         {
                             IRQ (Level, ActiveLow, Shared, )
                                 {1,3,4,5,6,7,10,12,14,15}
                         })
-                        Method (_CRS, 0, Serialized)
+                        Method (_CRS, 0, Serialized)  // _CRS: Current Resource Settings
                         {
                             Name (RTLA, ResourceTemplate ()
                             {
@@ -4991,7 +4992,7 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
                             Return (RTLA)
                         }
 
-                        Method (_SRS, 1, Serialized)
+                        Method (_SRS, 1, Serialized)  // _SRS: Set Resource Settings
                         {
                             CreateWordField (Arg0, One, IRQ0)
                             FindSetRightBit (IRQ0, Local0)
@@ -4999,7 +5000,7 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
                             Store (Local0, PARC)
                         }
 
-                        Method (_STA, 0, Serialized)
+                        Method (_STA, 0, Serialized)  // _STA: Status
                         {
                             If (And (PARC, 0x80))
                             {
@@ -5014,19 +5015,19 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
 
                     Device (LNKB)
                     {
-                        Name (_HID, EisaId ("PNP0C0F"))
-                        Name (_UID, 0x02)
-                        Method (_DIS, 0, Serialized)
+                        Name (_HID, EisaId ("PNP0C0F"))  // _HID: Hardware ID
+                        Name (_UID, 0x02)  // _UID: Unique ID
+                        Method (_DIS, 0, Serialized)  // _DIS: Disable Device
                         {
                             Or (PBRC, 0x80, PBRC)
                         }
 
-                        Name (_PRS, ResourceTemplate ()
+                        Name (_PRS, ResourceTemplate ()  // _PRS: Possible Resource Settings
                         {
                             IRQ (Level, ActiveLow, Shared, )
                                 {1,3,4,5,6,7,11,12,14,15}
                         })
-                        Method (_CRS, 0, Serialized)
+                        Method (_CRS, 0, Serialized)  // _CRS: Current Resource Settings
                         {
                             Name (RTLB, ResourceTemplate ()
                             {
@@ -5039,7 +5040,7 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
                             Return (RTLB)
                         }
 
-                        Method (_SRS, 1, Serialized)
+                        Method (_SRS, 1, Serialized)  // _SRS: Set Resource Settings
                         {
                             CreateWordField (Arg0, One, IRQ0)
                             FindSetRightBit (IRQ0, Local0)
@@ -5047,7 +5048,7 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
                             Store (Local0, PBRC)
                         }
 
-                        Method (_STA, 0, Serialized)
+                        Method (_STA, 0, Serialized)  // _STA: Status
                         {
                             If (And (PBRC, 0x80))
                             {
@@ -5062,19 +5063,19 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
 
                     Device (LNKC)
                     {
-                        Name (_HID, EisaId ("PNP0C0F"))
-                        Name (_UID, 0x03)
-                        Method (_DIS, 0, Serialized)
+                        Name (_HID, EisaId ("PNP0C0F"))  // _HID: Hardware ID
+                        Name (_UID, 0x03)  // _UID: Unique ID
+                        Method (_DIS, 0, Serialized)  // _DIS: Disable Device
                         {
                             Or (PCRC, 0x80, PCRC)
                         }
 
-                        Name (_PRS, ResourceTemplate ()
+                        Name (_PRS, ResourceTemplate ()  // _PRS: Possible Resource Settings
                         {
                             IRQ (Level, ActiveLow, Shared, )
                                 {1,3,4,5,6,7,10,12,14,15}
                         })
-                        Method (_CRS, 0, Serialized)
+                        Method (_CRS, 0, Serialized)  // _CRS: Current Resource Settings
                         {
                             Name (RTLC, ResourceTemplate ()
                             {
@@ -5087,7 +5088,7 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
                             Return (RTLC)
                         }
 
-                        Method (_SRS, 1, Serialized)
+                        Method (_SRS, 1, Serialized)  // _SRS: Set Resource Settings
                         {
                             CreateWordField (Arg0, One, IRQ0)
                             FindSetRightBit (IRQ0, Local0)
@@ -5095,7 +5096,7 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
                             Store (Local0, PCRC)
                         }
 
-                        Method (_STA, 0, Serialized)
+                        Method (_STA, 0, Serialized)  // _STA: Status
                         {
                             If (And (PCRC, 0x80))
                             {
@@ -5110,19 +5111,19 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
 
                     Device (LNKD)
                     {
-                        Name (_HID, EisaId ("PNP0C0F"))
-                        Name (_UID, 0x04)
-                        Method (_DIS, 0, Serialized)
+                        Name (_HID, EisaId ("PNP0C0F"))  // _HID: Hardware ID
+                        Name (_UID, 0x04)  // _UID: Unique ID
+                        Method (_DIS, 0, Serialized)  // _DIS: Disable Device
                         {
                             Or (PDRC, 0x80, PDRC)
                         }
 
-                        Name (_PRS, ResourceTemplate ()
+                        Name (_PRS, ResourceTemplate ()  // _PRS: Possible Resource Settings
                         {
                             IRQ (Level, ActiveLow, Shared, )
                                 {1,3,4,5,6,7,11,12,14,15}
                         })
-                        Method (_CRS, 0, Serialized)
+                        Method (_CRS, 0, Serialized)  // _CRS: Current Resource Settings
                         {
                             Name (RTLD, ResourceTemplate ()
                             {
@@ -5135,7 +5136,7 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
                             Return (RTLD)
                         }
 
-                        Method (_SRS, 1, Serialized)
+                        Method (_SRS, 1, Serialized)  // _SRS: Set Resource Settings
                         {
                             CreateWordField (Arg0, One, IRQ0)
                             FindSetRightBit (IRQ0, Local0)
@@ -5143,7 +5144,7 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
                             Store (Local0, PDRC)
                         }
 
-                        Method (_STA, 0, Serialized)
+                        Method (_STA, 0, Serialized)  // _STA: Status
                         {
                             If (And (PDRC, 0x80))
                             {
@@ -5158,19 +5159,19 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
 
                     Device (LNKE)
                     {
-                        Name (_HID, EisaId ("PNP0C0F"))
-                        Name (_UID, 0x05)
-                        Method (_DIS, 0, Serialized)
+                        Name (_HID, EisaId ("PNP0C0F"))  // _HID: Hardware ID
+                        Name (_UID, 0x05)  // _UID: Unique ID
+                        Method (_DIS, 0, Serialized)  // _DIS: Disable Device
                         {
                             Or (PERC, 0x80, PERC)
                         }
 
-                        Name (_PRS, ResourceTemplate ()
+                        Name (_PRS, ResourceTemplate ()  // _PRS: Possible Resource Settings
                         {
                             IRQ (Level, ActiveLow, Shared, )
                                 {1,3,4,5,6,7,10,12,14,15}
                         })
-                        Method (_CRS, 0, Serialized)
+                        Method (_CRS, 0, Serialized)  // _CRS: Current Resource Settings
                         {
                             Name (RTLE, ResourceTemplate ()
                             {
@@ -5183,7 +5184,7 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
                             Return (RTLE)
                         }
 
-                        Method (_SRS, 1, Serialized)
+                        Method (_SRS, 1, Serialized)  // _SRS: Set Resource Settings
                         {
                             CreateWordField (Arg0, One, IRQ0)
                             FindSetRightBit (IRQ0, Local0)
@@ -5191,7 +5192,7 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
                             Store (Local0, PERC)
                         }
 
-                        Method (_STA, 0, Serialized)
+                        Method (_STA, 0, Serialized)  // _STA: Status
                         {
                             If (And (PERC, 0x80))
                             {
@@ -5206,19 +5207,19 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
 
                     Device (LNKF)
                     {
-                        Name (_HID, EisaId ("PNP0C0F"))
-                        Name (_UID, 0x06)
-                        Method (_DIS, 0, Serialized)
+                        Name (_HID, EisaId ("PNP0C0F"))  // _HID: Hardware ID
+                        Name (_UID, 0x06)  // _UID: Unique ID
+                        Method (_DIS, 0, Serialized)  // _DIS: Disable Device
                         {
                             Or (PFRC, 0x80, PFRC)
                         }
 
-                        Name (_PRS, ResourceTemplate ()
+                        Name (_PRS, ResourceTemplate ()  // _PRS: Possible Resource Settings
                         {
                             IRQ (Level, ActiveLow, Shared, )
                                 {1,3,4,5,6,7,11,12,14,15}
                         })
-                        Method (_CRS, 0, Serialized)
+                        Method (_CRS, 0, Serialized)  // _CRS: Current Resource Settings
                         {
                             Name (RTLF, ResourceTemplate ()
                             {
@@ -5231,7 +5232,7 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
                             Return (RTLF)
                         }
 
-                        Method (_SRS, 1, Serialized)
+                        Method (_SRS, 1, Serialized)  // _SRS: Set Resource Settings
                         {
                             CreateWordField (Arg0, One, IRQ0)
                             FindSetRightBit (IRQ0, Local0)
@@ -5239,7 +5240,7 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
                             Store (Local0, PFRC)
                         }
 
-                        Method (_STA, 0, Serialized)
+                        Method (_STA, 0, Serialized)  // _STA: Status
                         {
                             If (And (PFRC, 0x80))
                             {
@@ -5254,19 +5255,19 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
 
                     Device (LNKG)
                     {
-                        Name (_HID, EisaId ("PNP0C0F"))
-                        Name (_UID, 0x07)
-                        Method (_DIS, 0, Serialized)
+                        Name (_HID, EisaId ("PNP0C0F"))  // _HID: Hardware ID
+                        Name (_UID, 0x07)  // _UID: Unique ID
+                        Method (_DIS, 0, Serialized)  // _DIS: Disable Device
                         {
                             Or (PGRC, 0x80, PGRC)
                         }
 
-                        Name (_PRS, ResourceTemplate ()
+                        Name (_PRS, ResourceTemplate ()  // _PRS: Possible Resource Settings
                         {
                             IRQ (Level, ActiveLow, Shared, )
                                 {1,3,4,5,6,7,10,12,14,15}
                         })
-                        Method (_CRS, 0, Serialized)
+                        Method (_CRS, 0, Serialized)  // _CRS: Current Resource Settings
                         {
                             Name (RTLG, ResourceTemplate ()
                             {
@@ -5279,7 +5280,7 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
                             Return (RTLG)
                         }
 
-                        Method (_SRS, 1, Serialized)
+                        Method (_SRS, 1, Serialized)  // _SRS: Set Resource Settings
                         {
                             CreateWordField (Arg0, One, IRQ0)
                             FindSetRightBit (IRQ0, Local0)
@@ -5287,7 +5288,7 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
                             Store (Local0, PGRC)
                         }
 
-                        Method (_STA, 0, Serialized)
+                        Method (_STA, 0, Serialized)  // _STA: Status
                         {
                             If (And (PGRC, 0x80))
                             {
@@ -5302,19 +5303,19 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
 
                     Device (LNKH)
                     {
-                        Name (_HID, EisaId ("PNP0C0F"))
-                        Name (_UID, 0x08)
-                        Method (_DIS, 0, Serialized)
+                        Name (_HID, EisaId ("PNP0C0F"))  // _HID: Hardware ID
+                        Name (_UID, 0x08)  // _UID: Unique ID
+                        Method (_DIS, 0, Serialized)  // _DIS: Disable Device
                         {
                             Or (PHRC, 0x80, PHRC)
                         }
 
-                        Name (_PRS, ResourceTemplate ()
+                        Name (_PRS, ResourceTemplate ()  // _PRS: Possible Resource Settings
                         {
                             IRQ (Level, ActiveLow, Shared, )
                                 {1,3,4,5,6,7,11,12,14,15}
                         })
-                        Method (_CRS, 0, Serialized)
+                        Method (_CRS, 0, Serialized)  // _CRS: Current Resource Settings
                         {
                             Name (RTLH, ResourceTemplate ()
                             {
@@ -5327,7 +5328,7 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
                             Return (RTLH)
                         }
 
-                        Method (_SRS, 1, Serialized)
+                        Method (_SRS, 1, Serialized)  // _SRS: Set Resource Settings
                         {
                             CreateWordField (Arg0, One, IRQ0)
                             FindSetRightBit (IRQ0, Local0)
@@ -5335,7 +5336,7 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
                             Store (Local0, PHRC)
                         }
 
-                        Method (_STA, 0, Serialized)
+                        Method (_STA, 0, Serialized)  // _STA: Status
                         {
                             If (And (PHRC, 0x80))
                             {
@@ -5352,12 +5353,12 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
                 OperationRegion (LPC0, PCI_Config, 0x40, 0xC0)
                 Field (LPC0, AnyAcc, NoLock, Preserve)
                 {
-                            Offset (0x40), 
+                    Offset (0x40), 
                     IOD0,   8, 
                     IOD1,   8, 
-                            Offset (0x6B), 
+                    Offset (0x6B), 
                     BMBK,   8, 
-                            Offset (0xB0), 
+                    Offset (0xB0), 
                     RAEN,   1, 
                         ,   13, 
                     RCBA,   18
@@ -5367,7 +5368,7 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
                 {
                     Device (PEGP)
                     {
-                        Name (_ADR, Zero)
+                        Name (_ADR, Zero)  // _ADR: Address
                     }
                 }
 
@@ -5375,18 +5376,18 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
                 {
                     Device (GFX0)
                     {
-                        Name (_ADR, 0x00020000)
-                        Method (_INI, 0, NotSerialized)
+                        Name (_ADR, 0x00020000)  // _ADR: Address
+                        Method (_INI, 0, NotSerialized)  // _INI: Initialize
                         {
                             Store (LIDS, CLID)
                         }
 
-                        Method (_DOS, 1, NotSerialized)
+                        Method (_DOS, 1, NotSerialized)  // _DOS: Disable Output Switching
                         {
                             Store (And (Arg0, 0x07), DSEN)
                         }
 
-                        Method (_DOD, 0, NotSerialized)
+                        Method (_DOD, 0, NotSerialized)  // _DOD: Display Output Devices
                         {
                             Return (Package (0x03)
                             {
@@ -5398,13 +5399,13 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
 
                         Device (CRT0)
                         {
-                            Name (_ADR, 0x0100)
-                            Method (_DCS, 0, NotSerialized)
+                            Name (_ADR, 0x0100)  // _ADR: Address
+                            Method (_DCS, 0, NotSerialized)  // _DCS: Display Current Status
                             {
                                 Return (CDDS (0x0100))
                             }
 
-                            Method (_DGS, 0, NotSerialized)
+                            Method (_DGS, 0, NotSerialized)  // _DGS: Display Graphics State
                             {
                                 If (And (NSTE, 0x0101))
                                 {
@@ -5414,7 +5415,7 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
                                 Return (Zero)
                             }
 
-                            Method (_DSS, 1, NotSerialized)
+                            Method (_DSS, 1, NotSerialized)  // _DSS: Device Set State
                             {
                                 If (LEqual (And (Arg0, 0xC0000000), 0xC0000000))
                                 {
@@ -5425,13 +5426,13 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
 
                         Device (HDMI)
                         {
-                            Name (_ADR, 0x0300)
-                            Method (_DCS, 0, NotSerialized)
+                            Name (_ADR, 0x0300)  // _ADR: Address
+                            Method (_DCS, 0, NotSerialized)  // _DCS: Display Current Status
                             {
                                 Return (CDDS (0x0300))
                             }
 
-                            Method (_DGS, 0, NotSerialized)
+                            Method (_DGS, 0, NotSerialized)  // _DGS: Display Graphics State
                             {
                                 If (And (NSTE, 0x0202))
                                 {
@@ -5441,7 +5442,7 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
                                 Return (Zero)
                             }
 
-                            Method (_DSS, 1, NotSerialized)
+                            Method (_DSS, 1, NotSerialized)  // _DSS: Device Set State
                             {
                                 If (LEqual (And (Arg0, 0xC0000000), 0xC0000000))
                                 {
@@ -5452,13 +5453,13 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
 
                         Device (LCD0)
                         {
-                            Name (_ADR, 0x0410)
-                            Method (_DCS, 0, NotSerialized)
+                            Name (_ADR, 0x0410)  // _ADR: Address
+                            Method (_DCS, 0, NotSerialized)  // _DCS: Display Current Status
                             {
                                 Return (CDDS (0x0400))
                             }
 
-                            Method (_DGS, 0, NotSerialized)
+                            Method (_DGS, 0, NotSerialized)  // _DGS: Display Graphics State
                             {
                                 If (And (NSTE, 0x0808))
                                 {
@@ -5468,7 +5469,7 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
                                 Return (Zero)
                             }
 
-                            Method (_DSS, 1, NotSerialized)
+                            Method (_DSS, 1, NotSerialized)  // _DSS: Device Set State
                             {
                                 If (LEqual (And (Arg0, 0xC0000000), 0xC0000000))
                                 {
@@ -5476,7 +5477,7 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
                                 }
                             }
 
-                            Method (_BCL, 0, NotSerialized)
+                            Method (_BCL, 0, NotSerialized)  // _BCL: Brightness Control Levels
                             {
                                 Return (Package (0x0A)
                                 {
@@ -5493,7 +5494,7 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
                                 })
                             }
 
-                            Method (_BCM, 1, NotSerialized)
+                            Method (_BCM, 1, NotSerialized)  // _BCM: Brightness Control Method
                             {
                                 If (LEqual (Arg0, Zero))
                                 {
@@ -5521,7 +5522,7 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
                                 Store (BRTL, P80H)
                             }
 
-                            Method (_BQC, 0, NotSerialized)
+                            Method (_BQC, 0, NotSerialized)  // _BQC: Brightness Query Current
                             {
                                 If (^^^LPCB.EC.ECOK)
                                 {
@@ -5681,7 +5682,7 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
 
                         Method (GNAD, 2, NotSerialized)
                         {
-                            Name (_T_0, Zero)
+                            Name (_T_0, Zero)  // _T_x: Emitted by ASL Compiler
                             Store (Arg0, Local0)
                             Store (Arg1, Local1)
                             While (Local1)
@@ -5766,14 +5767,14 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
                             OperationRegion (MCHP, PCI_Config, 0x40, 0xC0)
                             Field (MCHP, AnyAcc, NoLock, Preserve)
                             {
-                                        Offset (0x14), 
+                                Offset (0x14), 
                                     ,   1, 
                                 D1EN,   1, 
                                     ,   1, 
                                 D2F0,   1, 
-                                        Offset (0x60), 
+                                Offset (0x60), 
                                 TASM,   10, 
-                                        Offset (0x62)
+                                Offset (0x62)
                             }
                         }
 
@@ -5782,28 +5783,28 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
                         {
                             VID,    16, 
                             DID,    16, 
-                                    Offset (0x52), 
+                            Offset (0x52), 
                                 ,   1, 
                             GIVD,   1, 
                                 ,   2, 
                             GUMA,   3, 
-                                    Offset (0x54), 
+                            Offset (0x54), 
                                 ,   4, 
                             GMFN,   1, 
-                                    Offset (0x58), 
-                                    Offset (0xE4), 
+                            Offset (0x58), 
+                            Offset (0xE4), 
                             ASLE,   8, 
-                                    Offset (0xE8), 
+                            Offset (0xE8), 
                             GSSE,   1, 
                             GSSB,   14, 
                             GSES,   1, 
-                                    Offset (0xF0), 
+                            Offset (0xF0), 
                                 ,   12, 
                             CDVL,   1, 
-                                    Offset (0xF2), 
-                                    Offset (0xF5), 
+                            Offset (0xF2), 
+                            Offset (0xF5), 
                             LBPC,   8, 
-                                    Offset (0xFC), 
+                            Offset (0xFC), 
                             ASLS,   32
                         }
 
@@ -5818,11 +5819,11 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
                             GVER,   128, 
                             MBOX,   32, 
                             DMOD,   32, 
-                                    Offset (0x100), 
+                            Offset (0x100), 
                             DRDY,   32, 
                             CSTS,   32, 
                             CEVT,   32, 
-                                    Offset (0x120), 
+                            Offset (0x120), 
                             DIDL,   32, 
                             DDL2,   32, 
                             DDL3,   32, 
@@ -5864,15 +5865,15 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
                             EVTS,   32, 
                             CNOT,   32, 
                             NRDY,   32, 
-                                    Offset (0x200), 
+                            Offset (0x200), 
                             SCIE,   1, 
                             GEFC,   4, 
                             GXFC,   3, 
                             GESF,   8, 
-                                    Offset (0x204), 
+                            Offset (0x204), 
                             PARM,   32, 
                             DSLP,   32, 
-                                    Offset (0x300), 
+                            Offset (0x300), 
                             ARDY,   32, 
                             ASLC,   32, 
                             TCHE,   32, 
@@ -5887,7 +5888,7 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
                             PFMB,   32, 
                             CCDV,   32, 
                             PCFT,   32, 
-                                    Offset (0x400), 
+                            Offset (0x400), 
                             GVD1,   49152, 
                             PHED,   32, 
                             BDDC,   2048
@@ -6219,8 +6220,8 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
                 {
                     Device (EC)
                     {
-                        Name (_HID, EisaId ("PNP0C09"))
-                        Name (_GPE, 0x17)
+                        Name (_HID, EisaId ("PNP0C09"))  // _HID: Hardware ID
+                        Name (_GPE, 0x17)  // _GPE: General Purpose Events
                         Name (ECOK, Zero)
                         Name (SFEC, Zero)
                         Method (SILF, 0, NotSerialized)
@@ -6228,7 +6229,7 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
                             Return (LOr (SFEC, LEqual (And (OEMF, 0x06), 0x02)))
                         }
 
-                        Method (_REG, 2, NotSerialized)
+                        Method (_REG, 2, NotSerialized)  // _REG: Region Availability
                         {
                             If (LAnd (LEqual (Arg0, 0x03), LEqual (Arg1, One)))
                             {
@@ -6258,7 +6259,7 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
                             }
                         }
 
-                        Name (_CRS, ResourceTemplate ()
+                        Name (_CRS, ResourceTemplate ()  // _CRS: Current Resource Settings
                         {
                             IO (Decode16,
                                 0x0062,             // Range Minimum
@@ -6278,14 +6279,14 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
                         {
                             NMSG,   8, 
                             SLED,   4, 
-                                    Offset (0x02), 
+                            Offset (0x02), 
                             MODE,   1, 
                             FAN0,   1, 
                             TME0,   1, 
                             TME1,   1, 
                             FAN1,   1, 
                                 ,   2, 
-                                    Offset (0x03), 
+                            Offset (0x03), 
                             LIDS,   1, 
                             LSW0,   1, 
                             LWKE,   1, 
@@ -6301,7 +6302,7 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
                             SLPT,   8, 
                             SWEJ,   1, 
                             SWCH,   1, 
-                                    Offset (0x10), 
+                            Offset (0x10), 
                             ADP,    1, 
                             AFLT,   1, 
                             BAT0,   1, 
@@ -6358,24 +6359,24 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
                             OEM2,   8, 
                             OEM3,   16, 
                             OEM4,   8, 
-                                    Offset (0xD4), 
+                            Offset (0xD4), 
                             HDDT,   8, 
-                                    Offset (0xD7), 
+                            Offset (0xD7), 
                             DTHL,   8, 
                             BRTS,   8, 
-                                    Offset (0xDA), 
+                            Offset (0xDA), 
                             WINF,   8, 
                             RINF,   8, 
-                                    Offset (0xDD), 
+                            Offset (0xDD), 
                             INF2,   8, 
                             MUTE,   1, 
                             DLED,   1, 
-                                    Offset (0xF8), 
+                            Offset (0xF8), 
                             FCMD,   8, 
                             FDAT,   8
                         }
 
-                        Method (_Q0A, 0, NotSerialized)
+                        Method (_Q0A, 0, NotSerialized)  // _Qxx: EC Query
                         {
                             Store (0x0A, P80H)
                             If (^^^^WMI.HKDR)
@@ -6385,7 +6386,7 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
                             }
                         }
 
-                        Method (_Q0B, 0, NotSerialized)
+                        Method (_Q0B, 0, NotSerialized)  // _Qxx: EC Query
                         {
                             Store (0x0B, P80H)
                             If (^^^^WMI.HKDR)
@@ -6395,7 +6396,7 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
                             }
                         }
 
-                        Method (_Q0C, 0, NotSerialized)
+                        Method (_Q0C, 0, NotSerialized)  // _Qxx: EC Query
                         {
                             Store (0x0C, P80H)
                             If (^^^^WMI.HKDR)
@@ -6405,7 +6406,7 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
                             }
                         }
 
-                        Method (_Q0D, 0, NotSerialized)
+                        Method (_Q0D, 0, NotSerialized)  // _Qxx: EC Query
                         {
                             Store (0x0D, P80H)
                             If (^^^^LID0.LIDF)
@@ -6422,7 +6423,7 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
                             }
                         }
 
-                        Method (_Q0E, 0, NotSerialized)
+                        Method (_Q0E, 0, NotSerialized)  // _Qxx: EC Query
                         {
                             Store (0x0E, P80H)
                             If (^^^^WMI.HKDR)
@@ -6432,7 +6433,7 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
                             }
                         }
 
-                        Method (_Q0F, 0, NotSerialized)
+                        Method (_Q0F, 0, NotSerialized)  // _Qxx: EC Query
                         {
                             Store (0x0F, P80H)
                             If (^^^^WMI.HKDR)
@@ -6442,7 +6443,7 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
                             }
                         }
 
-                        Method (_Q10, 0, NotSerialized)
+                        Method (_Q10, 0, NotSerialized)  // _Qxx: EC Query
                         {
                             Store (0x10, P80H)
                             If (LEqual (OSYS, 0x03E8))
@@ -6477,7 +6478,7 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
                             }
                         }
 
-                        Method (_Q11, 0, NotSerialized)
+                        Method (_Q11, 0, NotSerialized)  // _Qxx: EC Query
                         {
                             Store (0x11, P80H)
                             If (And (WINF, One))
@@ -6515,7 +6516,7 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
                             }
                         }
 
-                        Method (_Q12, 0, NotSerialized)
+                        Method (_Q12, 0, NotSerialized)  // _Qxx: EC Query
                         {
                             Store (0x12, P80H)
                             If (And (WINF, One))
@@ -6553,7 +6554,7 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
                             }
                         }
 
-                        Method (_Q13, 0, NotSerialized)
+                        Method (_Q13, 0, NotSerialized)  // _Qxx: EC Query
                         {
                             Store (0x13, P80H)
                             If (LEqual (OSYS, 0x03E8))
@@ -6568,7 +6569,7 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
                             }
                         }
 
-                        Method (_Q14, 0, NotSerialized)
+                        Method (_Q14, 0, NotSerialized)  // _Qxx: EC Query
                         {
                             Store (0x14, P80H)
                             If (LEqual (OSYS, 0x03E8))
@@ -6583,7 +6584,7 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
                             }
                         }
 
-                        Method (_Q15, 0, NotSerialized)
+                        Method (_Q15, 0, NotSerialized)  // _Qxx: EC Query
                         {
                             Store (0x15, P80H)
                             If (LEqual (OSYS, 0x03E8))
@@ -6598,7 +6599,7 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
                             }
                         }
 
-                        Method (_Q16, 0, NotSerialized)
+                        Method (_Q16, 0, NotSerialized)  // _Qxx: EC Query
                         {
                             Store (0x16, P80H)
                             Notify (AC, 0x80)
@@ -6612,13 +6613,13 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
                             }
                         }
 
-                        Method (_Q17, 0, NotSerialized)
+                        Method (_Q17, 0, NotSerialized)  // _Qxx: EC Query
                         {
                             Store (0x17, P80H)
                             Notify (^^^^BAT0, 0x81)
                         }
 
-                        Method (_Q19, 0, NotSerialized)
+                        Method (_Q19, 0, NotSerialized)  // _Qxx: EC Query
                         {
                             Store (0x19, P80H)
                             Notify (^^^^BAT0, 0x81)
@@ -6629,7 +6630,7 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
                             }
                         }
 
-                        Method (_Q1B, 0, NotSerialized)
+                        Method (_Q1B, 0, NotSerialized)  // _Qxx: EC Query
                         {
                             Store (0x1B, P80H)
                             If (^^^^LID0.LIDF)
@@ -6653,20 +6654,20 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
                             }
                         }
 
-                        Method (_Q1C, 0, NotSerialized)
+                        Method (_Q1C, 0, NotSerialized)  // _Qxx: EC Query
                         {
                             Store (0x1C, P80H)
                             Notify (\_TZ.TZ0, 0x81)
                             Notify (\_TZ.TZ0, 0x80)
                         }
 
-                        Method (_Q1D, 0, NotSerialized)
+                        Method (_Q1D, 0, NotSerialized)  // _Qxx: EC Query
                         {
                             Store (0x1D, P80H)
                             Notify (PWRB, 0x80)
                         }
 
-                        Method (_Q1E, 0, NotSerialized)
+                        Method (_Q1E, 0, NotSerialized)  // _Qxx: EC Query
                         {
                             Store (0x1E, P80H)
                             If (^^^^WMI.HKDR)
@@ -6676,12 +6677,12 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
                             }
                         }
 
-                        Method (_Q24, 0, NotSerialized)
+                        Method (_Q24, 0, NotSerialized)  // _Qxx: EC Query
                         {
                             Store (0x24, P80H)
                         }
 
-                        Method (_Q35, 0, NotSerialized)
+                        Method (_Q35, 0, NotSerialized)  // _Qxx: EC Query
                         {
                             Store (0x35, P80H)
                             If (And (OEM3, 0x8000))
@@ -6726,12 +6727,12 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
                             }
                         }
 
-                        Method (_Q36, 0, NotSerialized)
+                        Method (_Q36, 0, NotSerialized)  // _Qxx: EC Query
                         {
                             Store (0x36, P80H)
                         }
 
-                        Method (_Q37, 0, NotSerialized)
+                        Method (_Q37, 0, NotSerialized)  // _Qxx: EC Query
                         {
                             Store (0x37, P80H)
                             If (^^^^AC.B15C ())
@@ -6768,7 +6769,7 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
                             }
                         }
 
-                        Method (_Q39, 0, NotSerialized)
+                        Method (_Q39, 0, NotSerialized)  // _Qxx: EC Query
                         {
                             Store (0x39, P80H)
                             If (^^^^WMI.HKDR)
@@ -6778,7 +6779,7 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
                             }
                         }
 
-                        Method (_Q40, 0, NotSerialized)
+                        Method (_Q40, 0, NotSerialized)  // _Qxx: EC Query
                         {
                             Store (0x40, P80H)
                             If (^^^^WMI.HKDR)
@@ -6788,19 +6789,19 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
                             }
                         }
 
-                        Method (_Q41, 0, NotSerialized)
+                        Method (_Q41, 0, NotSerialized)  // _Qxx: EC Query
                         {
                             Store (0x41, P80H)
                         }
 
-                        Method (_Q46, 0, NotSerialized)
+                        Method (_Q46, 0, NotSerialized)  // _Qxx: EC Query
                         {
                             Store (0x46, P80H)
                         }
 
-                        Method (_Q4A, 0, NotSerialized)
+                        Method (_Q4A, 0, NotSerialized)  // _Qxx: EC Query
                         {
-                            Name (_T_0, Zero)
+                            Name (_T_0, Zero)  // _T_x: Emitted by ASL Compiler
                             Store (0x4A, P80H)
                             Store (OEM4, Local0)
                             Store (Local0, _T_0)
@@ -6825,7 +6826,7 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
                             }
                         }
 
-                        Method (_Q50, 0, NotSerialized)
+                        Method (_Q50, 0, NotSerialized)  // _Qxx: EC Query
                         {
                             Store (0x50, P80H)
                             Store (OEM4, Local0)
@@ -6845,8 +6846,8 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
                 {
                     Device (PWRB)
                     {
-                        Name (_HID, EisaId ("PNP0C0C"))
-                        Name (_PRW, Package (0x02)
+                        Name (_HID, EisaId ("PNP0C0C"))  // _HID: Hardware ID
+                        Name (_PRW, Package (0x02)  // _PRW: Power Resources for Wake
                         {
                             0x08, 
                             0x03
@@ -6855,8 +6856,8 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
 
                     Device (SLPB)
                     {
-                        Name (_HID, EisaId ("PNP0C0E"))
-                        Name (_PRW, Package (0x02)
+                        Name (_HID, EisaId ("PNP0C0E"))  // _HID: Hardware ID
+                        Name (_PRW, Package (0x02)  // _PRW: Power Resources for Wake
                         {
                             0x08, 
                             0x03
@@ -6865,9 +6866,9 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
 
                     Device (LID0)
                     {
-                        Name (_HID, EisaId ("PNP0C0D"))
+                        Name (_HID, EisaId ("PNP0C0D"))  // _HID: Hardware ID
                         Name (LIDF, Zero)
-                        Method (_LID, 0, NotSerialized)
+                        Method (_LID, 0, NotSerialized)  // _LID: Lid Status
                         {
                             If (^^PCI0.LPCB.EC.ECOK)
                             {
@@ -6879,12 +6880,12 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
                             }
                         }
 
-                        Name (_PRW, Package (0x02)
+                        Name (_PRW, Package (0x02)  // _PRW: Power Resources for Wake
                         {
                             0x08, 
                             0x03
                         })
-                        Method (_PSW, 1, NotSerialized)
+                        Method (_PSW, 1, NotSerialized)  // _PSW: Power State Wake
                         {
                             If (^^PCI0.LPCB.EC.ECOK)
                             {
@@ -6895,8 +6896,8 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
 
                     Device (AC)
                     {
-                        Name (_HID, "ACPI0003")
-                        Name (_PCL, Package (0x01)
+                        Name (_HID, "ACPI0003")  // _HID: Hardware ID
+                        Name (_PCL, Package (0x01)  // _PCL: Power Consumer List
                         {
                             _SB
                         })
@@ -6910,7 +6911,7 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
                             Return (One)
                         }
 
-                        Method (_PSR, 0, NotSerialized)
+                        Method (_PSR, 0, NotSerialized)  // _PSR: Power Source
                         {
                             If (^^PCI0.LPCB.EC.ECOK)
                             {
@@ -6950,7 +6951,7 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
                             }
                         }
 
-                        Method (_STA, 0, NotSerialized)
+                        Method (_STA, 0, NotSerialized)  // _STA: Status
                         {
                             Return (0x0F)
                         }
@@ -7028,14 +7029,14 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
 
                     Device (BAT0)
                     {
-                        Name (_HID, EisaId ("PNP0C0A"))
-                        Name (_UID, Zero)
-                        Name (_PCL, Package (0x01)
+                        Name (_HID, EisaId ("PNP0C0A"))  // _HID: Hardware ID
+                        Name (_UID, Zero)  // _UID: Unique ID
+                        Name (_PCL, Package (0x01)  // _PCL: Power Consumer List
                         {
                             _SB
                         })
                         Name (BFCC, Zero)
-                        Method (_STA, 0, NotSerialized)
+                        Method (_STA, 0, NotSerialized)  // _STA: Status
                         {
                             If (^^PCI0.LPCB.EC.ECOK)
                             {
@@ -7108,7 +7109,7 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
                             }
                         }
 
-                        Method (_BIF, 0, NotSerialized)
+                        Method (_BIF, 0, NotSerialized)  // _BIF: Battery Information
                         {
                             If (^^PCI0.LPCB.EC.ECOK)
                             {
@@ -7180,7 +7181,7 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
                             }
                         }
 
-                        Method (_BST, 0, NotSerialized)
+                        Method (_BST, 0, NotSerialized)  // _BST: Battery Status
                         {
                             If (^^PCI0.LPCB.EC.ECOK)
                             {
@@ -7197,26 +7198,26 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
 
                     Device (WMI)
                     {
-                        Name (_HID, "PNP0C14")
-                        Name (_UID, Zero)
+                        Name (_HID, "PNP0C14")  // _HID: Hardware ID
+                        Name (_UID, Zero)  // _UID: Unique ID
                         Name (_WDG, Buffer (0x3C)
                         {
-                            /* 0000 */    0x6D, 0x0F, 0xBC, 0xAB, 0xA1, 0x8E, 0xD1, 0x11, 
-                            /* 0008 */    0x00, 0xA0, 0xC9, 0x06, 0x29, 0x10, 0x00, 0x00, 
-                            /* 0010 */    0x42, 0x42, 0x01, 0x02, 0x6B, 0x0F, 0xBC, 0xAB, 
-                            /* 0018 */    0xA1, 0x8E, 0xD1, 0x11, 0x00, 0xA0, 0xC9, 0x06, 
-                            /* 0020 */    0x29, 0x10, 0x00, 0x00, 0xD0, 0x00, 0x01, 0x08, 
-                            /* 0028 */    0x6C, 0x0F, 0xBC, 0xAB, 0xA1, 0x8E, 0xD1, 0x11, 
-                            /* 0030 */    0x00, 0xA0, 0xC9, 0x06, 0x29, 0x10, 0x00, 0x00, 
-                            /* 0038 */    0xD1, 0x00, 0x01, 0x08
+                            /* 0000 */   0x6D, 0x0F, 0xBC, 0xAB, 0xA1, 0x8E, 0xD1, 0x11,
+                            /* 0008 */   0x00, 0xA0, 0xC9, 0x06, 0x29, 0x10, 0x00, 0x00,
+                            /* 0010 */   0x42, 0x42, 0x01, 0x02, 0x6B, 0x0F, 0xBC, 0xAB,
+                            /* 0018 */   0xA1, 0x8E, 0xD1, 0x11, 0x00, 0xA0, 0xC9, 0x06,
+                            /* 0020 */   0x29, 0x10, 0x00, 0x00, 0xD0, 0x00, 0x01, 0x08,
+                            /* 0028 */   0x6C, 0x0F, 0xBC, 0xAB, 0xA1, 0x8E, 0xD1, 0x11,
+                            /* 0030 */   0x00, 0xA0, 0xC9, 0x06, 0x29, 0x10, 0x00, 0x00,
+                            /* 0038 */   0xD1, 0x00, 0x01, 0x08
                         })
                         Name (EVNT, Zero)
                         Name (EVID, Zero)
                         Name (HKDR, Zero)
                         Method (WMBB, 3, NotSerialized)
                         {
-                            Name (_T_1, Zero)
-                            Name (_T_0, Zero)
+                            Name (_T_1, Zero)  // _T_x: Emitted by ASL Compiler
+                            Name (_T_0, Zero)  // _T_x: Emitted by ASL Compiler
                             P8XH (Zero, Arg1)
                             If (SizeOf (Arg2))
                             {
@@ -7660,7 +7661,7 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
                             Return (Local0)
                         }
 
-                        Method (_WED, 1, NotSerialized)
+                        Method (_WED, 1, NotSerialized)  // _Wxx: Wake Event
                         {
                             Return (Zero)
                         }
@@ -7675,7 +7676,7 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
                     ThermalZone (TZ0)
                     {
                         Name (PPFG, Zero)
-                        Method (_TMP, 0, Serialized)
+                        Method (_TMP, 0, Serialized)  // _TMP: Temperature
                         {
                             If (\_SB.PCI0.LPCB.EC.ECOK)
                             {
@@ -7763,7 +7764,7 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
                             }
                         }
 
-                        Method (_CRT, 0, Serialized)
+                        Method (_CRT, 0, Serialized)  // _CRT: Critical Temperature
                         {
                             If (\_SB.PCI0.LPCB.EC.ECOK)
                             {
@@ -7779,8 +7780,8 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
 
                 Device (DMAC)
                 {
-                    Name (_HID, EisaId ("PNP0200"))
-                    Name (_CRS, ResourceTemplate ()
+                    Name (_HID, EisaId ("PNP0200"))  // _HID: Hardware ID
+                    Name (_CRS, ResourceTemplate ()  // _CRS: Current Resource Settings
                     {
                         IO (Decode16,
                             0x0000,             // Range Minimum
@@ -7813,8 +7814,8 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
 
                 Device (FWHD)
                 {
-                    Name (_HID, EisaId ("INT0800"))
-                    Name (_CRS, ResourceTemplate ()
+                    Name (_HID, EisaId ("INT0800"))  // _HID: Hardware ID
+                    Name (_CRS, ResourceTemplate ()  // _CRS: Current Resource Settings
                     {
                         Memory32Fixed (ReadOnly,
                             0xFF000000,         // Address Base
@@ -7825,7 +7826,7 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
 
                 Device (HPET)
                 {
-                    Name (_HID, EisaId ("PNP0103"))
+                    Name (_HID, EisaId ("PNP0103"))  // _HID: Hardware ID
                     Name (BUF0, ResourceTemplate ()
                     {
                         IRQNoFlags ()
@@ -7835,12 +7836,12 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
                         Memory32Fixed (ReadOnly,
                             0xFED00000,         // Address Base
                             0x00000400,         // Address Length
-                            )
+                            _Y0F)
                     })
                     Name (BUF1, ResourceTemplate ()
                     {
                     })
-                    Method (_STA, 0, NotSerialized)
+                    Method (_STA, 0, NotSerialized)  // _STA: Status
                     {
                         If (LGreaterEqual (OSYS, 0x07D1))
                         {
@@ -7860,11 +7861,11 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
                         Return (Zero)
                     }
 
-                    Method (_CRS, 0, Serialized)
+                    Method (_CRS, 0, Serialized)  // _CRS: Current Resource Settings
                     {
                         If (HPAE)
                         {
-                            CreateDWordField (BUF0, 0x0A, HPT0)
+                            CreateDWordField (BUF0, \_SB.PCI0.LPCB.HPET._Y0F._BAS, HPT0)  // _BAS: Base Address
                             If (LEqual (HPAS, One))
                             {
                                 Store (0xFED01000, HPT0)
@@ -7891,8 +7892,8 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
 
                 Device (IPIC)
                 {
-                    Name (_HID, EisaId ("PNP0000"))
-                    Name (_CRS, ResourceTemplate ()
+                    Name (_HID, EisaId ("PNP0000"))  // _HID: Hardware ID
+                    Name (_CRS, ResourceTemplate ()  // _CRS: Current Resource Settings
                     {
                         IO (Decode16,
                             0x0020,             // Range Minimum
@@ -8003,8 +8004,8 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
 
                 Device (MATH)
                 {
-                    Name (_HID, EisaId ("PNP0C04"))
-                    Name (_CRS, ResourceTemplate ()
+                    Name (_HID, EisaId ("PNP0C04"))  // _HID: Hardware ID
+                    Name (_CRS, ResourceTemplate ()  // _CRS: Current Resource Settings
                     {
                         IO (Decode16,
                             0x00F0,             // Range Minimum
@@ -8019,9 +8020,9 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
 
                 Device (LDRC)
                 {
-                    Name (_HID, EisaId ("PNP0C02"))
-                    Name (_UID, 0x02)
-                    Name (_CRS, ResourceTemplate ()
+                    Name (_HID, EisaId ("PNP0C02"))  // _HID: Hardware ID
+                    Name (_UID, 0x02)  // _UID: Unique ID
+                    Name (_CRS, ResourceTemplate ()  // _CRS: Current Resource Settings
                     {
                         IO (Decode16,
                             0x002E,             // Range Minimum
@@ -8130,7 +8131,7 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
 
                 Device (RTC)
                 {
-                    Name (_HID, EisaId ("PNP0B00"))
+                    Name (_HID, EisaId ("PNP0B00"))  // _HID: Hardware ID
                     Name (BUF0, ResourceTemplate ()
                     {
                         IO (Decode16,
@@ -8151,7 +8152,7 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
                             0x08,               // Length
                             )
                     })
-                    Method (_CRS, 0, NotSerialized)
+                    Method (_CRS, 0, NotSerialized)  // _CRS: Current Resource Settings
                     {
                         If (LGreaterEqual (OSYS, 0x07D1))
                         {
@@ -8173,7 +8174,7 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
 
                 Device (TIMR)
                 {
-                    Name (_HID, EisaId ("PNP0100"))
+                    Name (_HID, EisaId ("PNP0100"))  // _HID: Hardware ID
                     Name (BUF0, ResourceTemplate ()
                     {
                         IO (Decode16,
@@ -8206,7 +8207,7 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
                             0x04,               // Length
                             )
                     })
-                    Method (_CRS, 0, NotSerialized)
+                    Method (_CRS, 0, NotSerialized)  // _CRS: Current Resource Settings
                     {
                         If (LGreaterEqual (OSYS, 0x07D1))
                         {
@@ -8228,8 +8229,8 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
 
                 Device (PS2K)
                 {
-                    Name (_HID, EisaId ("PNP0303"))
-                    Name (_CRS, ResourceTemplate ()
+                    Name (_HID, EisaId ("PNP0303"))  // _HID: Hardware ID
+                    Name (_CRS, ResourceTemplate ()  // _CRS: Current Resource Settings
                     {
                         IO (Decode16,
                             0x0060,             // Range Minimum
@@ -8246,7 +8247,7 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
                         IRQ (Edge, ActiveHigh, Exclusive, )
                             {1}
                     })
-                    Name (_PRS, ResourceTemplate ()
+                    Name (_PRS, ResourceTemplate ()  // _PRS: Possible Resource Settings
                     {
                         StartDependentFn (0x00, 0x00)
                         {
@@ -8267,14 +8268,14 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
 
                 Device (PS2M)
                 {
-                    Name (_HID, EisaId ("PNP0F13"))
-                    Name (_UID, Zero)
-                    Name (_CRS, ResourceTemplate ()
+                    Name (_HID, EisaId ("PNP0F13"))  // _HID: Hardware ID
+                    Name (_UID, Zero)  // _UID: Unique ID
+                    Name (_CRS, ResourceTemplate ()  // _CRS: Current Resource Settings
                     {
                         IRQ (Edge, ActiveHigh, Exclusive, )
                             {12}
                     })
-                    Name (_PRS, ResourceTemplate ()
+                    Name (_PRS, ResourceTemplate ()  // _PRS: Possible Resource Settings
                     {
                         StartDependentFn (0x00, 0x00)
                         {
@@ -8283,7 +8284,7 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
                         }
                         EndDependentFn ()
                     })
-                    Method (_STA, 0, NotSerialized)
+                    Method (_STA, 0, NotSerialized)  // _STA: Status
                     {
                         If (LOr (And (OEMF, 0x80), And (FLG1, One)))
                         {
@@ -8298,15 +8299,15 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
 
                 Device (SENM)
                 {
-                    Name (_HID, EisaId ("STLC033"))
-                    Name (_CID, EisaId ("PNP0F13"))
-                    Name (_UID, One)
-                    Name (_CRS, ResourceTemplate ()
+                    Name (_HID, EisaId ("STLC033"))  // _HID: Hardware ID
+                    Name (_CID, EisaId ("PNP0F13"))  // _CID: Compatible ID
+                    Name (_UID, One)  // _UID: Unique ID
+                    Name (_CRS, ResourceTemplate ()  // _CRS: Current Resource Settings
                     {
                         IRQ (Edge, ActiveHigh, Exclusive, )
                             {12}
                     })
-                    Name (_PRS, ResourceTemplate ()
+                    Name (_PRS, ResourceTemplate ()  // _PRS: Possible Resource Settings
                     {
                         StartDependentFn (0x00, 0x00)
                         {
@@ -8315,7 +8316,7 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
                         }
                         EndDependentFn ()
                     })
-                    Method (_STA, 0, NotSerialized)
+                    Method (_STA, 0, NotSerialized)  // _STA: Status
                     {
                         If (And (OEMF, 0x80))
                         {
@@ -8330,15 +8331,15 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
 
                 Device (ELNM)
                 {
-                    Name (_HID, EisaId ("ETD0100"))
-                    Name (_CID, EisaId ("PNP0F13"))
-                    Name (_UID, 0x02)
-                    Name (_CRS, ResourceTemplate ()
+                    Name (_HID, EisaId ("ETD0100"))  // _HID: Hardware ID
+                    Name (_CID, EisaId ("PNP0F13"))  // _CID: Compatible ID
+                    Name (_UID, 0x02)  // _UID: Unique ID
+                    Name (_CRS, ResourceTemplate ()  // _CRS: Current Resource Settings
                     {
                         IRQ (Edge, ActiveHigh, Exclusive, )
                             {12}
                     })
-                    Name (_PRS, ResourceTemplate ()
+                    Name (_PRS, ResourceTemplate ()  // _PRS: Possible Resource Settings
                     {
                         StartDependentFn (0x00, 0x00)
                         {
@@ -8347,7 +8348,7 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
                         }
                         EndDependentFn ()
                     })
-                    Method (_STA, 0, NotSerialized)
+                    Method (_STA, 0, NotSerialized)  // _STA: Status
                     {
                         If (And (FLG1, One))
                         {
@@ -8363,7 +8364,7 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
 
             Device (EHC1)
             {
-                Name (_ADR, 0x001D0000)
+                Name (_ADR, 0x001D0000)  // _ADR: Address
                 OperationRegion (U1CS, PCI_Config, 0x62, 0x04)
                 Field (U1CS, DWordAcc, NoLock, Preserve)
                 {
@@ -8371,7 +8372,7 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
                     E1EN,   8
                 }
 
-                Method (_PSW, 1, NotSerialized)
+                Method (_PSW, 1, NotSerialized)  // _PSW: Power State Wake
                 {
                     If (Arg0)
                     {
@@ -8383,38 +8384,63 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
                     }
                 }
 
-                Method (_S3D, 0, NotSerialized)
+                Method (_S3D, 0, NotSerialized)  // _S3D: S3 Device State
                 {
                     Return (0x02)
                 }
 
-                Method (_S4D, 0, NotSerialized)
+                Method (_S4D, 0, NotSerialized)  // _S4D: S4 Device State
                 {
                     Return (0x02)
                 }
 
-                Name (_PRW, Package (0x02)
+                Name (_PRW, Package (0x02)  // _PRW: Power Resources for Wake
                 {
                     0x0D, 
                     0x03
                 })
                 Device (RHUB)
                 {
-                    Name (_ADR, Zero)
+                    Name (_ADR, Zero)  // _ADR: Address
                     Device (PRT1)
                     {
-                        Name (_ADR, One)
-                        Name (_UPC, Package (0x04)
+                        Name (_ADR, One)  // _ADR: Address
+                        Name (_UPC, Package (0x04)  // _UPC: USB Port Capabilities
                         {
                             0xFF, 
                             0xFF, 
                             Zero, 
                             Zero
                         })
-                        Name (_PLD, Buffer (0x10)
+                        Name (_PLD, Buffer (0x10)  // _PLD: Physical Location of Device
                         {
-                            /* 0000 */    0x81, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
-                            /* 0008 */    0x30, 0x1C, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
+                            /* 0000 */   0x81, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+                            /* 0008 */   0x30, 0x1C, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
+                            /*           Revision : 01     */
+                            /*        IgnoreColor : 01     */
+                            /*              Color : 000000 */
+                            /*              Width : 0000   */
+                            /*             Height : 0000   */
+                            /*        UserVisible : 00     */
+                            /*               Dock : 00     */
+                            /*                Lid : 00     */
+                            /*              Panel : 06     */
+                            /*   VerticalPosition : 00     */
+                            /* HorizontalPosition : 00     */
+                            /*              Shape : 07     */
+                            /*   GroupOrientation : 00     */
+                            /*         GroupToken : 00     */
+                            /*      GroupPosition : 00     */
+                            /*                Bay : 00     */
+                            /*          Ejectable : 00     */
+                            /*  OspmEjectRequired : 00     */
+                            /*      CabinetNumber : 00     */
+                            /*     CardCageNumber : 00     */
+                            /*          Reference : 00     */
+                            /*           Rotation : 00     */
+                            /*              Order : 00     */
+                            /*     VerticalOffset : 0000   */
+                            /*   HorizontalOffset : 0000   */
                         })
                     }
                 }
@@ -8422,14 +8448,14 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
 
             Device (USB1)
             {
-                Name (_ADR, 0x001D0001)
+                Name (_ADR, 0x001D0001)  // _ADR: Address
                 OperationRegion (U1CS, PCI_Config, 0xC4, 0x04)
                 Field (U1CS, DWordAcc, NoLock, Preserve)
                 {
                     U1EN,   2
                 }
 
-                Method (_PSW, 1, NotSerialized)
+                Method (_PSW, 1, NotSerialized)  // _PSW: Power State Wake
                 {
                     If (Arg0)
                     {
@@ -8441,17 +8467,17 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
                     }
                 }
 
-                Method (_S3D, 0, NotSerialized)
+                Method (_S3D, 0, NotSerialized)  // _S3D: S3 Device State
                 {
                     Return (0x02)
                 }
 
-                Method (_S4D, 0, NotSerialized)
+                Method (_S4D, 0, NotSerialized)  // _S4D: S4 Device State
                 {
                     Return (0x02)
                 }
 
-                Name (_PRW, Package (0x02)
+                Name (_PRW, Package (0x02)  // _PRW: Power Resources for Wake
                 {
                     0x03, 
                     0x03
@@ -8460,14 +8486,14 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
 
             Device (USB2)
             {
-                Name (_ADR, 0x001D0002)
+                Name (_ADR, 0x001D0002)  // _ADR: Address
                 OperationRegion (U1CS, PCI_Config, 0xC4, 0x04)
                 Field (U1CS, DWordAcc, NoLock, Preserve)
                 {
                     U1EN,   2
                 }
 
-                Method (_PSW, 1, NotSerialized)
+                Method (_PSW, 1, NotSerialized)  // _PSW: Power State Wake
                 {
                     If (Arg0)
                     {
@@ -8479,17 +8505,17 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
                     }
                 }
 
-                Method (_S3D, 0, NotSerialized)
+                Method (_S3D, 0, NotSerialized)  // _S3D: S3 Device State
                 {
                     Return (0x02)
                 }
 
-                Method (_S4D, 0, NotSerialized)
+                Method (_S4D, 0, NotSerialized)  // _S4D: S4 Device State
                 {
                     Return (0x02)
                 }
 
-                Name (_PRW, Package (0x02)
+                Name (_PRW, Package (0x02)  // _PRW: Power Resources for Wake
                 {
                     0x04, 
                     0x03
@@ -8498,14 +8524,14 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
 
             Device (USB3)
             {
-                Name (_ADR, 0x001D0003)
+                Name (_ADR, 0x001D0003)  // _ADR: Address
                 OperationRegion (U1CS, PCI_Config, 0xC4, 0x04)
                 Field (U1CS, DWordAcc, NoLock, Preserve)
                 {
                     U1EN,   2
                 }
 
-                Method (_PSW, 1, NotSerialized)
+                Method (_PSW, 1, NotSerialized)  // _PSW: Power State Wake
                 {
                     If (Arg0)
                     {
@@ -8517,17 +8543,17 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
                     }
                 }
 
-                Method (_S3D, 0, NotSerialized)
+                Method (_S3D, 0, NotSerialized)  // _S3D: S3 Device State
                 {
                     Return (0x02)
                 }
 
-                Method (_S4D, 0, NotSerialized)
+                Method (_S4D, 0, NotSerialized)  // _S4D: S4 Device State
                 {
                     Return (0x02)
                 }
 
-                Name (_PRW, Package (0x02)
+                Name (_PRW, Package (0x02)  // _PRW: Power Resources for Wake
                 {
                     0x0C, 
                     0x03
@@ -8536,14 +8562,14 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
 
             Device (USB4)
             {
-                Name (_ADR, 0x001D0004)
+                Name (_ADR, 0x001D0004)  // _ADR: Address
                 OperationRegion (U1CS, PCI_Config, 0xC4, 0x04)
                 Field (U1CS, DWordAcc, NoLock, Preserve)
                 {
                     U1EN,   2
                 }
 
-                Method (_PSW, 1, NotSerialized)
+                Method (_PSW, 1, NotSerialized)  // _PSW: Power State Wake
                 {
                     If (Arg0)
                     {
@@ -8555,17 +8581,17 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
                     }
                 }
 
-                Method (_S3D, 0, NotSerialized)
+                Method (_S3D, 0, NotSerialized)  // _S3D: S3 Device State
                 {
                     Return (0x02)
                 }
 
-                Method (_S4D, 0, NotSerialized)
+                Method (_S4D, 0, NotSerialized)  // _S4D: S4 Device State
                 {
                     Return (0x02)
                 }
 
-                Name (_PRW, Package (0x02)
+                Name (_PRW, Package (0x02)  // _PRW: Power Resources for Wake
                 {
                     0x0E, 
                     0x03
@@ -8574,7 +8600,7 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
 
             Device (EHC2)
             {
-                Name (_ADR, 0x001A0000)
+                Name (_ADR, 0x001A0000)  // _ADR: Address
                 OperationRegion (U1CS, PCI_Config, 0x62, 0x04)
                 Field (U1CS, DWordAcc, NoLock, Preserve)
                 {
@@ -8582,7 +8608,7 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
                     E2EN,   6
                 }
 
-                Method (_PSW, 1, NotSerialized)
+                Method (_PSW, 1, NotSerialized)  // _PSW: Power State Wake
                 {
                     If (Arg0)
                     {
@@ -8594,38 +8620,63 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
                     }
                 }
 
-                Method (_S3D, 0, NotSerialized)
+                Method (_S3D, 0, NotSerialized)  // _S3D: S3 Device State
                 {
                     Return (0x02)
                 }
 
-                Method (_S4D, 0, NotSerialized)
+                Method (_S4D, 0, NotSerialized)  // _S4D: S4 Device State
                 {
                     Return (0x02)
                 }
 
-                Name (_PRW, Package (0x02)
+                Name (_PRW, Package (0x02)  // _PRW: Power Resources for Wake
                 {
                     0x0D, 
                     0x03
                 })
                 Device (RHUB)
                 {
-                    Name (_ADR, Zero)
+                    Name (_ADR, Zero)  // _ADR: Address
                     Device (PRT1)
                     {
-                        Name (_ADR, One)
-                        Name (_UPC, Package (0x04)
+                        Name (_ADR, One)  // _ADR: Address
+                        Name (_UPC, Package (0x04)  // _UPC: USB Port Capabilities
                         {
                             0xFF, 
                             0xFF, 
                             Zero, 
                             Zero
                         })
-                        Name (_PLD, Buffer (0x10)
+                        Name (_PLD, Buffer (0x10)  // _PLD: Physical Location of Device
                         {
-                            /* 0000 */    0x81, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
-                            /* 0008 */    0x30, 0x1C, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
+                            /* 0000 */   0x81, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+                            /* 0008 */   0x30, 0x1C, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
+                            /*           Revision : 01     */
+                            /*        IgnoreColor : 01     */
+                            /*              Color : 000000 */
+                            /*              Width : 0000   */
+                            /*             Height : 0000   */
+                            /*        UserVisible : 00     */
+                            /*               Dock : 00     */
+                            /*                Lid : 00     */
+                            /*              Panel : 06     */
+                            /*   VerticalPosition : 00     */
+                            /* HorizontalPosition : 00     */
+                            /*              Shape : 07     */
+                            /*   GroupOrientation : 00     */
+                            /*         GroupToken : 00     */
+                            /*      GroupPosition : 00     */
+                            /*                Bay : 00     */
+                            /*          Ejectable : 00     */
+                            /*  OspmEjectRequired : 00     */
+                            /*      CabinetNumber : 00     */
+                            /*     CardCageNumber : 00     */
+                            /*          Reference : 00     */
+                            /*           Rotation : 00     */
+                            /*              Order : 00     */
+                            /*     VerticalOffset : 0000   */
+                            /*   HorizontalOffset : 0000   */
                         })
                     }
                 }
@@ -8633,14 +8684,14 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
 
             Device (USB5)
             {
-                Name (_ADR, 0x001A0001)
+                Name (_ADR, 0x001A0001)  // _ADR: Address
                 OperationRegion (U1CS, PCI_Config, 0xC4, 0x04)
                 Field (U1CS, DWordAcc, NoLock, Preserve)
                 {
                     U1EN,   2
                 }
 
-                Method (_PSW, 1, NotSerialized)
+                Method (_PSW, 1, NotSerialized)  // _PSW: Power State Wake
                 {
                     If (Arg0)
                     {
@@ -8652,17 +8703,17 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
                     }
                 }
 
-                Method (_S3D, 0, NotSerialized)
+                Method (_S3D, 0, NotSerialized)  // _S3D: S3 Device State
                 {
                     Return (0x02)
                 }
 
-                Method (_S4D, 0, NotSerialized)
+                Method (_S4D, 0, NotSerialized)  // _S4D: S4 Device State
                 {
                     Return (0x02)
                 }
 
-                Name (_PRW, Package (0x02)
+                Name (_PRW, Package (0x02)  // _PRW: Power Resources for Wake
                 {
                     0x05, 
                     0x03
@@ -8671,14 +8722,14 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
 
             Device (USB6)
             {
-                Name (_ADR, 0x001A0002)
+                Name (_ADR, 0x001A0002)  // _ADR: Address
                 OperationRegion (U1CS, PCI_Config, 0xC4, 0x04)
                 Field (U1CS, DWordAcc, NoLock, Preserve)
                 {
                     U1EN,   2
                 }
 
-                Method (_PSW, 1, NotSerialized)
+                Method (_PSW, 1, NotSerialized)  // _PSW: Power State Wake
                 {
                     If (Arg0)
                     {
@@ -8690,17 +8741,17 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
                     }
                 }
 
-                Method (_S3D, 0, NotSerialized)
+                Method (_S3D, 0, NotSerialized)  // _S3D: S3 Device State
                 {
                     Return (0x02)
                 }
 
-                Method (_S4D, 0, NotSerialized)
+                Method (_S4D, 0, NotSerialized)  // _S4D: S4 Device State
                 {
                     Return (0x02)
                 }
 
-                Name (_PRW, Package (0x02)
+                Name (_PRW, Package (0x02)  // _PRW: Power Resources for Wake
                 {
                     0x20, 
                     0x03
@@ -8709,14 +8760,14 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
 
             Device (USB7)
             {
-                Name (_ADR, 0x001A0003)
+                Name (_ADR, 0x001A0003)  // _ADR: Address
                 OperationRegion (U1CS, PCI_Config, 0xC4, 0x04)
                 Field (U1CS, DWordAcc, NoLock, Preserve)
                 {
                     U1EN,   2
                 }
 
-                Method (_PSW, 1, NotSerialized)
+                Method (_PSW, 1, NotSerialized)  // _PSW: Power State Wake
                 {
                     If (Arg0)
                     {
@@ -8728,17 +8779,17 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
                     }
                 }
 
-                Method (_S3D, 0, NotSerialized)
+                Method (_S3D, 0, NotSerialized)  // _S3D: S3 Device State
                 {
                     Return (0x02)
                 }
 
-                Method (_S4D, 0, NotSerialized)
+                Method (_S4D, 0, NotSerialized)  // _S4D: S4 Device State
                 {
                     Return (0x02)
                 }
 
-                Name (_PRW, Package (0x02)
+                Name (_PRW, Package (0x02)  // _PRW: Power Resources for Wake
                 {
                     0x25, 
                     0x03
@@ -8747,21 +8798,21 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
 
             Device (HDEF)
             {
-                Name (_ADR, 0x001B0000)
+                Name (_ADR, 0x001B0000)  // _ADR: Address
                 OperationRegion (HDAR, PCI_Config, 0x4C, 0x10)
                 Field (HDAR, WordAcc, NoLock, Preserve)
                 {
                     DCKA,   1, 
-                            Offset (0x01), 
+                    Offset (0x01), 
                     DCKM,   1, 
                         ,   6, 
                     DCKS,   1, 
-                            Offset (0x08), 
+                    Offset (0x08), 
                         ,   15, 
                     PMES,   1
                 }
 
-                Name (_PRW, Package (0x02)
+                Name (_PRW, Package (0x02)  // _PRW: Power Resources for Wake
                 {
                     0x0D, 
                     0x03
@@ -8770,25 +8821,25 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
 
             Device (RP01)
             {
-                Name (_ADR, 0x001C0000)
+                Name (_ADR, 0x001C0000)  // _ADR: Address
                 OperationRegion (PXCS, PCI_Config, 0x40, 0xC0)
                 Field (PXCS, AnyAcc, NoLock, WriteAsZeros)
                 {
-                            Offset (0x12), 
+                    Offset (0x12), 
                         ,   13, 
                     LASX,   1, 
-                            Offset (0x1A), 
+                    Offset (0x1A), 
                     ABPX,   1, 
                         ,   2, 
                     PDCX,   1, 
                         ,   2, 
                     PDSX,   1, 
-                            Offset (0x1B), 
+                    Offset (0x1B), 
                     LSCX,   1, 
-                            Offset (0x20), 
-                            Offset (0x22), 
+                    Offset (0x20), 
+                    Offset (0x22), 
                     PSPX,   1, 
-                            Offset (0x98), 
+                    Offset (0x98), 
                         ,   30, 
                     HPEX,   1, 
                     PMEX,   1, 
@@ -8799,15 +8850,15 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
 
                 Device (PXSX)
                 {
-                    Name (_ADR, Zero)
-                    Name (_PRW, Package (0x02)
+                    Name (_ADR, Zero)  // _ADR: Address
+                    Name (_PRW, Package (0x02)  // _PRW: Power Resources for Wake
                     {
                         0x09, 
                         0x03
                     })
                 }
 
-                Name (_PRW, Package (0x02)
+                Name (_PRW, Package (0x02)  // _PRW: Power Resources for Wake
                 {
                     0x09, 
                     0x03
@@ -8817,7 +8868,7 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
                     Name (_1MV, One)
                 }
 
-                Method (_PRT, 0, NotSerialized)
+                Method (_PRT, 0, NotSerialized)  // _PRT: PCI Routing Table
                 {
                     If (PICM)
                     {
@@ -8830,25 +8881,25 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
 
             Device (RP02)
             {
-                Name (_ADR, 0x001C0001)
+                Name (_ADR, 0x001C0001)  // _ADR: Address
                 OperationRegion (PXCS, PCI_Config, 0x40, 0xC0)
                 Field (PXCS, AnyAcc, NoLock, WriteAsZeros)
                 {
-                            Offset (0x12), 
+                    Offset (0x12), 
                         ,   13, 
                     LASX,   1, 
-                            Offset (0x1A), 
+                    Offset (0x1A), 
                     ABPX,   1, 
                         ,   2, 
                     PDCX,   1, 
                         ,   2, 
                     PDSX,   1, 
-                            Offset (0x1B), 
+                    Offset (0x1B), 
                     LSCX,   1, 
-                            Offset (0x20), 
-                            Offset (0x22), 
+                    Offset (0x20), 
+                    Offset (0x22), 
                     PSPX,   1, 
-                            Offset (0x98), 
+                    Offset (0x98), 
                         ,   30, 
                     HPEX,   1, 
                     PMEX,   1, 
@@ -8859,41 +8910,41 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
 
                 Device (J380)
                 {
-                    Name (_ADR, Zero)
+                    Name (_ADR, Zero)  // _ADR: Address
                     OperationRegion (PCFG, PCI_Config, Zero, 0xFF)
                     Field (PCFG, ByteAcc, NoLock, Preserve)
                     {
                         DVID,   32, 
-                                Offset (0x2C), 
+                        Offset (0x2C), 
                         SSID,   32, 
-                                Offset (0x89), 
+                        Offset (0x89), 
                         CACH,   8, 
-                                Offset (0xAC), 
+                        Offset (0xAC), 
                             ,   6, 
                         D3EF,   1, 
-                                Offset (0xAD), 
-                                Offset (0xAE), 
+                        Offset (0xAD), 
+                        Offset (0xAE), 
                         PMOS,   8, 
-                                Offset (0xB2), 
+                        Offset (0xB2), 
                         LAT0,   8, 
-                                Offset (0xCD), 
+                        Offset (0xCD), 
                         XDNO,   8, 
                         INTL,   8, 
                         ATRB,   8, 
-                                Offset (0xD3), 
+                        Offset (0xD3), 
                         PMC0,   8, 
                             ,   4, 
                         PMT0,   1, 
-                                Offset (0xDE), 
+                        Offset (0xDE), 
                         TEMP,   8, 
-                                Offset (0xEC), 
+                        Offset (0xEC), 
                         D3ET,   8, 
-                                Offset (0xF5), 
+                        Offset (0xF5), 
                             ,   5, 
                         D3EL,   1
                     }
 
-                    Method (_STA, 0, NotSerialized)
+                    Method (_STA, 0, NotSerialized)  // _STA: Status
                     {
                         If (LNotEqual (DVID, 0xFFFFFFFF))
                         {
@@ -8906,12 +8957,12 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
                     }
                 }
 
-                Name (_PRW, Package (0x02)
+                Name (_PRW, Package (0x02)  // _PRW: Power Resources for Wake
                 {
                     0x09, 
                     0x03
                 })
-                Method (_PRT, 0, NotSerialized)
+                Method (_PRT, 0, NotSerialized)  // _PRT: PCI Routing Table
                 {
                     If (PICM)
                     {
@@ -8924,25 +8975,25 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
 
             Device (RP03)
             {
-                Name (_ADR, 0x001C0002)
+                Name (_ADR, 0x001C0002)  // _ADR: Address
                 OperationRegion (PXCS, PCI_Config, 0x40, 0xC0)
                 Field (PXCS, AnyAcc, NoLock, WriteAsZeros)
                 {
-                            Offset (0x12), 
+                    Offset (0x12), 
                         ,   13, 
                     LASX,   1, 
-                            Offset (0x1A), 
+                    Offset (0x1A), 
                     ABPX,   1, 
                         ,   2, 
                     PDCX,   1, 
                         ,   2, 
                     PDSX,   1, 
-                            Offset (0x1B), 
+                    Offset (0x1B), 
                     LSCX,   1, 
-                            Offset (0x20), 
-                            Offset (0x22), 
+                    Offset (0x20), 
+                    Offset (0x22), 
                     PSPX,   1, 
-                            Offset (0x98), 
+                    Offset (0x98), 
                         ,   30, 
                     HPEX,   1, 
                     PMEX,   1, 
@@ -8953,20 +9004,20 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
 
                 Device (PXSX)
                 {
-                    Name (_ADR, Zero)
-                    Name (_PRW, Package (0x02)
+                    Name (_ADR, Zero)  // _ADR: Address
+                    Name (_PRW, Package (0x02)  // _PRW: Power Resources for Wake
                     {
                         0x09, 
                         0x03
                     })
                 }
 
-                Name (_PRW, Package (0x02)
+                Name (_PRW, Package (0x02)  // _PRW: Power Resources for Wake
                 {
                     0x09, 
                     0x03
                 })
-                Method (_PRT, 0, NotSerialized)
+                Method (_PRT, 0, NotSerialized)  // _PRT: PCI Routing Table
                 {
                     If (PICM)
                     {
@@ -8979,25 +9030,25 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
 
             Device (RP04)
             {
-                Name (_ADR, 0x001C0003)
+                Name (_ADR, 0x001C0003)  // _ADR: Address
                 OperationRegion (PXCS, PCI_Config, 0x40, 0xC0)
                 Field (PXCS, AnyAcc, NoLock, WriteAsZeros)
                 {
-                            Offset (0x12), 
+                    Offset (0x12), 
                         ,   13, 
                     LASX,   1, 
-                            Offset (0x1A), 
+                    Offset (0x1A), 
                     ABPX,   1, 
                         ,   2, 
                     PDCX,   1, 
                         ,   2, 
                     PDSX,   1, 
-                            Offset (0x1B), 
+                    Offset (0x1B), 
                     LSCX,   1, 
-                            Offset (0x20), 
-                            Offset (0x22), 
+                    Offset (0x20), 
+                    Offset (0x22), 
                     PSPX,   1, 
-                            Offset (0x98), 
+                    Offset (0x98), 
                         ,   30, 
                     HPEX,   1, 
                     PMEX,   1, 
@@ -9008,20 +9059,20 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
 
                 Device (PXSX)
                 {
-                    Name (_ADR, Zero)
-                    Name (_PRW, Package (0x02)
+                    Name (_ADR, Zero)  // _ADR: Address
+                    Name (_PRW, Package (0x02)  // _PRW: Power Resources for Wake
                     {
                         0x09, 
                         0x03
                     })
                 }
 
-                Name (_PRW, Package (0x02)
+                Name (_PRW, Package (0x02)  // _PRW: Power Resources for Wake
                 {
                     0x09, 
                     0x03
                 })
-                Method (_PRT, 0, NotSerialized)
+                Method (_PRT, 0, NotSerialized)  // _PRT: PCI Routing Table
                 {
                     If (PICM)
                     {
@@ -9034,25 +9085,25 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
 
             Device (RP05)
             {
-                Name (_ADR, 0x001C0004)
+                Name (_ADR, 0x001C0004)  // _ADR: Address
                 OperationRegion (PXCS, PCI_Config, 0x40, 0xC0)
                 Field (PXCS, AnyAcc, NoLock, WriteAsZeros)
                 {
-                            Offset (0x12), 
+                    Offset (0x12), 
                         ,   13, 
                     LASX,   1, 
-                            Offset (0x1A), 
+                    Offset (0x1A), 
                     ABPX,   1, 
                         ,   2, 
                     PDCX,   1, 
                         ,   2, 
                     PDSX,   1, 
-                            Offset (0x1B), 
+                    Offset (0x1B), 
                     LSCX,   1, 
-                            Offset (0x20), 
-                            Offset (0x22), 
+                    Offset (0x20), 
+                    Offset (0x22), 
                     PSPX,   1, 
-                            Offset (0x98), 
+                    Offset (0x98), 
                         ,   30, 
                     HPEX,   1, 
                     PMEX,   1, 
@@ -9063,20 +9114,20 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
 
                 Device (PXSX)
                 {
-                    Name (_ADR, Zero)
-                    Name (_PRW, Package (0x02)
+                    Name (_ADR, Zero)  // _ADR: Address
+                    Name (_PRW, Package (0x02)  // _PRW: Power Resources for Wake
                     {
                         0x09, 
                         0x03
                     })
                 }
 
-                Name (_PRW, Package (0x02)
+                Name (_PRW, Package (0x02)  // _PRW: Power Resources for Wake
                 {
                     0x09, 
                     0x03
                 })
-                Method (_PRT, 0, NotSerialized)
+                Method (_PRT, 0, NotSerialized)  // _PRT: PCI Routing Table
                 {
                     If (PICM)
                     {
@@ -9089,25 +9140,25 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
 
             Device (RP07)
             {
-                Name (_ADR, 0x001C0006)
+                Name (_ADR, 0x001C0006)  // _ADR: Address
                 OperationRegion (PXCS, PCI_Config, 0x40, 0xC0)
                 Field (PXCS, AnyAcc, NoLock, WriteAsZeros)
                 {
-                            Offset (0x12), 
+                    Offset (0x12), 
                         ,   13, 
                     LASX,   1, 
-                            Offset (0x1A), 
+                    Offset (0x1A), 
                     ABPX,   1, 
                         ,   2, 
                     PDCX,   1, 
                         ,   2, 
                     PDSX,   1, 
-                            Offset (0x1B), 
+                    Offset (0x1B), 
                     LSCX,   1, 
-                            Offset (0x20), 
-                            Offset (0x22), 
+                    Offset (0x20), 
+                    Offset (0x22), 
                     PSPX,   1, 
-                            Offset (0x98), 
+                    Offset (0x98), 
                         ,   30, 
                     HPEX,   1, 
                     PMEX,   1, 
@@ -9118,20 +9169,20 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
 
                 Device (PXSX)
                 {
-                    Name (_ADR, Zero)
-                    Name (_PRW, Package (0x02)
+                    Name (_ADR, Zero)  // _ADR: Address
+                    Name (_PRW, Package (0x02)  // _PRW: Power Resources for Wake
                     {
                         0x09, 
                         0x03
                     })
                 }
 
-                Name (_PRW, Package (0x02)
+                Name (_PRW, Package (0x02)  // _PRW: Power Resources for Wake
                 {
                     0x09, 
                     0x03
                 })
-                Method (_PRT, 0, NotSerialized)
+                Method (_PRT, 0, NotSerialized)  // _PRT: PCI Routing Table
                 {
                     If (PICM)
                     {
@@ -9144,25 +9195,25 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
 
             Device (RP08)
             {
-                Name (_ADR, 0x001C0007)
+                Name (_ADR, 0x001C0007)  // _ADR: Address
                 OperationRegion (PXCS, PCI_Config, 0x40, 0xC0)
                 Field (PXCS, AnyAcc, NoLock, WriteAsZeros)
                 {
-                            Offset (0x12), 
+                    Offset (0x12), 
                         ,   13, 
                     LASX,   1, 
-                            Offset (0x1A), 
+                    Offset (0x1A), 
                     ABPX,   1, 
                         ,   2, 
                     PDCX,   1, 
                         ,   2, 
                     PDSX,   1, 
-                            Offset (0x1B), 
+                    Offset (0x1B), 
                     LSCX,   1, 
-                            Offset (0x20), 
-                            Offset (0x22), 
+                    Offset (0x20), 
+                    Offset (0x22), 
                     PSPX,   1, 
-                            Offset (0x98), 
+                    Offset (0x98), 
                         ,   30, 
                     HPEX,   1, 
                     PMEX,   1, 
@@ -9173,20 +9224,20 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
 
                 Device (PXSX)
                 {
-                    Name (_ADR, Zero)
-                    Name (_PRW, Package (0x02)
+                    Name (_ADR, Zero)  // _ADR: Address
+                    Name (_PRW, Package (0x02)  // _PRW: Power Resources for Wake
                     {
                         0x09, 
                         0x03
                     })
                 }
 
-                Name (_PRW, Package (0x02)
+                Name (_PRW, Package (0x02)  // _PRW: Power Resources for Wake
                 {
                     0x09, 
                     0x03
                 })
-                Method (_PRT, 0, NotSerialized)
+                Method (_PRT, 0, NotSerialized)  // _PRT: PCI Routing Table
                 {
                     If (PICM)
                     {
@@ -9199,12 +9250,12 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
 
             Device (GLAN)
             {
-                Name (_ADR, 0x00190000)
+                Name (_ADR, 0x00190000)  // _ADR: Address
             }
 
             Device (IO10)
             {
-                Name (_ADR, 0x00080000)
+                Name (_ADR, 0x00080000)  // _ADR: Address
                 OperationRegion (IBUS, PCI_Config, 0xD0, 0xE0)
                 Field (IBUS, DWordAcc, NoLock, Preserve)
                 {
@@ -9212,7 +9263,7 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
                     TOLM,   6, 
                         ,   26, 
                     TOHM,   38, 
-                            Offset (0xB0), 
+                    Offset (0xB0), 
                     VTEN,   1, 
                         ,   11, 
                     VTBA,   20
@@ -9221,11 +9272,11 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
 
             Device (IO1X)
             {
-                Name (_ADR, 0x00080001)
+                Name (_ADR, 0x00080001)  // _ADR: Address
                 OperationRegion (PBIC, PCI_Config, Zero, 0xF0)
                 Field (PBIC, DWordAcc, NoLock, Preserve)
                 {
-                            Offset (0x7C), 
+                    Offset (0x7C), 
                     SR0,    32, 
                     SR1,    32, 
                     SR2,    32, 
@@ -9241,7 +9292,7 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
 
             Device (IIO0)
             {
-                Name (_ADR, 0x00140000)
+                Name (_ADR, 0x00140000)  // _ADR: Address
                 OperationRegion (IBUS, PCI_Config, 0xD0, 0xE0)
                 Field (IBUS, DWordAcc, NoLock, Preserve)
                 {
@@ -9249,7 +9300,7 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
                     TOLM,   6, 
                         ,   26, 
                     TOHM,   38, 
-                            Offset (0xB0), 
+                    Offset (0xB0), 
                     VTEN,   1, 
                         ,   11, 
                     VTBA,   20
@@ -9258,11 +9309,11 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
 
             Device (IIOX)
             {
-                Name (_ADR, 0x00140001)
+                Name (_ADR, 0x00140001)  // _ADR: Address
                 OperationRegion (PBIC, PCI_Config, Zero, 0xF0)
                 Field (PBIC, DWordAcc, NoLock, Preserve)
                 {
-                            Offset (0x7C), 
+                    Offset (0x7C), 
                     SR0,    32, 
                     SR1,    32, 
                     SR2,    32, 
@@ -9278,13 +9329,13 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
 
             Device (PEG3)
             {
-                Name (_ADR, 0x00030000)
-                Name (_PRW, Package (0x02)
+                Name (_ADR, 0x00030000)  // _ADR: Address
+                Name (_PRW, Package (0x02)  // _PRW: Power Resources for Wake
                 {
                     0x09, 
                     0x03
                 })
-                Method (_PRT, 0, NotSerialized)
+                Method (_PRT, 0, NotSerialized)  // _PRT: PCI Routing Table
                 {
                     If (PICM)
                     {
@@ -9297,8 +9348,8 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
 
             Device (PEG4)
             {
-                Name (_ADR, 0x00040000)
-                Name (_PRW, Package (0x02)
+                Name (_ADR, 0x00040000)  // _ADR: Address
+                Name (_PRW, Package (0x02)  // _PRW: Power Resources for Wake
                 {
                     0x09, 
                     0x03
@@ -9307,13 +9358,13 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
 
             Device (PEG5)
             {
-                Name (_ADR, 0x00050000)
-                Name (_PRW, Package (0x02)
+                Name (_ADR, 0x00050000)  // _ADR: Address
+                Name (_PRW, Package (0x02)  // _PRW: Power Resources for Wake
                 {
                     0x09, 
                     0x03
                 })
-                Method (_PRT, 0, NotSerialized)
+                Method (_PRT, 0, NotSerialized)  // _PRT: PCI Routing Table
                 {
                     If (PICM)
                     {
@@ -9326,8 +9377,8 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
 
             Device (PEG6)
             {
-                Name (_ADR, 0x00060000)
-                Name (_PRW, Package (0x02)
+                Name (_ADR, 0x00060000)  // _ADR: Address
+                Name (_PRW, Package (0x02)  // _PRW: Power Resources for Wake
                 {
                     0x09, 
                     0x03
@@ -9389,13 +9440,13 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
         SSMP,   8
     }
 
-    Method (_PIC, 1, NotSerialized)
+    Method (_PIC, 1, NotSerialized)  // _PIC: Interrupt Model
     {
         Store (Arg0, GPIC)
         Store (Arg0, PICM)
     }
 
-    Method (_PTS, 1, NotSerialized)
+    Method (_PTS, 1, NotSerialized)  // _PTS: Prepare To Sleep
     {
         Store (Zero, P80D)
         P8XH (Zero, Arg0)
@@ -9418,7 +9469,7 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
         }
     }
 
-    Method (_WAK, 1, Serialized)
+    Method (_WAK, 1, Serialized)  // _WAK: Wake
     {
         P8XH (Zero, ShiftLeft (Arg0, 0x04))
         If (NEXP)
@@ -9705,7 +9756,7 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
 
     Scope (_SB.PCI0)
     {
-        Method (_INI, 0, NotSerialized)
+        Method (_INI, 0, NotSerialized)  // _INI: Initialize
         {
             Store (0x07D0, OSYS)
             If (CondRefOf (_OSI, Local0))
@@ -9814,38 +9865,38 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
     {
         Device (PDRC)
         {
-            Name (_HID, EisaId ("PNP0C02"))
-            Name (_UID, One)
+            Name (_HID, EisaId ("PNP0C02"))  // _HID: Hardware ID
+            Name (_UID, One)  // _UID: Unique ID
             Name (BUF0, ResourceTemplate ()
             {
                 Memory32Fixed (ReadWrite,
                     0x00000000,         // Address Base
                     0x00004000,         // Address Length
-                    )
+                    _Y10)
                 Memory32Fixed (ReadWrite,
                     0x00000000,         // Address Base
                     0x00004000,         // Address Length
-                    )
+                    _Y13)
                 Memory32Fixed (ReadWrite,
                     0x00000000,         // Address Base
                     0x00001000,         // Address Length
-                    )
+                    _Y14)
                 Memory32Fixed (ReadWrite,
                     0x00000000,         // Address Base
                     0x00001000,         // Address Length
-                    )
+                    _Y15)
                 Memory32Fixed (ReadWrite,
                     0x00000000,         // Address Base
                     0x00000000,         // Address Length
-                    )
+                    _Y16)
                 Memory32Fixed (ReadWrite,
                     0x00000000,         // Address Base
                     0x00001000,         // Address Length
-                    )
+                    _Y11)
                 Memory32Fixed (ReadWrite,
                     0x00000000,         // Address Base
                     0x00001000,         // Address Length
-                    )
+                    _Y12)
                 Memory32Fixed (ReadWrite,
                     0xFED20000,         // Address Base
                     0x00020000,         // Address Length
@@ -9853,7 +9904,7 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
                 Memory32Fixed (ReadOnly,
                     0xFED90000,         // Address Base
                     0x00004000,         // Address Length
-                    )
+                    _Y17)
                 Memory32Fixed (ReadWrite,
                     0xFED40000,         // Address Base
                     0x00005000,         // Address Length
@@ -9871,23 +9922,23 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
                     0x00100000,         // Address Length
                     )
             })
-            Method (_CRS, 0, Serialized)
+            Method (_CRS, 0, Serialized)  // _CRS: Current Resource Settings
             {
-                CreateDWordField (BUF0, 0x04, RBR0)
+                CreateDWordField (BUF0, \_SB.PCI0.PDRC._Y10._BAS, RBR0)  // _BAS: Base Address
                 ShiftLeft (^^LPCB.RCBA, 0x0E, RBR0)
                 If (LEqual (^^TMRP.TRID, 0x3B32))
                 {
-                    CreateDWordField (BUF0, 0x44, TMRL)
+                    CreateDWordField (BUF0, \_SB.PCI0.PDRC._Y11._LEN, TMRL)  // _LEN: Length
                     Store (Zero, TMRL)
-                    CreateDWordField (BUF0, 0x4C, TMB0)
+                    CreateDWordField (BUF0, \_SB.PCI0.PDRC._Y12._BAS, TMB0)  // _BAS: Base Address
                     ShiftLeft (^^TMRP.TARB, 0x0C, TMB0)
                 }
                 Else
                 {
                     Store (Zero, TTDR)
-                    CreateDWordField (BUF0, 0x40, TMR1)
+                    CreateDWordField (BUF0, \_SB.PCI0.PDRC._Y11._BAS, TMR1)  // _BAS: Base Address
                     ShiftLeft (^^TMRP.TBAR, 0x0C, TMR1)
-                    CreateDWordField (BUF0, 0x4C, TMB1)
+                    CreateDWordField (BUF0, \_SB.PCI0.PDRC._Y12._BAS, TMB1)  // _BAS: Base Address
                     ShiftLeft (^^TMRP.TARB, 0x0C, TMB1)
                     Store (One, TTDR)
                 }
@@ -9895,16 +9946,16 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
                 If (Or (LEqual (And (PNHM, 0x000FFFF0), 0x000106E0), LEqual (And (
                     PNHM, 0x000FFFF0), 0x000106A0)))
                 {
-                    CreateDWordField (BUF0, 0x14, MBLN)
+                    CreateDWordField (BUF0, \_SB.PCI0.PDRC._Y13._LEN, MBLN)  // _LEN: Length
                     Store (Zero, MBLN)
                 }
                 Else
                 {
-                    CreateDWordField (BUF0, 0x10, MBR0)
+                    CreateDWordField (BUF0, \_SB.PCI0.PDRC._Y13._BAS, MBR0)  // _BAS: Base Address
                     ShiftLeft (MHBR, 0x0E, MBR0)
                 }
 
-                CreateDWordField (BUF0, 0x1C, DBR0)
+                CreateDWordField (BUF0, \_SB.PCI0.PDRC._Y14._BAS, DBR0)  // _BAS: Base Address
                 ShiftLeft (DIBR, 0x0C, DBR0)
                 If (Or (LEqual (And (PNHM, 0x000FFFF0), 0x000106E0), LEqual (And (
                     PNHM, 0x000FFFF0), 0x000106A0)))
@@ -9915,21 +9966,21 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
                 If (Or (LEqual (And (PNHM, 0x000FFFF0), 0x000106E0), LEqual (And (
                     PNHM, 0x000FFFF0), 0x000106A0)))
                 {
-                    CreateDWordField (BUF0, 0x2C, EBLN)
+                    CreateDWordField (BUF0, \_SB.PCI0.PDRC._Y15._LEN, EBLN)  // _LEN: Length
                     Store (Zero, EBLN)
                 }
                 Else
                 {
-                    CreateDWordField (BUF0, 0x28, EBR0)
+                    CreateDWordField (BUF0, \_SB.PCI0.PDRC._Y15._BAS, EBR0)  // _BAS: Base Address
                     ShiftLeft (EPBR, 0x0C, EBR0)
                 }
 
-                CreateDWordField (BUF0, 0x34, XBR0)
+                CreateDWordField (BUF0, \_SB.PCI0.PDRC._Y16._BAS, XBR0)  // _BAS: Base Address
                 ShiftLeft (^^^CPBG.IMCH.PXBR, 0x14, XBR0)
-                CreateDWordField (BUF0, 0x38, XSZ0)
+                CreateDWordField (BUF0, \_SB.PCI0.PDRC._Y16._LEN, XSZ0)  // _LEN: Length
                 ShiftRight (0x10000000, ^^^CPBG.IMCH.PXSZ, XSZ0)
-                CreateDWordField (BUF0, 0x64, VTB0)
-                CreateDWordField (BUF0, 0x68, VTLN)
+                CreateDWordField (BUF0, \_SB.PCI0.PDRC._Y17._BAS, VTB0)  // _BAS: Base Address
+                CreateDWordField (BUF0, \_SB.PCI0.PDRC._Y17._LEN, VTLN)  // _LEN: Length
                 If (Or (LEqual (And (PNHM, 0x000FFFF0), 0x000106E0), LEqual (And (
                     PNHM, 0x000FFFF0), 0x000106A0)))
                 {
@@ -9979,17 +10030,17 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
         Field (IO_T, ByteAcc, NoLock, Preserve)
         {
             TRPI,   16, 
-                    Offset (0x04), 
-                    Offset (0x06), 
-                    Offset (0x08), 
+            Offset (0x04), 
+            Offset (0x06), 
+            Offset (0x08), 
             TRP0,   8, 
-                    Offset (0x0A), 
-                    Offset (0x0B), 
-                    Offset (0x0C), 
-                    Offset (0x0D), 
-                    Offset (0x0E), 
-                    Offset (0x0F), 
-                    Offset (0x10)
+            Offset (0x0A), 
+            Offset (0x0B), 
+            Offset (0x0C), 
+            Offset (0x0D), 
+            Offset (0x0E), 
+            Offset (0x0F), 
+            Offset (0x10)
         }
 
         OperationRegion (IO_D, SystemIO, 0x0600, 0x04)
@@ -10007,16 +10058,16 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
         OperationRegion (PMIO, SystemIO, PMBS, 0x80)
         Field (PMIO, ByteAcc, NoLock, Preserve)
         {
-                    Offset (0x20), 
+            Offset (0x20), 
                 ,   2, 
             SPST,   1, 
-                    Offset (0x42), 
+            Offset (0x42), 
                 ,   1, 
             GPEC,   1, 
-                    Offset (0x64), 
+            Offset (0x64), 
                 ,   9, 
             SCIS,   1, 
-                    Offset (0x66)
+            Offset (0x66)
         }
 
         OperationRegion (GPIO, SystemIO, GPBS, 0x64)
@@ -10030,20 +10081,20 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
             GIO1,   8, 
             GIO2,   8, 
             GIO3,   8, 
-                    Offset (0x0C), 
+            Offset (0x0C), 
             GL00,   8, 
             GL01,   8, 
             GL02,   8, 
                 ,   3, 
             GP27,   1, 
             GP28,   1, 
-                    Offset (0x10), 
-                    Offset (0x18), 
+            Offset (0x10), 
+            Offset (0x18), 
             GB00,   8, 
             GB01,   8, 
             GB02,   8, 
             GB03,   8, 
-                    Offset (0x2C), 
+            Offset (0x2C), 
             GIV0,   8, 
             GIV1,   8, 
             GIV2,   8, 
@@ -10058,11 +10109,11 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
             GIO7,   8, 
                 ,   5, 
                 ,   1, 
-                    Offset (0x39), 
+            Offset (0x39), 
             GL05,   8, 
             GL06,   8, 
             GL07,   8, 
-                    Offset (0x40), 
+            Offset (0x40), 
             GU08,   8, 
             GU09,   8, 
             GU0A,   8, 
@@ -10080,19 +10131,19 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
         OperationRegion (RCRB, SystemMemory, SRCB, 0x4000)
         Field (RCRB, DWordAcc, Lock, Preserve)
         {
-                    Offset (0x1000), 
-                    Offset (0x3000), 
-                    Offset (0x3404), 
+            Offset (0x1000), 
+            Offset (0x3000), 
+            Offset (0x3404), 
             HPAS,   2, 
                 ,   5, 
             HPAE,   1, 
-                    Offset (0x3418), 
+            Offset (0x3418), 
                 ,   1, 
                 ,   1, 
             SATD,   1, 
             SMBD,   1, 
             HDAD,   1, 
-                    Offset (0x341A), 
+            Offset (0x341A), 
             RP1D,   1, 
             RP2D,   1, 
             RP3D,   1, 
@@ -10107,14 +10158,14 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
         OperationRegion (PTBA, SystemMemory, TBAB, 0x1000)
         Field (PTBA, AnyAcc, NoLock, Preserve)
         {
-                    Offset (0x12), 
+            Offset (0x12), 
             PCTA,   16, 
-                    Offset (0x1A), 
+            Offset (0x1A), 
             PTRC,   16, 
-                    Offset (0x30), 
+            Offset (0x30), 
             CTV1,   16, 
             CTV2,   16, 
-                    Offset (0x60), 
+            Offset (0x60), 
             PMCP,   16
         }
 
@@ -10271,7 +10322,7 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
     {
         Device (SAT0)
         {
-            Name (_ADR, 0x001F0002)
+            Name (_ADR, 0x001F0002)  // _ADR: Address
             OperationRegion (SACS, PCI_Config, 0x40, 0xC0)
             Field (SACS, DWordAcc, NoLock, Preserve)
             {
@@ -10279,31 +10330,31 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
                 SECT,   16, 
                 PSIT,   4, 
                 SSIT,   4, 
-                        Offset (0x08), 
+                Offset (0x08), 
                 SYNC,   4, 
-                        Offset (0x0A), 
+                Offset (0x0A), 
                 SDT0,   2, 
                     ,   2, 
                 SDT1,   2, 
-                        Offset (0x0B), 
+                Offset (0x0B), 
                 SDT2,   2, 
                     ,   2, 
                 SDT3,   2, 
-                        Offset (0x14), 
+                Offset (0x14), 
                 ICR0,   4, 
                 ICR1,   4, 
                 ICR2,   4, 
                 ICR3,   4, 
                 ICR4,   4, 
                 ICR5,   4, 
-                        Offset (0x50), 
+                Offset (0x50), 
                 MAPV,   2
             }
         }
 
         Device (SAT1)
         {
-            Name (_ADR, 0x001F0005)
+            Name (_ADR, 0x001F0005)  // _ADR: Address
             OperationRegion (SACS, PCI_Config, 0x40, 0xC0)
             Field (SACS, DWordAcc, NoLock, Preserve)
             {
@@ -10311,31 +10362,31 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
                 SECT,   16, 
                 PSIT,   4, 
                 SSIT,   4, 
-                        Offset (0x08), 
+                Offset (0x08), 
                 SYNC,   4, 
-                        Offset (0x0A), 
+                Offset (0x0A), 
                 SDT0,   2, 
                     ,   2, 
                 SDT1,   2, 
-                        Offset (0x0B), 
+                Offset (0x0B), 
                 SDT2,   2, 
                     ,   2, 
                 SDT3,   2, 
-                        Offset (0x14), 
+                Offset (0x14), 
                 ICR0,   4, 
                 ICR1,   4, 
                 ICR2,   4, 
                 ICR3,   4, 
                 ICR4,   4, 
                 ICR5,   4, 
-                        Offset (0x50), 
+                Offset (0x50), 
                 MAPV,   2
             }
         }
 
         Device (SBUS)
         {
-            Name (_ADR, 0x001F0003)
+            Name (_ADR, 0x001F0003)  // _ADR: Address
             OperationRegion (SMBP, PCI_Config, 0x40, 0xC0)
             Field (SMBP, DWordAcc, NoLock, Preserve)
             {
@@ -10354,7 +10405,7 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
             Field (SMBI, ByteAcc, NoLock, Preserve)
             {
                 HSTS,   8, 
-                        Offset (0x02), 
+                Offset (0x02), 
                 HCON,   8, 
                 HCOM,   8, 
                 TXSA,   8, 
@@ -10672,17 +10723,17 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
 
         Device (TMRP)
         {
-            Name (_ADR, 0x001F0006)
+            Name (_ADR, 0x001F0006)  // _ADR: Address
             OperationRegion (TRCS, PCI_Config, Zero, 0x50)
             Field (TRCS, DWordAcc, NoLock, Preserve)
             {
-                        Offset (0x02), 
+                Offset (0x02), 
                 TRID,   16, 
-                        Offset (0x10), 
+                Offset (0x10), 
                 SPTP,   1, 
                     ,   11, 
                 TBAR,   20, 
-                        Offset (0x40), 
+                Offset (0x40), 
                 SPEN,   1, 
                     ,   11, 
                 TARB,   20
@@ -10692,7 +10743,7 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
 
     Scope (_GPE)
     {
-        Method (_L01, 0, NotSerialized)
+        Method (_L01, 0, NotSerialized)  // _Lxx: Level-Triggered GPE
         {
             Add (L01C, One, L01C)
             P8XH (Zero, One)
@@ -10846,7 +10897,7 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
             }
         }
 
-        Method (_L02, 0, NotSerialized)
+        Method (_L02, 0, NotSerialized)  // _Lxx: Level-Triggered GPE
         {
             Store (Zero, GPEC)
             If (CondRefOf (\_SB.PCI0.IEIT.EITV))
@@ -10860,7 +10911,7 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
             }
         }
 
-        Method (_L06, 0, NotSerialized)
+        Method (_L06, 0, NotSerialized)  // _Lxx: Level-Triggered GPE
         {
             If (LAnd (\_SB.PCI0.GFX0.GSSE, LNot (GSMI)))
             {
@@ -10868,16 +10919,16 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
             }
         }
 
-        Method (_L07, 0, NotSerialized)
+        Method (_L07, 0, NotSerialized)  // _Lxx: Level-Triggered GPE
         {
             Store (0x20, \_SB.PCI0.SBUS.HSTS)
         }
 
-        Method (_L08, 0, NotSerialized)
+        Method (_L08, 0, NotSerialized)  // _Lxx: Level-Triggered GPE
         {
         }
 
-        Method (_L09, 0, NotSerialized)
+        Method (_L09, 0, NotSerialized)  // _Lxx: Level-Triggered GPE
         {
             Notify (\_SB.PCI0.P0P2, 0x02)
             Notify (\_SB.PCI0.P0P2.PEGP, 0x02)
@@ -10894,12 +10945,12 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
             Notify (\_SB.PCI0.PEG6, 0x02)
         }
 
-        Method (_L0B, 0, NotSerialized)
+        Method (_L0B, 0, NotSerialized)  // _Lxx: Level-Triggered GPE
         {
             Notify (\_SB.PCI0.P0P1, 0x02)
         }
 
-        Method (_L0D, 0, NotSerialized)
+        Method (_L0D, 0, NotSerialized)  // _Lxx: Level-Triggered GPE
         {
             Notify (\_SB.PCI0.EHC1, 0x02)
             Notify (\_SB.PCI0.EHC2, 0x02)
@@ -10907,37 +10958,37 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
             Notify (\_SB.PCI0.GLAN, 0x02)
         }
 
-        Method (_L03, 0, NotSerialized)
+        Method (_L03, 0, NotSerialized)  // _Lxx: Level-Triggered GPE
         {
             Notify (\_SB.PCI0.USB1, 0x02)
         }
 
-        Method (_L04, 0, NotSerialized)
+        Method (_L04, 0, NotSerialized)  // _Lxx: Level-Triggered GPE
         {
             Notify (\_SB.PCI0.USB2, 0x02)
         }
 
-        Method (_L0C, 0, NotSerialized)
+        Method (_L0C, 0, NotSerialized)  // _Lxx: Level-Triggered GPE
         {
             Notify (\_SB.PCI0.USB3, 0x02)
         }
 
-        Method (_L0E, 0, NotSerialized)
+        Method (_L0E, 0, NotSerialized)  // _Lxx: Level-Triggered GPE
         {
             Notify (\_SB.PCI0.USB4, 0x02)
         }
 
-        Method (_L05, 0, NotSerialized)
+        Method (_L05, 0, NotSerialized)  // _Lxx: Level-Triggered GPE
         {
             Notify (\_SB.PCI0.USB5, 0x02)
         }
 
-        Method (_L20, 0, NotSerialized)
+        Method (_L20, 0, NotSerialized)  // _Lxx: Level-Triggered GPE
         {
             Notify (\_SB.PCI0.USB6, 0x02)
         }
 
-        Method (_L25, 0, NotSerialized)
+        Method (_L25, 0, NotSerialized)  // _Lxx: Level-Triggered GPE
         {
             Notify (\_SB.PCI0.USB7, 0x02)
         }
@@ -10947,14 +10998,14 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
     {
         Device (CPBG)
         {
-            Name (_HID, EisaId ("PNP0A03"))
-            Name (_UID, 0xFF)
-            Method (_BBN, 0, NotSerialized)
+            Name (_HID, EisaId ("PNP0A03"))  // _HID: Hardware ID
+            Name (_UID, 0xFF)  // _UID: Unique ID
+            Method (_BBN, 0, NotSerialized)  // _BBN: BIOS Bus Number
             {
                 Return (Subtract (ShiftRight (PELN, 0x14), One))
             }
 
-            Name (_ADR, Zero)
+            Name (_ADR, Zero)  // _ADR: Address
             Name (BUF0, ResourceTemplate ()
             {
                 WordBusNumber (ResourceProducer, MinFixed, MaxFixed, PosDecode,
@@ -10963,55 +11014,55 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
                     0x00FF,             // Range Maximum
                     0x0000,             // Translation Offset
                     0x0001,             // Length
-                    ,, )
+                    ,, _Y18)
             })
-            Method (_CRS, 0, Serialized)
+            Method (_CRS, 0, Serialized)  // _CRS: Current Resource Settings
             {
-                CreateWordField (BUF0, 0x08, PBMN)
+                CreateWordField (BUF0, \_SB.CPBG._Y18._MIN, PBMN)  // _MIN: Minimum Base Address
                 Store (Subtract (ShiftRight (PELN, 0x14), One), PBMN)
-                CreateWordField (BUF0, 0x0A, PBMX)
+                CreateWordField (BUF0, \_SB.CPBG._Y18._MAX, PBMX)  // _MAX: Maximum Base Address
                 Store (Subtract (ShiftRight (PELN, 0x14), One), PBMX)
                 Return (BUF0)
             }
 
             Device (IMCH)
             {
-                Name (_ADR, One)
+                Name (_ADR, One)  // _ADR: Address
                 OperationRegion (PBUS, PCI_Config, Zero, 0xC0)
                 Field (PBUS, DWordAcc, NoLock, Preserve)
                 {
-                            Offset (0x40), 
+                    Offset (0x40), 
                         ,   4, 
                     PM0H,   2, 
-                            Offset (0x41), 
+                    Offset (0x41), 
                     PM1L,   2, 
                         ,   2, 
                     PM1H,   2, 
-                            Offset (0x42), 
+                    Offset (0x42), 
                     PM2L,   2, 
                         ,   2, 
                     PM2H,   2, 
-                            Offset (0x43), 
+                    Offset (0x43), 
                     PM3L,   2, 
                         ,   2, 
                     PM3H,   2, 
-                            Offset (0x44), 
+                    Offset (0x44), 
                     PM4L,   2, 
                         ,   2, 
                     PM4H,   2, 
-                            Offset (0x45), 
+                    Offset (0x45), 
                     PM5L,   2, 
                         ,   2, 
                     PM5H,   2, 
-                            Offset (0x46), 
+                    Offset (0x46), 
                     PM6L,   2, 
                         ,   2, 
                     PM6H,   2, 
-                            Offset (0x47), 
-                            Offset (0x48), 
+                    Offset (0x47), 
+                    Offset (0x48), 
                         ,   7, 
                     HENA,   1, 
-                            Offset (0x50), 
+                    Offset (0x50), 
                     PXEN,   1, 
                     PXSZ,   2, 
                         ,   17, 
@@ -11021,28 +11072,28 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "Intel ", "CALPELLA", 0x06040000)
         }
     }
 
-    Name (_S0, Package (0x04)
+    Name (_S0, Package (0x04)  // _S0_: S0 System State
     {
         Zero, 
         Zero, 
         Zero, 
         Zero
     })
-    Name (_S3, Package (0x04)
+    Name (_S3, Package (0x04)  // _S3_: S3 System State
     {
         0x05, 
         Zero, 
         Zero, 
         Zero
     })
-    Name (_S4, Package (0x04)
+    Name (_S4, Package (0x04)  // _S4_: S4 System State
     {
         0x06, 
         Zero, 
         Zero, 
         Zero
     })
-    Name (_S5, Package (0x04)
+    Name (_S5, Package (0x04)  // _S5_: S5 System State
     {
         0x07, 
         Zero, 
