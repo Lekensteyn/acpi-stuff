@@ -12,5 +12,5 @@ clean:
 	$(MAKE) -C $(KDIR) M=$(PWD) clean
 
 load:
-	-/sbin/rmmod $(name)
-	/sbin/insmod $(name).ko
+	-rmmod $(name)
+	insmod $(name).ko
