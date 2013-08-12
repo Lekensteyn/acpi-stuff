@@ -1,15 +1,32 @@
 #!/bin/sh
-# Usage: ./get_methods dsdt.dat ssdt1.dat ... > methods.txt
+# Usage: ./get_methods [acpiexec options] dsdt.dat ssdt1.dat ... > methods.txt
 # When ran without parameters, it will read all .dat files from the current
 # directory and store a list of methods in methods.txt
+# A useful acpiexec option is "-di", this prevents _INI from being called and
+# should be used when get_method appears to hang (acpiexec is then looping and
+# sleeping).
 #
 # Requires `acpiexec` from ACPICA to be installed.
 
+has_file=false
+for arg; do
+	case $arg in
+	-*) ;;
+	*)
+		has_file=true
+		break
+		;;
+	esac
+done
+
 output=
-if [ $# -eq 0 ]; then
-	set -- *.dat
+if ! $has_file; then
+	set -- "$@" *.dat
 	output=methods.txt
 fi
-acpiexec -b methods "$@" | awk '/^$/{s=0};s==1{print $1};/^Objects of type \[Method\]/{s=1}' | {
+{
+	acpiexec -b methods "$@" | awk '/^$/{s=0};s==1{print $1};/^Objects of type \[Method\]/{s=1}'
+	[ -z "$ALL" ] || acpiexec -b Predefined "$@" | awk '/^\\/{print $1}'
+} | sort -u | {
 	[ -n "$output" ] && tee "$output" >/dev/null || cat
 }
