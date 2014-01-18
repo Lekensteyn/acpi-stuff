@@ -53,3 +53,6 @@ Getting the register value at a certain position:
 
 ### bbswitch/bbswitch.c
 bbswitch has been migrated to https://github.com/Bumblebee-Project/bbswitch
+
+### Clevo_B7130
+Stuff related to my Clevo B7130 (BTO 17CL34) laptop.
