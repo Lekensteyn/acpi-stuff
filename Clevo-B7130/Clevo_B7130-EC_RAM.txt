@@ -19,7 +19,7 @@ MWKE,    1,    // byte 0x03  bit 7
  PSV,   16,    // byte 0x06  bit 0  Temperature that allows for passive cooling
  CRT,   16,    // byte 0x08  bit 0  Critical temperature (in tenths of Kelvin)
  TMP,   16,    // byte 0x0A  bit 0  Temperature (in tenths of Kelvin)
- AC1,   16,    // byte 0x0C  bit 0  
+ AC1,   16,    // byte 0x0C  bit 0  AC status? (0xAA0C if connected, 0xAA90 if not (on battery))
 SLPT,    8,    // byte 0x0E  bit 0  
 SWEJ,    1,    // byte 0x0F  bit 0  
 SWCH,    1,    // byte 0x0F  bit 1  
@@ -46,10 +46,10 @@ BCW0,   32,    // byte 0x3A  bit 0  The first 16 bits are design capacity of war
 BCL0,   32,    // byte 0x3E  bit 0  The first 16 bits are design capacity of low (little endian)
 BCG0,   32,    // byte 0x42  bit 0  
 BG20,   32,    // byte 0x46  bit 0  
-BMO0,   64,    // byte 0x4A  bit 0  
-BIF0,   64,    // byte 0x52  bit 0  
-BSN0,   32,    // byte 0x5A  bit 0  
-BTY0,   64,    // byte 0x5E  bit 0  
+BMO0,   64,    // byte 0x4A  bit 0  Board/Battery Model? (contains "W150HRM")
+BIF0,   64,    // byte 0x52  bit 0  Board/Battery Information? (contains "SMP-SAM2")
+BSN0,   32,    // byte 0x5A  bit 0  ? "Battery Serial Number"? (0x00090000 when AC was re-connected, all zeroes otherwise)
+BTY0,   64,    // byte 0x5E  bit 0  Battery Type string ("LI-ION")
 BCC0,   16,    // byte 0x66  bit 0  
 ECOS,    8,    // byte 0x68  bit 0  
 REV0,    8,    // byte 0x69  bit 0  
@@ -87,7 +87,7 @@ DTHL,    8,    // byte 0xD7  bit 0  If temp. falls below PSV-10*DTHL, optionally
 BRTS,    8,    // byte 0xD8  bit 0  
 Offset (0xDA), // byte 0xDA  bit 0  
 WINF,    8,    // byte 0xDA  bit 0  
-RINF,    8,    // byte 0xDB  bit 0  ? 0x2 if the discrete GPU is on, 0x0 if off
+RINF,    8,    // byte 0xDB  bit 0  ? 0x2 if the discrete GPU is on, 0x0 if off (also seen 0x8a shortly after unplugging AC)
 Offset (0xDD), // byte 0xDD  bit 0  
 INF2,    8,    // byte 0xDD  bit 0  
 MUTE,    1,    // byte 0xDE  bit 0  
