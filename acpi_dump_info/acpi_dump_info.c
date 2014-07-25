@@ -9,7 +9,8 @@
 
 MODULE_LICENSE("GPL");
 MODULE_DESCRIPTION("Dumps information of the ACPI handles for devices");
-MODULE_AUTHOR("Lekensteyn <lekensteyn@gmail.com>");
+MODULE_AUTHOR("Peter Wu <peter@lekensteyn.nl>");
+MODULE_VERSION("0.1");
 
 #define DEVNAME "dump_info"
 
@@ -22,7 +23,13 @@ static int meh_show(struct seq_file *seqfp, void *p) {
 		struct acpi_buffer buf = { ACPI_ALLOCATE_BUFFER, NULL };
 		acpi_handle handle;
 
+#ifdef ACPI_HANDLE
+		/* since Linux 3.8 */
+		handle = ACPI_HANDLE(&pdev->dev);
+#else
+		/* removed since Linux 3.13 */
 		handle = DEVICE_ACPI_HANDLE(&pdev->dev);
+#endif
 		seq_printf(seqfp, "%s ", dev_name(&pdev->dev));
 		seq_printf(seqfp, "%06x ", pdev->class);
 		if (handle) {
