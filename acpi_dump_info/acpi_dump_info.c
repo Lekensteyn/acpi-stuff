@@ -10,7 +10,7 @@
 MODULE_LICENSE("GPL");
 MODULE_DESCRIPTION("Dumps information of the ACPI handles for devices");
 MODULE_AUTHOR("Peter Wu <peter@lekensteyn.nl>");
-MODULE_VERSION("0.1");
+MODULE_VERSION("0.2");
 
 #define DEVNAME "dump_info"
 
