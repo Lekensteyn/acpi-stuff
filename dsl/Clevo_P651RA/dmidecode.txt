@@ -1,0 +1,9 @@
+baseboard-manufacturer: Notebook                        
+baseboard-product-name: P65_P67RGRERA
+baseboard-version     : Not Applicable                  
+system-manufacturer   : Notebook                        
+system-product-name   : P65_P67RGRERA
+system-version        : Not Applicable                  
+bios-vendor           : American Megatrends Inc.
+bios-version          : 1.05.07
+bios-release-date     : 10/12/2015
