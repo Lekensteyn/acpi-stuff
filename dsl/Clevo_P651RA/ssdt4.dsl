@@ -1,11 +1,11 @@
 /*
  * Intel ACPI Component Architecture
- * AML/ASL+ Disassembler version 20150717-64
- * Copyright (c) 2000 - 2015 Intel Corporation
+ * AML/ASL+ Disassembler version 20160212-64
+ * Copyright (c) 2000 - 2016 Intel Corporation
  * 
  * Disassembling to symbolic ASL+ operators
  *
- * Disassembly of ssdt4.dat, Mon Jan 18 23:32:36 2016
+ * Disassembly of ssdt4.dat, Sat May 14 22:16:15 2016
  *
  * Original Table Header:
  *     Signature        "SSDT"
@@ -21,15 +21,15 @@
 DefinitionBlock ("ssdt4.aml", "SSDT", 2, "CpuRef", "CpuSsdt", 0x00003000)
 {
 
-    External (_PR_.CPU0, DeviceObj)
-    External (_PR_.CPU1, DeviceObj)
-    External (_PR_.CPU2, DeviceObj)
-    External (_PR_.CPU3, DeviceObj)
-    External (_PR_.CPU4, DeviceObj)
-    External (_PR_.CPU5, DeviceObj)
-    External (_PR_.CPU6, DeviceObj)
-    External (_PR_.CPU7, DeviceObj)
-    External (_SB_.OSCP, UnknownObj)
+    External (_PR_.CPU0, ProcessorObj)
+    External (_PR_.CPU1, ProcessorObj)
+    External (_PR_.CPU2, ProcessorObj)
+    External (_PR_.CPU3, ProcessorObj)
+    External (_PR_.CPU4, ProcessorObj)
+    External (_PR_.CPU5, ProcessorObj)
+    External (_PR_.CPU6, ProcessorObj)
+    External (_PR_.CPU7, ProcessorObj)
+    External (_SB_.OSCP, IntObj)
 
     Scope (\)
     {
@@ -256,7 +256,7 @@ DefinitionBlock ("ssdt4.aml", "SSDT", 2, "CpuRef", "CpuSsdt", 0x00003000)
                     (SDTL & 0x02)))
                 {
                     SDTL |= 0x02
-                    OperationRegion (CST0, SystemMemory, DerefOf (Index (SSDT, 0x07)), DerefOf (Index (SSDT, 0x08)))
+                    OperationRegion (CST0, SystemMemory, DerefOf (SSDT [0x07]), DerefOf (SSDT [0x08]))
                     Load (CST0, HC0) /* \_PR_.CPU0.HC0_ */
                 }
             }
@@ -264,7 +264,7 @@ DefinitionBlock ("ssdt4.aml", "SSDT", 2, "CpuRef", "CpuSsdt", 0x00003000)
             If (((CFGD & One) && !(SDTL & 0x08)))
             {
                 SDTL |= 0x08
-                OperationRegion (IST0, SystemMemory, DerefOf (Index (SSDT, One)), DerefOf (Index (SSDT, 0x02)))
+                OperationRegion (IST0, SystemMemory, DerefOf (SSDT [One]), DerefOf (SSDT [0x02]))
                 Load (IST0, HI0) /* \_PR_.CPU0.HI0_ */
             }
 
@@ -273,11 +273,11 @@ DefinitionBlock ("ssdt4.aml", "SSDT", 2, "CpuRef", "CpuSsdt", 0x00003000)
                 If ((\_SB.OSCP & 0x20))
                 {
                     SDTL |= 0x40
-                    OperationRegion (HWP0, SystemMemory, DerefOf (Index (SSDT, 0x0D)), DerefOf (Index (SSDT, 0x0E)))
+                    OperationRegion (HWP0, SystemMemory, DerefOf (SSDT [0x0D]), DerefOf (SSDT [0x0E]))
                     Load (HWP0, HW0) /* \_PR_.CPU0.HW0_ */
                     If ((CFGD & 0x00800000))
                     {
-                        OperationRegion (HWPL, SystemMemory, DerefOf (Index (SSDT, 0x13)), DerefOf (Index (SSDT, 0x14)))
+                        OperationRegion (HWPL, SystemMemory, DerefOf (SSDT [0x13]), DerefOf (SSDT [0x14]))
                         Load (HWPL, HW2) /* \_PR_.CPU0.HW2_ */
                     }
                 }
@@ -370,7 +370,7 @@ DefinitionBlock ("ssdt4.aml", "SSDT", 2, "CpuRef", "CpuSsdt", 0x00003000)
             If (((CFGD & 0x7A) && !(SDTL & 0x20)))
             {
                 SDTL |= 0x20
-                OperationRegion (CST1, SystemMemory, DerefOf (Index (SSDT, 0x0A)), DerefOf (Index (SSDT, 0x0B)))
+                OperationRegion (CST1, SystemMemory, DerefOf (SSDT [0x0A]), DerefOf (SSDT [0x0B]))
                 Load (CST1, HC1) /* \_PR_.CPU1.HC1_ */
             }
         }
@@ -380,7 +380,7 @@ DefinitionBlock ("ssdt4.aml", "SSDT", 2, "CpuRef", "CpuSsdt", 0x00003000)
             If (((CFGD & One) && !(SDTL & 0x10)))
             {
                 SDTL |= 0x10
-                OperationRegion (IST1, SystemMemory, DerefOf (Index (SSDT, 0x04)), DerefOf (Index (SSDT, 0x05)))
+                OperationRegion (IST1, SystemMemory, DerefOf (SSDT [0x04]), DerefOf (SSDT [0x05]))
                 Load (IST1, HI1) /* \_PR_.CPU1.HI1_ */
             }
         }
@@ -390,7 +390,7 @@ DefinitionBlock ("ssdt4.aml", "SSDT", 2, "CpuRef", "CpuSsdt", 0x00003000)
             If (((CFGD & 0x00400000) && !(SDTL & 0x80)))
             {
                 SDTL |= 0x80
-                OperationRegion (HWP1, SystemMemory, DerefOf (Index (SSDT, 0x10)), DerefOf (Index (SSDT, 0x11)))
+                OperationRegion (HWP1, SystemMemory, DerefOf (SSDT [0x10]), DerefOf (SSDT [0x11]))
                 Load (HWP1, HW1) /* \_PR_.CPU1.HW1_ */
             }
         }

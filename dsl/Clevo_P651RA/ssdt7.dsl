@@ -1,11 +1,11 @@
 /*
  * Intel ACPI Component Architecture
- * AML/ASL+ Disassembler version 20150717-64
- * Copyright (c) 2000 - 2015 Intel Corporation
+ * AML/ASL+ Disassembler version 20160212-64
+ * Copyright (c) 2000 - 2016 Intel Corporation
  * 
  * Disassembling to symbolic ASL+ operators
  *
- * Disassembly of ssdt7.dat, Mon Jan 18 23:32:36 2016
+ * Disassembly of ssdt7.dat, Sat May 14 22:16:15 2016
  *
  * Original Table Header:
  *     Signature        "SSDT"
@@ -20,79 +20,52 @@
  */
 DefinitionBlock ("ssdt7.aml", "SSDT", 1, "OptRef", "OptTabl", 0x00001000)
 {
-    /*
-     * iASL Warning: There were 9 external control methods found during
-     * disassembly, but additional ACPI tables to resolve these externals
-     * were not specified. This resulting disassembler output file may not
-     * compile because the disassembler did not know how many arguments
-     * to assign to these methods. To specify the tables needed to resolve
-     * external control method references, the -e option can be used to
-     * specify the filenames. Note: SSDTs can be dynamically loaded at
-     * runtime and may or may not be available via the host OS.
-     * Example iASL invocations:
-     *     iasl -e ssdt1.aml ssdt2.aml ssdt3.aml -d dsdt.aml
-     *     iasl -e dsdt.aml ssdt2.aml -d ssdt1.aml
-     *     iasl -e ssdt*.aml -d dsdt.aml
-     *
-     * In addition, the -fe option can be used to specify a file containing
-     * control method external declarations with the associated method
-     * argument counts. Each line of the file must be of the form:
-     *     External (<method pathname>, MethodObj, <argument count>)
-     * Invocation:
-     *     iasl -fe refs.txt -d dsdt.aml
-     *
-     * The following methods were unresolved and many not compile properly
-     * because the disassembler had to guess at the number of arguments
-     * required for each:
-     */
-    External (_SB_.AC__.ADJP, MethodObj)    // Warning: Unresolved method, guessing 0 arguments
-    External (_SB_.PCI0.PEG0.PEGP.SGST, MethodObj)    // Warning: Unresolved method, guessing 0 arguments
-    External (_SB_.PCI0.PGOF, MethodObj)    // Warning: Unresolved method, guessing 1 arguments
-    External (_SB_.PCI0.PGON, MethodObj)    // Warning: Unresolved method, guessing 1 arguments
-    External (EBAS, MethodObj)    // Warning: Unresolved method, guessing 1 arguments
-    External (NVGA, MethodObj)    // Warning: Unresolved method, guessing 1 arguments
-    External (NVHA, MethodObj)    // Warning: Unresolved method, guessing 1 arguments
-    External (PGOF, MethodObj)    // Warning: Unresolved method, guessing 1 arguments
-    External (PGON, MethodObj)    // Warning: Unresolved method, guessing 1 arguments
 
-    External (_PR_.CPU0, UnknownObj)
-    External (_PR_.CPU0._PPC, IntObj)
-    External (_PR_.CPU0._PSS, IntObj)
+    External (_PR_.CPU0, ProcessorObj)
+    External (_PR_.CPU0._PPC, MethodObj)    // 0 Arguments
+    External (_PR_.CPU0._PSS, MethodObj)    // 0 Arguments
     External (_PR_.CPU0._PTC, UnknownObj)
     External (_PR_.CPU0._TSS, IntObj)
-    External (_SB_.AC__.GPSF, UnknownObj)
-    External (_SB_.GGIV, UnknownObj)
+    External (_SB_.AC__.ADJP, MethodObj)    // 1 Arguments
+    External (_SB_.AC__.GPSF, IntObj)
+    External (_SB_.GGIV, MethodObj)    // 1 Arguments
     External (_SB_.PCI0, DeviceObj)
     External (_SB_.PCI0.GFX0, DeviceObj)
-    External (_SB_.PCI0.GFX0._DSM, IntObj)
-    External (_SB_.PCI0.LPCB.EC__.ADP_, UnknownObj)
-    External (_SB_.PCI0.LPCB.EC__.AIRP, IntObj)
-    External (_SB_.PCI0.LPCB.EC__.EP12, UnknownObj)
-    External (_SB_.PCI0.LPCB.EC__.GP12, UnknownObj)
-    External (_SB_.PCI0.LPCB.EC__.GTVR, IntObj)
+    External (_SB_.PCI0.GFX0._DSM, MethodObj)    // 4 Arguments
+    External (_SB_.PCI0.GFX0.CLID, FieldUnitObj)
+    External (_SB_.PCI0.LPCB.EC__.ADP_, FieldUnitObj)
+    External (_SB_.PCI0.LPCB.EC__.AIRP, FieldUnitObj)
+    External (_SB_.PCI0.LPCB.EC__.EP12, FieldUnitObj)
+    External (_SB_.PCI0.LPCB.EC__.GP12, IntObj)
+    External (_SB_.PCI0.LPCB.EC__.GTVR, FieldUnitObj)
     External (_SB_.PCI0.PEG0.PEGP, DeviceObj)
-    External (CLID, UnknownObj)
-    External (DID1, IntObj)
-    External (DID2, IntObj)
-    External (DID3, IntObj)
-    External (DID4, IntObj)
-    External (DID5, IntObj)
-    External (DID6, IntObj)
-    External (DID7, IntObj)
-    External (DID8, UnknownObj)
-    External (GPCF, UnknownObj)
-    External (LIDS, IntObj)
-    External (NXD1, UnknownObj)
-    External (NXD2, UnknownObj)
-    External (NXD3, UnknownObj)
-    External (NXD4, UnknownObj)
-    External (NXD5, UnknownObj)
-    External (NXD6, UnknownObj)
-    External (NXD7, UnknownObj)
-    External (NXD8, UnknownObj)
-    External (P80H, UnknownObj)
-    External (SGFL, UnknownObj)
-    External (SSMP, UnknownObj)
+    External (_SB_.PCI0.PEG0.PEGP.SGST, MethodObj)    // 0 Arguments
+    External (_SB_.PCI0.PGOF, MethodObj)    // 1 Arguments
+    External (_SB_.PCI0.PGON, MethodObj)    // 1 Arguments
+    External (DID1, FieldUnitObj)
+    External (DID2, FieldUnitObj)
+    External (DID3, FieldUnitObj)
+    External (DID4, FieldUnitObj)
+    External (DID5, FieldUnitObj)
+    External (DID6, FieldUnitObj)
+    External (DID7, FieldUnitObj)
+    External (DID8, FieldUnitObj)
+    External (EBAS, FieldUnitObj)
+    External (GPCF, FieldUnitObj)
+    External (LIDS, FieldUnitObj)
+    External (NVGA, FieldUnitObj)
+    External (NVHA, FieldUnitObj)
+    External (NXD1, FieldUnitObj)
+    External (NXD2, FieldUnitObj)
+    External (NXD3, FieldUnitObj)
+    External (NXD4, FieldUnitObj)
+    External (NXD5, FieldUnitObj)
+    External (NXD6, FieldUnitObj)
+    External (NXD7, FieldUnitObj)
+    External (NXD8, FieldUnitObj)
+    External (P80H, FieldUnitObj)
+    External (SGFL, FieldUnitObj)
+    External (SSMP, FieldUnitObj)
 
     Scope (\_SB.PCI0)
     {
@@ -101,35 +74,39 @@ DefinitionBlock ("ssdt7.aml", "SSDT", 1, "OptRef", "OptTabl", 0x00001000)
 
     Scope (\_SB.PCI0.PEG0.PEGP)
     {
-        OperationRegion (PCI2, SystemMemory, EBAS (0x0500), Field (PCI2, DWordAcc, Lock, Preserve)
-            {
-                Offset (0x04), 
-                CMDR,   8, 
-                VGAR,   2000, 
-                Offset (0x48B), 
-                    ,   1, 
-                NHDA,   1
-            })
+        OperationRegion (PCI2, SystemMemory, EBAS, 0x0500)
+        Field (PCI2, DWordAcc, Lock, Preserve)
+        {
+            Offset (0x04), 
+            CMDR,   8, 
+            VGAR,   2000, 
+            Offset (0x48B), 
+                ,   1, 
+            NHDA,   1
+        }
+
         Name (VGAB, Buffer (0xFA)
         {
              0x00                                             /* . */
         })
         Name (GPRF, Zero)
         Name (LTRE, Zero)
-        OperationRegion (NVHM, SystemMemory, NVHA (0x00020400), Field (NVHM, DWordAcc, NoLock, Preserve)
-            {
-                NVSG,   128, 
-                NVSZ,   32, 
-                NVVR,   32, 
-                NVHO,   32, 
-                RVBS,   32, 
-                RBF1,   262144, 
-                RBF2,   262144, 
-                RBF3,   262144, 
-                RBF4,   262144, 
-                MXML,   32, 
-                MXM3,   1600
-            })
+        OperationRegion (NVHM, SystemMemory, NVHA, 0x00020400)
+        Field (NVHM, DWordAcc, NoLock, Preserve)
+        {
+            NVSG,   128, 
+            NVSZ,   32, 
+            NVVR,   32, 
+            NVHO,   32, 
+            RVBS,   32, 
+            RBF1,   262144, 
+            RBF2,   262144, 
+            RBF3,   262144, 
+            RBF4,   262144, 
+            MXML,   32, 
+            MXM3,   1600
+        }
+
         Name (OPCE, 0x02)
         Name (DGPS, Zero)
         Name (_PSC, Zero)  // _PSC: Power State Current
@@ -194,29 +171,20 @@ DefinitionBlock ("ssdt7.aml", "SSDT", 1, "OptRef", "OptTabl", 0x00001000)
             {
                 ROM1 = RBF1 /* \_SB_.PCI0.PEG0.PEGP.RBF1 */
             }
-            Else
+            ElseIf ((Local0 < 0x00010000))
             {
-                If ((Local0 < 0x00010000))
-                {
-                    Local0 -= 0x8000
-                    ROM1 = RBF2 /* \_SB_.PCI0.PEG0.PEGP.RBF2 */
-                }
-                Else
-                {
-                    If ((Local0 < 0x00018000))
-                    {
-                        Local0 -= 0x00010000
-                        ROM1 = RBF3 /* \_SB_.PCI0.PEG0.PEGP.RBF3 */
-                    }
-                    Else
-                    {
-                        If ((Local0 < 0x00020000))
-                        {
-                            Local0 -= 0x00018000
-                            ROM1 = RBF4 /* \_SB_.PCI0.PEG0.PEGP.RBF4 */
-                        }
-                    }
-                }
+                Local0 -= 0x8000
+                ROM1 = RBF2 /* \_SB_.PCI0.PEG0.PEGP.RBF2 */
+            }
+            ElseIf ((Local0 < 0x00018000))
+            {
+                Local0 -= 0x00010000
+                ROM1 = RBF3 /* \_SB_.PCI0.PEG0.PEGP.RBF3 */
+            }
+            ElseIf ((Local0 < 0x00020000))
+            {
+                Local0 -= 0x00018000
+                ROM1 = RBF4 /* \_SB_.PCI0.PEG0.PEGP.RBF4 */
             }
 
             Local2 = (Local0 * 0x08)
@@ -249,11 +217,8 @@ DefinitionBlock ("ssdt7.aml", "SSDT", 1, "OptRef", "OptTabl", 0x00001000)
                 VGAR = VGAB /* \_SB_.PCI0.PEG0.PEGP.VGAB */
                 CMDR = 0x06
                 TMP3 = Zero
-                \_SB.GGIV |= 0x01080000
-                0x01080001
-                TMP3
-                TMP3 = (\_SB.GGIV | 0x01080002)
-                TMP3
+                TMP3 = (\_SB.GGIV (0x01080000) | \_SB.GGIV (0x01080001))
+                TMP3 |= \_SB.GGIV (0x01080002) /* \_SB_.PCI0.PEG0.PEGP.TMP3 */
                 If (TMP3)
                 {
                     \_SB.PCI0.PEG0.PEGP.NHDA = One
@@ -298,49 +263,51 @@ DefinitionBlock ("ssdt7.aml", "SSDT", 1, "OptRef", "OptTabl", 0x00001000)
     {
         Method (_INI, 0, NotSerialized)  // _INI: Initialize
         {
-            Index (TLPK, Zero) = DID1 /* External reference */
-            Index (TLPK, 0x02) = DID2 /* External reference */
-            Index (TLPK, 0x04) = DID3 /* External reference */
-            Index (TLPK, 0x06) = DID4 /* External reference */
-            Index (TLPK, 0x08) = DID5 /* External reference */
-            Index (TLPK, 0x0A) = DID6 /* External reference */
-            Index (TLPK, 0x0C) = DID7 /* External reference */
-            Index (TLPK, 0x0E) = DID2 /* External reference */
-            Index (TLPK, 0x0F) = DID1 /* External reference */
-            Index (TLPK, 0x11) = DID2 /* External reference */
-            Index (TLPK, 0x12) = DID3 /* External reference */
-            Index (TLPK, 0x14) = DID2 /* External reference */
-            Index (TLPK, 0x15) = DID4 /* External reference */
-            Index (TLPK, 0x17) = DID2 /* External reference */
-            Index (TLPK, 0x18) = DID5 /* External reference */
-            Index (TLPK, 0x1A) = DID2 /* External reference */
-            Index (TLPK, 0x1B) = DID6 /* External reference */
-            Index (TLPK, 0x1D) = DID2 /* External reference */
-            Index (TLPK, 0x1E) = DID7 /* External reference */
+            TLPK [Zero] = DID1 /* External reference */
+            TLPK [0x02] = DID2 /* External reference */
+            TLPK [0x04] = DID3 /* External reference */
+            TLPK [0x06] = DID4 /* External reference */
+            TLPK [0x08] = DID5 /* External reference */
+            TLPK [0x0A] = DID6 /* External reference */
+            TLPK [0x0C] = DID7 /* External reference */
+            TLPK [0x0E] = DID2 /* External reference */
+            TLPK [0x0F] = DID1 /* External reference */
+            TLPK [0x11] = DID2 /* External reference */
+            TLPK [0x12] = DID3 /* External reference */
+            TLPK [0x14] = DID2 /* External reference */
+            TLPK [0x15] = DID4 /* External reference */
+            TLPK [0x17] = DID2 /* External reference */
+            TLPK [0x18] = DID5 /* External reference */
+            TLPK [0x1A] = DID2 /* External reference */
+            TLPK [0x1B] = DID6 /* External reference */
+            TLPK [0x1D] = DID2 /* External reference */
+            TLPK [0x1E] = DID7 /* External reference */
             CLID = \LIDS /* External reference */
         }
 
-        OperationRegion (NVIG, SystemMemory, NVGA (0x45), Field (NVIG, DWordAcc, NoLock, Preserve)
-            {
-                NISG,   128, 
-                NISZ,   32, 
-                NIVR,   32, 
-                GPSS,   32, 
-                GACD,   16, 
-                GATD,   16, 
-                LDES,   8, 
-                DKST,   8, 
-                DACE,   8, 
-                DHPE,   8, 
-                DHPS,   8, 
-                SGNC,   8, 
-                GPPO,   8, 
-                USPM,   8, 
-                GPSP,   8, 
-                TLSN,   8, 
-                DOSF,   8, 
-                ELCL,   16
-            })
+        OperationRegion (NVIG, SystemMemory, NVGA, 0x45)
+        Field (NVIG, DWordAcc, NoLock, Preserve)
+        {
+            NISG,   128, 
+            NISZ,   32, 
+            NIVR,   32, 
+            GPSS,   32, 
+            GACD,   16, 
+            GATD,   16, 
+            LDES,   8, 
+            DKST,   8, 
+            DACE,   8, 
+            DHPE,   8, 
+            DHPS,   8, 
+            SGNC,   8, 
+            GPPO,   8, 
+            USPM,   8, 
+            GPSP,   8, 
+            TLSN,   8, 
+            DOSF,   8, 
+            ELCL,   16
+        }
+
         Name (TLPK, Package (0x20)
         {
             Ones, 
@@ -438,7 +405,7 @@ DefinitionBlock ("ssdt7.aml", "SSDT", 1, "OptRef", "OptTabl", 0x00001000)
             Local1 = Zero
             While ((Local0 < Arg0))
             {
-                If ((DerefOf (Index (TLPK, Local1)) == 0x2C))
+                If ((DerefOf (TLPK [Local1]) == 0x2C))
                 {
                     Local0++
                 }
@@ -446,11 +413,11 @@ DefinitionBlock ("ssdt7.aml", "SSDT", 1, "OptRef", "OptTabl", 0x00001000)
                 Local1++
             }
 
-            SND1 (DerefOf (Index (TLPK, Local1)))
+            SND1 (DerefOf (TLPK [Local1]))
             Local1++
-            If ((DerefOf (Index (TLPK, Local1)) != 0x2C))
+            If ((DerefOf (TLPK [Local1]) != 0x2C))
             {
-                SND1 (DerefOf (Index (TLPK, Local1)))
+                SND1 (DerefOf (TLPK [Local1]))
             }
         }
 
@@ -464,93 +431,57 @@ DefinitionBlock ("ssdt7.aml", "SSDT", 1, "OptRef", "OptTabl", 0x00001000)
                 {
                     Return (One)
                 }
+                ElseIf ((_T_0 == 0x02))
+                {
+                    Return (0x02)
+                }
+                ElseIf ((_T_0 == 0x04))
+                {
+                    Return (0x03)
+                }
+                ElseIf ((_T_0 == 0x08))
+                {
+                    Return (0x04)
+                }
+                ElseIf ((_T_0 == 0x10))
+                {
+                    Return (0x05)
+                }
+                ElseIf ((_T_0 == 0x20))
+                {
+                    Return (0x06)
+                }
+                ElseIf ((_T_0 == 0x40))
+                {
+                    Return (0x07)
+                }
+                ElseIf ((_T_0 == 0x03))
+                {
+                    Return (0x08)
+                }
+                ElseIf ((_T_0 == 0x06))
+                {
+                    Return (0x09)
+                }
+                ElseIf ((_T_0 == 0x0A))
+                {
+                    Return (0x0A)
+                }
+                ElseIf ((_T_0 == 0x12))
+                {
+                    Return (0x0B)
+                }
+                ElseIf ((_T_0 == 0x22))
+                {
+                    Return (0x0C)
+                }
+                ElseIf ((_T_0 == 0x42))
+                {
+                    Return (0x0D)
+                }
                 Else
                 {
-                    If ((_T_0 == 0x02))
-                    {
-                        Return (0x02)
-                    }
-                    Else
-                    {
-                        If ((_T_0 == 0x04))
-                        {
-                            Return (0x03)
-                        }
-                        Else
-                        {
-                            If ((_T_0 == 0x08))
-                            {
-                                Return (0x04)
-                            }
-                            Else
-                            {
-                                If ((_T_0 == 0x10))
-                                {
-                                    Return (0x05)
-                                }
-                                Else
-                                {
-                                    If ((_T_0 == 0x20))
-                                    {
-                                        Return (0x06)
-                                    }
-                                    Else
-                                    {
-                                        If ((_T_0 == 0x40))
-                                        {
-                                            Return (0x07)
-                                        }
-                                        Else
-                                        {
-                                            If ((_T_0 == 0x03))
-                                            {
-                                                Return (0x08)
-                                            }
-                                            Else
-                                            {
-                                                If ((_T_0 == 0x06))
-                                                {
-                                                    Return (0x09)
-                                                }
-                                                Else
-                                                {
-                                                    If ((_T_0 == 0x0A))
-                                                    {
-                                                        Return (0x0A)
-                                                    }
-                                                    Else
-                                                    {
-                                                        If ((_T_0 == 0x12))
-                                                        {
-                                                            Return (0x0B)
-                                                        }
-                                                        Else
-                                                        {
-                                                            If ((_T_0 == 0x22))
-                                                            {
-                                                                Return (0x0C)
-                                                            }
-                                                            Else
-                                                            {
-                                                                If ((_T_0 == 0x42))
-                                                                {
-                                                                    Return (0x0D)
-                                                                }
-                                                                Else
-                                                                {
-                                                                    Return (One)
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
+                    Return (One)
                 }
 
                 Break
@@ -582,12 +513,9 @@ DefinitionBlock ("ssdt7.aml", "SSDT", 1, "OptRef", "OptTabl", 0x00001000)
                         Return (0x80000002)
                     }
                 }
-                Else
+                ElseIf ((Arg1 != 0x0102))
                 {
-                    If ((Arg1 != 0x0102))
-                    {
-                        Return (0x80000002)
-                    }
+                    Return (0x80000002)
                 }
 
                 If ((Arg2 == Zero))
@@ -599,25 +527,19 @@ DefinitionBlock ("ssdt7.aml", "SSDT", 1, "OptRef", "OptTabl", 0x00001000)
                              0x7F, 0x00, 0x04, 0x00                           /* .... */
                         })
                     }
-                    Else
+                    ElseIf (NBCI)
                     {
-                        If (NBCI)
+                        Return (Buffer (0x04)
                         {
-                            Return (Buffer (0x04)
-                            {
-                                 0x73, 0x00, 0x04, 0x00                           /* s... */
-                            })
-                        }
-                        Else
+                             0x73, 0x00, 0x04, 0x00                           /* s... */
+                        })
+                    }
+                    ElseIf (OPCI)
+                    {
+                        Return (Buffer (0x04)
                         {
-                            If (OPCI)
-                            {
-                                Return (Buffer (0x04)
-                                {
-                                     0x61, 0x18, 0x03, 0x0C                           /* a... */
-                                })
-                            }
-                        }
+                             0x61, 0x18, 0x03, 0x0C                           /* a... */
+                        })
                     }
                 }
 
@@ -969,200 +891,168 @@ DefinitionBlock ("ssdt7.aml", "SSDT", 1, "OptRef", "OptTabl", 0x00001000)
                         }
                     Divide (Zero, 0x08, Local2, Local1)
                     Local2 = (One << Local2)
-                    Index (Local0, Local1) = (DerefOf (Index (Local0, Local1)) | Local2)
+                    Local0 [Local1] = (DerefOf (Local0 [Local1]) | Local2)
                     Divide (0x13, 0x08, Local2, Local1)
                     Local2 = (One << Local2)
-                    Index (Local0, Local1) = (DerefOf (Index (Local0, Local1)) | Local2)
+                    Local0 [Local1] = (DerefOf (Local0 [Local1]) | Local2)
                     Divide (0x20, 0x08, Local2, Local1)
                     Local2 = (One << Local2)
-                    Index (Local0, Local1) = (DerefOf (Index (Local0, Local1)) | Local2)
+                    Local0 [Local1] = (DerefOf (Local0 [Local1]) | Local2)
                     Divide (0x21, 0x08, Local2, Local1)
                     Local2 = (One << Local2)
-                    Index (Local0, Local1) = (DerefOf (Index (Local0, Local1)) | Local2)
+                    Local0 [Local1] = (DerefOf (Local0 [Local1]) | Local2)
                     Divide (0x22, 0x08, Local2, Local1)
                     Local2 = (One << Local2)
-                    Index (Local0, Local1) = (DerefOf (Index (Local0, Local1)) | Local2)
+                    Local0 [Local1] = (DerefOf (Local0 [Local1]) | Local2)
                     Divide (0x23, 0x08, Local2, Local1)
                     Local2 = (One << Local2)
-                    Index (Local0, Local1) = (DerefOf (Index (Local0, Local1)) | Local2)
+                    Local0 [Local1] = (DerefOf (Local0 [Local1]) | Local2)
                     Divide (0x2A, 0x08, Local2, Local1)
                     Local2 = (One << Local2)
-                    Index (Local0, Local1) = (DerefOf (Index (Local0, Local1)) | Local2)
+                    Local0 [Local1] = (DerefOf (Local0 [Local1]) | Local2)
                     Local1 = SizeOf (Local0)
                     While ((Local1 != Zero))
                     {
                         Local1--
-                        Local2 = DerefOf (Index (FMSK, Local1))
-                        Index (Local0, Local1) = (DerefOf (Index (Local0, Local1)) & Local2)
+                        Local2 = DerefOf (FMSK [Local1])
+                        Local0 [Local1] = (DerefOf (Local0 [Local1]) & Local2)
                     }
 
                     Return (Local0)
                 }
-                Else
+                ElseIf ((_T_0 == 0x13))
                 {
-                    If ((_T_0 == 0x13))
-                    {
-                        Debug = "GPS fun 19"
-                        Local0 = Buffer (0x04)
-                            {
-                                 0x00, 0x00, 0x00, 0x00                           /* .... */
-                            }
-                        CreateField (Arg3, 0x02, One, PPST)
-                        CreateBitField (Local0, 0x02, CPST)
-                        If ((ToInteger (PPST) && \_SB.PCI0.LPCB.EC.GP12))
+                    Debug = "GPS fun 19"
+                    Local0 = Buffer (0x04)
                         {
-                            \_SB.PCI0.LPCB.EC.EP12 = One
-                            \_SB.PCI0.LPCB.EC.GP12 = Zero
+                             0x00, 0x00, 0x00, 0x00                           /* .... */
                         }
-
-                        CPST = One
-                        Return (Local0)
-                    }
-                    Else
+                    CreateField (Arg3, 0x02, One, PPST)
+                    CreateBitField (Local0, 0x02, CPST)
+                    If ((ToInteger (PPST) && \_SB.PCI0.LPCB.EC.GP12))
                     {
-                        If ((_T_0 == 0x20))
+                        \_SB.PCI0.LPCB.EC.EP12 = One
+                        \_SB.PCI0.LPCB.EC.GP12 = Zero
+                    }
+
+                    CPST = One
+                    Return (Local0)
+                }
+                ElseIf ((_T_0 == 0x20))
+                {
+                    Debug = "GPS fun 20"
+                    Name (RET1, Zero)
+                    CreateBitField (Arg3, 0x18, NRIT)
+                    CreateBitField (Arg3, 0x19, NRIS)
+                    If (NRIS)
+                    {
+                        If (NRIT)
                         {
-                            Debug = "GPS fun 20"
-                            Name (RET1, Zero)
-                            CreateBitField (Arg3, 0x18, NRIT)
-                            CreateBitField (Arg3, 0x19, NRIS)
-                            If (NRIS)
-                            {
-                                If (NRIT)
-                                {
-                                    RET1 |= 0x01000000
-                                }
-                                Else
-                                {
-                                    RET1 &= 0xFEFFFFFF
-                                }
-                            }
-
-                            RET1 |= 0x40000000
-                            If (NLIM)
-                            {
-                                RET1 |= One
-                            }
-
-                            Return (RET1) /* \_SB_.PCI0.PEG0.PEGP.GPS_.RET1 */
+                            RET1 |= 0x01000000
                         }
                         Else
                         {
-                            If ((_T_0 == 0x21))
-                            {
-                                Return (\_PR.CPU0._PSS) /* External reference */
-                            }
-                            Else
-                            {
-                                If ((_T_0 == 0x22))
-                                {
-                                    CreateByteField (Arg3, Zero, PCAP)
-                                    If ((GPCF & One))
-                                    {
-                                        \_SB.AC.GPSF = One
-                                        If ((\_SB.PCI0.LPCB.EC.ADP == One))
-                                        {
-                                            \_SB.AC.ADJP ()
-                                            (PCAP | 0x40000000)
-                                        }
-                                        Else
-                                        {
-                                            \_SB.AC.ADJP ()
-                                            Zero
-                                        }
-
-                                        \_SB.AC.GPSF = Zero
-                                    }
-
-                                    Return (PCAP) /* \_SB_.PCI0.PEG0.PEGP.GPS_.PCAP */
-                                }
-                                Else
-                                {
-                                    If ((_T_0 == 0x23))
-                                    {
-                                        Return (\_PR.CPU0._PPC) /* External reference */
-                                    }
-                                    Else
-                                    {
-                                        If ((_T_0 == 0x25))
-                                        {
-                                            Debug = "GPS fun 25"
-                                            Return (\_PR.CPU0._TSS) /* External reference */
-                                        }
-                                        Else
-                                        {
-                                            If ((_T_0 == 0x26))
-                                            {
-                                                Debug = "GPS fun 26"
-                                                CreateDWordField (Arg3, Zero, TCAP)
-                                                \_PR.CPU0._PTC = TCAP /* \_SB_.PCI0.PEG0.PEGP.GPS_.TCAP */
-                                                Notify (\_PR.CPU0, 0x80) // Status Change
-                                                Return (TCAP) /* \_SB_.PCI0.PEG0.PEGP.GPS_.TCAP */
-                                            }
-                                            Else
-                                            {
-                                                If ((_T_0 == 0x2A))
-                                                {
-                                                    Debug = "GPS fun 2a"
-                                                    CreateByteField (Arg3, Zero, PSH0)
-                                                    CreateByteField (Arg3, One, PSH1)
-                                                    CreateBitField (Arg3, 0x08, GPUT)
-                                                    CreateBitField (Arg3, 0x09, CPUT)
-                                                    CreateBitField (Arg3, 0x0A, FANS)
-                                                    CreateBitField (Arg3, 0x0B, SKIN)
-                                                    CreateBitField (Arg3, 0x0C, ENGR)
-                                                    CreateBitField (Arg3, 0x0D, SEN1)
-                                                    CreateBitField (Arg3, 0x0E, SEN2)
-                                                    While (One)
-                                                    {
-                                                        _T_1 = PSH0 /* \_SB_.PCI0.PEG0.PEGP.GPS_.PSH0 */
-                                                        If ((_T_1 == Zero))
-                                                        {
-                                                            If (CPUT)
-                                                            {
-                                                                RETN = 0x0200
-                                                                RETN |= PSH0 /* \_SB_.PCI0.PEG0.PEGP.GPS_.PSH0 */
-                                                                PDTS = \_SB.PCI0.LPCB.EC.GTVR /* External reference */
-                                                            }
-
-                                                            Return (GPSP) /* \_SB_.PCI0.PEG0.PEGP.GPSP */
-                                                        }
-                                                        Else
-                                                        {
-                                                            If ((_T_1 == One))
-                                                            {
-                                                                RETN = 0x0300
-                                                                RETN |= PSH0 /* \_SB_.PCI0.PEG0.PEGP.GPS_.PSH0 */
-                                                                PDTS = 0x03E8
-                                                                Return (GPSP) /* \_SB_.PCI0.PEG0.PEGP.GPSP */
-                                                            }
-                                                            Else
-                                                            {
-                                                                If ((_T_1 == 0x02))
-                                                                {
-                                                                    RETN = 0x0102
-                                                                    VRV1 = Zero
-                                                                    TGPU = Zero
-                                                                    PDTS = Zero
-                                                                    SFAN = Zero
-                                                                    CPUE = Zero
-                                                                    SKNT = Zero
-                                                                    TMP1 = Zero
-                                                                    TMP2 = Zero
-                                                                    Return (GPSP) /* \_SB_.PCI0.PEG0.PEGP.GPSP */
-                                                                }
-                                                            }
-                                                        }
-
-                                                        Break
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
+                            RET1 &= 0xFEFFFFFF
                         }
+                    }
+
+                    RET1 |= 0x40000000
+                    If (NLIM)
+                    {
+                        RET1 |= One
+                    }
+
+                    Return (RET1) /* \_SB_.PCI0.PEG0.PEGP.GPS_.RET1 */
+                }
+                ElseIf ((_T_0 == 0x21))
+                {
+                    Return (\_PR.CPU0._PSS ())
+                }
+                ElseIf ((_T_0 == 0x22))
+                {
+                    CreateByteField (Arg3, Zero, PCAP)
+                    If ((GPCF & One))
+                    {
+                        \_SB.AC.GPSF = One
+                        If ((\_SB.PCI0.LPCB.EC.ADP == One))
+                        {
+                            \_SB.AC.ADJP ((PCAP | 0x40000000))
+                        }
+                        Else
+                        {
+                            \_SB.AC.ADJP (Zero)
+                        }
+
+                        \_SB.AC.GPSF = Zero
+                    }
+
+                    Return (PCAP) /* \_SB_.PCI0.PEG0.PEGP.GPS_.PCAP */
+                }
+                ElseIf ((_T_0 == 0x23))
+                {
+                    Return (\_PR.CPU0._PPC ())
+                }
+                ElseIf ((_T_0 == 0x25))
+                {
+                    Debug = "GPS fun 25"
+                    Return (\_PR.CPU0._TSS) /* External reference */
+                }
+                ElseIf ((_T_0 == 0x26))
+                {
+                    Debug = "GPS fun 26"
+                    CreateDWordField (Arg3, Zero, TCAP)
+                    \_PR.CPU0._PTC = TCAP /* \_SB_.PCI0.PEG0.PEGP.GPS_.TCAP */
+                    Notify (\_PR.CPU0, 0x80) // Status Change
+                    Return (TCAP) /* \_SB_.PCI0.PEG0.PEGP.GPS_.TCAP */
+                }
+                ElseIf ((_T_0 == 0x2A))
+                {
+                    Debug = "GPS fun 2a"
+                    CreateByteField (Arg3, Zero, PSH0)
+                    CreateByteField (Arg3, One, PSH1)
+                    CreateBitField (Arg3, 0x08, GPUT)
+                    CreateBitField (Arg3, 0x09, CPUT)
+                    CreateBitField (Arg3, 0x0A, FANS)
+                    CreateBitField (Arg3, 0x0B, SKIN)
+                    CreateBitField (Arg3, 0x0C, ENGR)
+                    CreateBitField (Arg3, 0x0D, SEN1)
+                    CreateBitField (Arg3, 0x0E, SEN2)
+                    While (One)
+                    {
+                        _T_1 = PSH0 /* \_SB_.PCI0.PEG0.PEGP.GPS_.PSH0 */
+                        If ((_T_1 == Zero))
+                        {
+                            If (CPUT)
+                            {
+                                RETN = 0x0200
+                                RETN |= PSH0 /* \_SB_.PCI0.PEG0.PEGP.GPS_.PSH0 */
+                                PDTS = \_SB.PCI0.LPCB.EC.GTVR /* External reference */
+                            }
+
+                            Return (GPSP) /* \_SB_.PCI0.PEG0.PEGP.GPSP */
+                        }
+                        ElseIf ((_T_1 == One))
+                        {
+                            RETN = 0x0300
+                            RETN |= PSH0 /* \_SB_.PCI0.PEG0.PEGP.GPS_.PSH0 */
+                            PDTS = 0x03E8
+                            Return (GPSP) /* \_SB_.PCI0.PEG0.PEGP.GPSP */
+                        }
+                        ElseIf ((_T_1 == 0x02))
+                        {
+                            RETN = 0x0102
+                            VRV1 = Zero
+                            TGPU = Zero
+                            PDTS = Zero
+                            SFAN = Zero
+                            CPUE = Zero
+                            SKNT = Zero
+                            TMP1 = Zero
+                            TMP2 = Zero
+                            Return (GPSP) /* \_SB_.PCI0.PEG0.PEGP.GPSP */
+                        }
+
+                        Break
                     }
                 }
 
@@ -1208,11 +1098,7 @@ DefinitionBlock ("ssdt7.aml", "SSDT", 1, "OptRef", "OptTabl", 0x00001000)
                         CreateField (Arg2, 0xE0, 0x20, XRG0)
                         If (CondRefOf (\_SB.PCI0.GFX0._DSM))
                         {
-                            Return (\_SB.PCI0.GFX0._DSM) /* External reference */
-                            MUID
-                            REVI
-                            SFNC
-                            XRG0
+                            Return (\_SB.PCI0.GFX0._DSM (MUID, REVI, SFNC, XRG0))
                         }
                     }
                 }

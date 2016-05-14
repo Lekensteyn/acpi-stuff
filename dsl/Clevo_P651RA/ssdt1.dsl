@@ -1,11 +1,11 @@
 /*
  * Intel ACPI Component Architecture
- * AML/ASL+ Disassembler version 20150717-64
- * Copyright (c) 2000 - 2015 Intel Corporation
+ * AML/ASL+ Disassembler version 20160212-64
+ * Copyright (c) 2000 - 2016 Intel Corporation
  * 
  * Disassembling to symbolic ASL+ operators
  *
- * Disassembly of ssdt1.dat, Mon Jan 18 23:32:36 2016
+ * Disassembly of ssdt1.dat, Sat May 14 22:16:15 2016
  *
  * Original Table Header:
  *     Signature        "SSDT"
@@ -22,8 +22,8 @@ DefinitionBlock ("ssdt1.aml", "SSDT", 1, "SataRe", "SataTabl", 0x00001000)
 {
 
     External (_SB_.PCI0.SAT0, DeviceObj)
-    External (DSSP, UnknownObj)
-    External (FHPP, UnknownObj)
+    External (DSSP, IntObj)
+    External (FHPP, IntObj)
 
     Scope (\)
     {

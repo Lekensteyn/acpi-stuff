@@ -1,11 +1,11 @@
 /*
  * Intel ACPI Component Architecture
- * AML/ASL+ Disassembler version 20150717-64
- * Copyright (c) 2000 - 2015 Intel Corporation
+ * AML/ASL+ Disassembler version 20160212-64
+ * Copyright (c) 2000 - 2016 Intel Corporation
  * 
  * Disassembling to symbolic ASL+ operators
  *
- * Disassembly of ssdt3.dat, Mon Jan 18 23:32:36 2016
+ * Disassembly of ssdt3.dat, Sat May 14 22:16:15 2016
  *
  * Original Table Header:
  *     Signature        "SSDT"
@@ -20,60 +20,36 @@
  */
 DefinitionBlock ("ssdt3.aml", "SSDT", 2, "SaSsdt", "SaSsdt ", 0x00003000)
 {
-    /*
-     * iASL Warning: There were 8 external control methods found during
-     * disassembly, but additional ACPI tables to resolve these externals
-     * were not specified. This resulting disassembler output file may not
-     * compile because the disassembler did not know how many arguments
-     * to assign to these methods. To specify the tables needed to resolve
-     * external control method references, the -e option can be used to
-     * specify the filenames. Note: SSDTs can be dynamically loaded at
-     * runtime and may or may not be available via the host OS.
-     * Example iASL invocations:
-     *     iasl -e ssdt1.aml ssdt2.aml ssdt3.aml -d dsdt.aml
-     *     iasl -e dsdt.aml ssdt2.aml -d ssdt1.aml
-     *     iasl -e ssdt*.aml -d dsdt.aml
-     *
-     * In addition, the -fe option can be used to specify a file containing
-     * control method external declarations with the associated method
-     * argument counts. Each line of the file must be of the form:
-     *     External (<method pathname>, MethodObj, <argument count>)
-     * Invocation:
-     *     iasl -fe refs.txt -d dsdt.aml
-     *
-     * The following methods were unresolved and many not compile properly
-     * because the disassembler had to guess at the number of arguments
-     * required for each:
-     */
-    External (_SB_.ISME, MethodObj)    // Warning: Unresolved method, guessing 4 arguments
-    External (_SB_.SGOV, MethodObj)    // Warning: Unresolved method, guessing 5 arguments
-    External (_SB_.SHPO, MethodObj)    // Warning: Unresolved method, guessing 2 arguments
-    External (GUAM, MethodObj)    // Warning: Unresolved method, guessing 1 arguments
-    External (HDOS, MethodObj)    // Warning: Unresolved method, guessing 0 arguments
-    External (HNOT, MethodObj)    // Warning: Unresolved method, guessing 1 arguments
-    External (PCRA, MethodObj)    // Warning: Unresolved method, guessing 2 arguments
-    External (PCRO, MethodObj)    // Warning: Unresolved method, guessing 2 arguments
 
-    External (_SB_.GGIV, UnknownObj)
-    External (_SB_.GGOV, IntObj)
+    External (_SB_.GGIV, MethodObj)    // 1 Arguments
+    External (_SB_.GGOV, MethodObj)    // 1 Arguments
+    External (_SB_.ISME, MethodObj)    // 1 Arguments
     External (_SB_.PCI0, DeviceObj)
     External (_SB_.PCI0.GFX0, DeviceObj)
-    External (_SB_.PCI0.LPCB.EC__.AIRP, IntObj)
+    External (_SB_.PCI0.GFX0.SNXD, MethodObj)    // 1 Arguments
+    External (_SB_.PCI0.LPCB.EC__.AIRP, FieldUnitObj)
     External (_SB_.PCI0.PEG0, DeviceObj)
     External (_SB_.PCI0.PEG0.PEGP, DeviceObj)
     External (_SB_.PCI0.PEG0.PEGP.LTRE, IntObj)
-    External (_SB_.PCI0.PEG0.PEGP.NHDA, UnknownObj)
+    External (_SB_.PCI0.PEG0.PEGP.NHDA, FieldUnitObj)
     External (_SB_.PCI0.PEG1, DeviceObj)
     External (_SB_.PCI0.PEG1.PEGP, DeviceObj)
     External (_SB_.PCI0.PEG2, DeviceObj)
     External (_SB_.PCI0.PEG2.PEGP, DeviceObj)
-    External (CPSC, UnknownObj)
-    External (DSEN, UnknownObj)
-    External (ECR1, IntObj)
-    External (GPRW, IntObj)
-    External (OSYS, UnknownObj)
-    External (P80H, UnknownObj)
-    External (S0ID, UnknownObj)
+    External (_SB_.SGOV, MethodObj)    // 2 Arguments
+    External (_SB_.SHPO, MethodObj)    // 2 Arguments
+    External (CPSC, FieldUnitObj)
+    External (DSEN, FieldUnitObj)
+    External (ECR1, FieldUnitObj)
+    External (GPRW, MethodObj)    // 2 Arguments
+    External (GUAM, MethodObj)    // 1 Arguments
+    External (HDOS, MethodObj)    // 0 Arguments
+    External (HNOT, MethodObj)    // 1 Arguments
+    External (OSYS, FieldUnitObj)
+    External (P80H, FieldUnitObj)
+    External (PCRA, MethodObj)    // 3 Arguments
+    External (PCRO, MethodObj)    // 3 Arguments
+    External (S0ID, FieldUnitObj)
 
     OperationRegion (SANV, SystemMemory, 0x5FF9BD98, 0x0135)
     Field (SANV, AnyAcc, Lock, Preserve)
@@ -213,17 +189,29 @@ DefinitionBlock ("ssdt3.aml", "SSDT", 2, "SaSsdt", "SaSsdt ", 0x00003000)
     {
         Method (P0L6, 0, NotSerialized)
         {
-            If (\_SB.ISME (P0WK, \_SB.SHPO (P0WK, One), Notify (\_SB.PCI0.PEG0, 0x02) // Device Wake)) {}
+            If (\_SB.ISME (P0WK))
+            {
+                \_SB.SHPO (P0WK, One)
+                Notify (\_SB.PCI0.PEG0, 0x02) // Device Wake
+            }
         }
 
         Method (P1L6, 0, NotSerialized)
         {
-            If (\_SB.ISME (P1WK, \_SB.SHPO (P1WK, One), Notify (\_SB.PCI0.PEG1, 0x02) // Device Wake)) {}
+            If (\_SB.ISME (P1WK))
+            {
+                \_SB.SHPO (P1WK, One)
+                Notify (\_SB.PCI0.PEG1, 0x02) // Device Wake
+            }
         }
 
         Method (P2L6, 0, NotSerialized)
         {
-            If (\_SB.ISME (P2WK, \_SB.SHPO (P2WK, One), Notify (\_SB.PCI0.PEG2, 0x02) // Device Wake)) {}
+            If (\_SB.ISME (P2WK))
+            {
+                \_SB.SHPO (P2WK, One)
+                Notify (\_SB.PCI0.PEG2, 0x02) // Device Wake
+            }
         }
     }
 
@@ -272,9 +260,7 @@ DefinitionBlock ("ssdt3.aml", "SSDT", 2, "SaSsdt", "SaSsdt ", 0x00003000)
 
         Method (_PRW, 0, NotSerialized)  // _PRW: Power Resources for Wake
         {
-            Return (GPRW) /* External reference */
-            0x69
-            0x04
+            Return (GPRW (0x69, 0x04))
         }
 
         Method (HPME, 0, Serialized)
@@ -339,82 +325,70 @@ DefinitionBlock ("ssdt3.aml", "SSDT", 2, "SaSsdt", "SaSsdt ", 0x00003000)
 
                         Return (Local0)
                     }
-                    Else
+                    ElseIf ((_T_0 == 0x04))
                     {
-                        If ((_T_0 == 0x04))
+                        If ((Arg1 >= 0x02))
                         {
-                            If ((Arg1 >= 0x02))
+                            If (OBFS)
                             {
-                                If (OBFS)
+                                Return (Buffer (0x10)
                                 {
-                                    Return (Buffer (0x10)
-                                    {
-                                        /* 0000 */  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,  /* ........ */
-                                        /* 0008 */  0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, 0x00   /* ........ */
-                                    })
-                                }
-                                Else
-                                {
-                                    Return (Buffer (0x10)
-                                    {
-                                        /* 0000 */  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,  /* ........ */
-                                        /* 0008 */  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00   /* ........ */
-                                    })
-                                }
-                            }
-                        }
-                        Else
-                        {
-                            If ((_T_0 == 0x06))
-                            {
-                                If ((Arg1 >= 0x02))
-                                {
-                                    If (LTRS)
-                                    {
-                                        Index (LTRV, Zero) = ((SMSL >> 0x0A) & 0x07)
-                                        Index (LTRV, One) = (SMSL & 0x03FF)
-                                        Index (LTRV, 0x02) = ((SNSL >> 0x0A) & 0x07)
-                                        Index (LTRV, 0x03) = (SNSL & 0x03FF)
-                                        Return (LTRV) /* \_SB_.PCI0.PEG0.LTRV */
-                                    }
-                                    Else
-                                    {
-                                        Return (Zero)
-                                    }
-                                }
+                                    /* 0000 */  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,  /* ........ */
+                                    /* 0008 */  0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, 0x00   /* ........ */
+                                })
                             }
                             Else
                             {
-                                If ((_T_0 == 0x08))
+                                Return (Buffer (0x10)
                                 {
-                                    If ((ECR1 == One))
-                                    {
-                                        If ((Arg1 >= 0x03))
-                                        {
-                                            Return (One)
-                                        }
-                                    }
-                                }
-                                Else
+                                    /* 0000 */  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,  /* ........ */
+                                    /* 0008 */  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00   /* ........ */
+                                })
+                            }
+                        }
+                    }
+                    ElseIf ((_T_0 == 0x06))
+                    {
+                        If ((Arg1 >= 0x02))
+                        {
+                            If (LTRS)
+                            {
+                                LTRV [Zero] = ((SMSL >> 0x0A) & 0x07)
+                                LTRV [One] = (SMSL & 0x03FF)
+                                LTRV [0x02] = ((SNSL >> 0x0A) & 0x07)
+                                LTRV [0x03] = (SNSL & 0x03FF)
+                                Return (LTRV) /* \_SB_.PCI0.PEG0.LTRV */
+                            }
+                            Else
+                            {
+                                Return (Zero)
+                            }
+                        }
+                    }
+                    ElseIf ((_T_0 == 0x08))
+                    {
+                        If ((ECR1 == One))
+                        {
+                            If ((Arg1 >= 0x03))
+                            {
+                                Return (One)
+                            }
+                        }
+                    }
+                    ElseIf ((_T_0 == 0x09))
+                    {
+                        If ((ECR1 == One))
+                        {
+                            If ((Arg1 >= 0x03))
+                            {
+                                Return (Package (0x05)
                                 {
-                                    If ((_T_0 == 0x09))
-                                    {
-                                        If ((ECR1 == One))
-                                        {
-                                            If ((Arg1 >= 0x03))
-                                            {
-                                                Return (Package (0x05)
-                                                {
-                                                    0xC350, 
-                                                    Ones, 
-                                                    Ones, 
-                                                    0xC350, 
-                                                    Ones
-                                                })
-                                            }
-                                        }
-                                    }
-                                }
+                                    0xC350, 
+                                    Ones, 
+                                    Ones, 
+                                    0xC350, 
+                                    Ones
+                                })
                             }
                         }
                     }
@@ -455,11 +429,8 @@ DefinitionBlock ("ssdt3.aml", "SSDT", 2, "SaSsdt", "SaSsdt ", 0x00003000)
                         }
 
                         TMP3 = Zero
-                        \_SB.GGIV |= 0x01080000
-                        0x01080001
-                        TMP3
-                        TMP3 = (\_SB.GGIV | 0x01080002)
-                        TMP3
+                        TMP3 = (\_SB.GGIV (0x01080000) | \_SB.GGIV (0x01080001))
+                        TMP3 |= \_SB.GGIV (0x01080002) /* \_SB_.PCI0.PEG0.PG00.TMP3 */
                         If (TMP3)
                         {
                             \_SB.PCI0.PEG0.PEGP.NHDA = One
@@ -518,16 +489,13 @@ DefinitionBlock ("ssdt3.aml", "SSDT", 2, "SaSsdt", "SaSsdt ", 0x00003000)
             {
                 WKEN = Zero
             }
+            ElseIf ((Arg0 && Arg2))
+            {
+                WKEN = One
+            }
             Else
             {
-                If ((Arg0 && Arg2))
-                {
-                    WKEN = One
-                }
-                Else
-                {
-                    WKEN = Zero
-                }
+                WKEN = Zero
             }
         }
 
@@ -539,7 +507,8 @@ DefinitionBlock ("ssdt3.aml", "SSDT", 2, "SaSsdt", "SaSsdt ", 0x00003000)
                 {
                     If ((SGGP == One))
                     {
-                        \_SB.SGOV (P0WK, One, \_SB.SHPO (P0WK, Zero))
+                        \_SB.SGOV (P0WK, One)
+                        \_SB.SHPO (P0WK, Zero)
                     }
                 }
             }
@@ -562,9 +531,7 @@ DefinitionBlock ("ssdt3.aml", "SSDT", 2, "SaSsdt", "SaSsdt ", 0x00003000)
 
         Method (_PRW, 0, NotSerialized)  // _PRW: Power Resources for Wake
         {
-            Return (GPRW) /* External reference */
-            0x69
-            0x04
+            Return (GPRW (0x69, 0x04))
         }
     }
 
@@ -584,9 +551,7 @@ DefinitionBlock ("ssdt3.aml", "SSDT", 2, "SaSsdt", "SaSsdt ", 0x00003000)
 
         Method (_PRW, 0, NotSerialized)  // _PRW: Power Resources for Wake
         {
-            Return (GPRW) /* External reference */
-            0x69
-            0x04
+            Return (GPRW (0x69, 0x04))
         }
 
         Method (HPME, 0, Serialized)
@@ -651,82 +616,70 @@ DefinitionBlock ("ssdt3.aml", "SSDT", 2, "SaSsdt", "SaSsdt ", 0x00003000)
 
                         Return (Local0)
                     }
-                    Else
+                    ElseIf ((_T_0 == 0x04))
                     {
-                        If ((_T_0 == 0x04))
+                        If ((Arg1 >= 0x02))
                         {
-                            If ((Arg1 >= 0x02))
+                            If (OBFS)
                             {
-                                If (OBFS)
+                                Return (Buffer (0x10)
                                 {
-                                    Return (Buffer (0x10)
-                                    {
-                                        /* 0000 */  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,  /* ........ */
-                                        /* 0008 */  0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, 0x00   /* ........ */
-                                    })
-                                }
-                                Else
-                                {
-                                    Return (Buffer (0x10)
-                                    {
-                                        /* 0000 */  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,  /* ........ */
-                                        /* 0008 */  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00   /* ........ */
-                                    })
-                                }
-                            }
-                        }
-                        Else
-                        {
-                            If ((_T_0 == 0x06))
-                            {
-                                If ((Arg1 >= 0x02))
-                                {
-                                    If (LTRS)
-                                    {
-                                        Index (LTRV, Zero) = ((SMSL >> 0x0A) & 0x07)
-                                        Index (LTRV, One) = (SMSL & 0x03FF)
-                                        Index (LTRV, 0x02) = ((SNSL >> 0x0A) & 0x07)
-                                        Index (LTRV, 0x03) = (SNSL & 0x03FF)
-                                        Return (LTRV) /* \_SB_.PCI0.PEG1.LTRV */
-                                    }
-                                    Else
-                                    {
-                                        Return (Zero)
-                                    }
-                                }
+                                    /* 0000 */  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,  /* ........ */
+                                    /* 0008 */  0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, 0x00   /* ........ */
+                                })
                             }
                             Else
                             {
-                                If ((_T_0 == 0x08))
+                                Return (Buffer (0x10)
                                 {
-                                    If ((ECR1 == One))
-                                    {
-                                        If ((Arg1 >= 0x03))
-                                        {
-                                            Return (One)
-                                        }
-                                    }
-                                }
-                                Else
+                                    /* 0000 */  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,  /* ........ */
+                                    /* 0008 */  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00   /* ........ */
+                                })
+                            }
+                        }
+                    }
+                    ElseIf ((_T_0 == 0x06))
+                    {
+                        If ((Arg1 >= 0x02))
+                        {
+                            If (LTRS)
+                            {
+                                LTRV [Zero] = ((SMSL >> 0x0A) & 0x07)
+                                LTRV [One] = (SMSL & 0x03FF)
+                                LTRV [0x02] = ((SNSL >> 0x0A) & 0x07)
+                                LTRV [0x03] = (SNSL & 0x03FF)
+                                Return (LTRV) /* \_SB_.PCI0.PEG1.LTRV */
+                            }
+                            Else
+                            {
+                                Return (Zero)
+                            }
+                        }
+                    }
+                    ElseIf ((_T_0 == 0x08))
+                    {
+                        If ((ECR1 == One))
+                        {
+                            If ((Arg1 >= 0x03))
+                            {
+                                Return (One)
+                            }
+                        }
+                    }
+                    ElseIf ((_T_0 == 0x09))
+                    {
+                        If ((ECR1 == One))
+                        {
+                            If ((Arg1 >= 0x03))
+                            {
+                                Return (Package (0x05)
                                 {
-                                    If ((_T_0 == 0x09))
-                                    {
-                                        If ((ECR1 == One))
-                                        {
-                                            If ((Arg1 >= 0x03))
-                                            {
-                                                Return (Package (0x05)
-                                                {
-                                                    0xC350, 
-                                                    Ones, 
-                                                    Ones, 
-                                                    0xC350, 
-                                                    Ones
-                                                })
-                                            }
-                                        }
-                                    }
-                                }
+                                    0xC350, 
+                                    Ones, 
+                                    Ones, 
+                                    0xC350, 
+                                    Ones
+                                })
                             }
                         }
                     }
@@ -781,16 +734,13 @@ DefinitionBlock ("ssdt3.aml", "SSDT", 2, "SaSsdt", "SaSsdt ", 0x00003000)
             {
                 WKEN = Zero
             }
+            ElseIf ((Arg0 && Arg2))
+            {
+                WKEN = One
+            }
             Else
             {
-                If ((Arg0 && Arg2))
-                {
-                    WKEN = One
-                }
-                Else
-                {
-                    WKEN = Zero
-                }
+                WKEN = Zero
             }
         }
 
@@ -802,7 +752,8 @@ DefinitionBlock ("ssdt3.aml", "SSDT", 2, "SaSsdt", "SaSsdt ", 0x00003000)
                 {
                     If ((P1GP == One))
                     {
-                        \_SB.SGOV (P1WK, One, \_SB.SHPO (P1WK, Zero))
+                        \_SB.SGOV (P1WK, One)
+                        \_SB.SHPO (P1WK, Zero)
                     }
                 }
             }
@@ -825,9 +776,7 @@ DefinitionBlock ("ssdt3.aml", "SSDT", 2, "SaSsdt", "SaSsdt ", 0x00003000)
 
         Method (_PRW, 0, NotSerialized)  // _PRW: Power Resources for Wake
         {
-            Return (GPRW) /* External reference */
-            0x69
-            0x04
+            Return (GPRW (0x69, 0x04))
         }
     }
 
@@ -847,9 +796,7 @@ DefinitionBlock ("ssdt3.aml", "SSDT", 2, "SaSsdt", "SaSsdt ", 0x00003000)
 
         Method (_PRW, 0, NotSerialized)  // _PRW: Power Resources for Wake
         {
-            Return (GPRW) /* External reference */
-            0x69
-            0x04
+            Return (GPRW (0x69, 0x04))
         }
 
         Method (HPME, 0, Serialized)
@@ -914,82 +861,70 @@ DefinitionBlock ("ssdt3.aml", "SSDT", 2, "SaSsdt", "SaSsdt ", 0x00003000)
 
                         Return (Local0)
                     }
-                    Else
+                    ElseIf ((_T_0 == 0x04))
                     {
-                        If ((_T_0 == 0x04))
+                        If ((Arg1 >= 0x02))
                         {
-                            If ((Arg1 >= 0x02))
+                            If (OBFS)
                             {
-                                If (OBFS)
+                                Return (Buffer (0x10)
                                 {
-                                    Return (Buffer (0x10)
-                                    {
-                                        /* 0000 */  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,  /* ........ */
-                                        /* 0008 */  0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, 0x00   /* ........ */
-                                    })
-                                }
-                                Else
-                                {
-                                    Return (Buffer (0x10)
-                                    {
-                                        /* 0000 */  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,  /* ........ */
-                                        /* 0008 */  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00   /* ........ */
-                                    })
-                                }
-                            }
-                        }
-                        Else
-                        {
-                            If ((_T_0 == 0x06))
-                            {
-                                If ((Arg1 >= 0x02))
-                                {
-                                    If (LTRS)
-                                    {
-                                        Index (LTRV, Zero) = ((SMSL >> 0x0A) & 0x07)
-                                        Index (LTRV, One) = (SMSL & 0x03FF)
-                                        Index (LTRV, 0x02) = ((SNSL >> 0x0A) & 0x07)
-                                        Index (LTRV, 0x03) = (SNSL & 0x03FF)
-                                        Return (LTRV) /* \_SB_.PCI0.PEG2.LTRV */
-                                    }
-                                    Else
-                                    {
-                                        Return (Zero)
-                                    }
-                                }
+                                    /* 0000 */  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,  /* ........ */
+                                    /* 0008 */  0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, 0x00   /* ........ */
+                                })
                             }
                             Else
                             {
-                                If ((_T_0 == 0x08))
+                                Return (Buffer (0x10)
                                 {
-                                    If ((ECR1 == One))
-                                    {
-                                        If ((Arg1 >= 0x03))
-                                        {
-                                            Return (One)
-                                        }
-                                    }
-                                }
-                                Else
+                                    /* 0000 */  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,  /* ........ */
+                                    /* 0008 */  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00   /* ........ */
+                                })
+                            }
+                        }
+                    }
+                    ElseIf ((_T_0 == 0x06))
+                    {
+                        If ((Arg1 >= 0x02))
+                        {
+                            If (LTRS)
+                            {
+                                LTRV [Zero] = ((SMSL >> 0x0A) & 0x07)
+                                LTRV [One] = (SMSL & 0x03FF)
+                                LTRV [0x02] = ((SNSL >> 0x0A) & 0x07)
+                                LTRV [0x03] = (SNSL & 0x03FF)
+                                Return (LTRV) /* \_SB_.PCI0.PEG2.LTRV */
+                            }
+                            Else
+                            {
+                                Return (Zero)
+                            }
+                        }
+                    }
+                    ElseIf ((_T_0 == 0x08))
+                    {
+                        If ((ECR1 == One))
+                        {
+                            If ((Arg1 >= 0x03))
+                            {
+                                Return (One)
+                            }
+                        }
+                    }
+                    ElseIf ((_T_0 == 0x09))
+                    {
+                        If ((ECR1 == One))
+                        {
+                            If ((Arg1 >= 0x03))
+                            {
+                                Return (Package (0x05)
                                 {
-                                    If ((_T_0 == 0x09))
-                                    {
-                                        If ((ECR1 == One))
-                                        {
-                                            If ((Arg1 >= 0x03))
-                                            {
-                                                Return (Package (0x05)
-                                                {
-                                                    0xC350, 
-                                                    Ones, 
-                                                    Ones, 
-                                                    0xC350, 
-                                                    Ones
-                                                })
-                                            }
-                                        }
-                                    }
-                                }
+                                    0xC350, 
+                                    Ones, 
+                                    Ones, 
+                                    0xC350, 
+                                    Ones
+                                })
                             }
                         }
                     }
@@ -1044,16 +979,13 @@ DefinitionBlock ("ssdt3.aml", "SSDT", 2, "SaSsdt", "SaSsdt ", 0x00003000)
             {
                 WKEN = Zero
             }
+            ElseIf ((Arg0 && Arg2))
+            {
+                WKEN = One
+            }
             Else
             {
-                If ((Arg0 && Arg2))
-                {
-                    WKEN = One
-                }
-                Else
-                {
-                    WKEN = Zero
-                }
+                WKEN = Zero
             }
         }
 
@@ -1065,7 +997,8 @@ DefinitionBlock ("ssdt3.aml", "SSDT", 2, "SaSsdt", "SaSsdt ", 0x00003000)
                 {
                     If ((P2GP == One))
                     {
-                        \_SB.SGOV (P2WK, One, \_SB.SHPO (P2WK, Zero))
+                        \_SB.SGOV (P2WK, One)
+                        \_SB.SHPO (P2WK, Zero)
                     }
                 }
             }
@@ -1088,9 +1021,7 @@ DefinitionBlock ("ssdt3.aml", "SSDT", 2, "SaSsdt", "SaSsdt ", 0x00003000)
 
         Method (_PRW, 0, NotSerialized)  // _PRW: Power Resources for Wake
         {
-            Return (GPRW) /* External reference */
-            0x69
-            0x04
+            Return (GPRW (0x69, 0x04))
         }
     }
 
@@ -1203,11 +1134,11 @@ DefinitionBlock ("ssdt3.aml", "SSDT", 2, "SaSsdt", "SaSsdt ", 0x00003000)
                 })
                 If ((IMTP == One))
                 {
-                    Index (TMP1, Zero) = 0x0002CA00
+                    TMP1 [Zero] = 0x0002CA00
                 }
                 Else
                 {
-                    Index (TMP1, Zero) = (0x00010000 | DID1)
+                    TMP1 [Zero] = (0x00010000 | DID1)
                 }
 
                 Return (TMP1) /* \_SB_.PCI0.GFX0._DOD.TMP1 */
@@ -1220,14 +1151,14 @@ DefinitionBlock ("ssdt3.aml", "SSDT", 2, "SaSsdt", "SaSsdt ", 0x00003000)
                     0xFFFFFFFF, 
                     0xFFFFFFFF
                 })
-                Index (TMP2, Zero) = (0x00010000 | DID1)
+                TMP2 [Zero] = (0x00010000 | DID1)
                 If ((IMTP == One))
                 {
-                    Index (TMP2, One) = 0x0002CA00
+                    TMP2 [One] = 0x0002CA00
                 }
                 Else
                 {
-                    Index (TMP2, One) = (0x00010000 | DID2)
+                    TMP2 [One] = (0x00010000 | DID2)
                 }
 
                 Return (TMP2) /* \_SB_.PCI0.GFX0._DOD.TMP2 */
@@ -1241,15 +1172,15 @@ DefinitionBlock ("ssdt3.aml", "SSDT", 2, "SaSsdt", "SaSsdt ", 0x00003000)
                     0xFFFFFFFF, 
                     0xFFFFFFFF
                 })
-                Index (TMP3, Zero) = (0x00010000 | DID1)
-                Index (TMP3, One) = (0x00010000 | DID2)
+                TMP3 [Zero] = (0x00010000 | DID1)
+                TMP3 [One] = (0x00010000 | DID2)
                 If ((IMTP == One))
                 {
-                    Index (TMP3, 0x02) = 0x0002CA00
+                    TMP3 [0x02] = 0x0002CA00
                 }
                 Else
                 {
-                    Index (TMP3, 0x02) = (0x00010000 | DID3)
+                    TMP3 [0x02] = (0x00010000 | DID3)
                 }
 
                 Return (TMP3) /* \_SB_.PCI0.GFX0._DOD.TMP3 */
@@ -1264,16 +1195,16 @@ DefinitionBlock ("ssdt3.aml", "SSDT", 2, "SaSsdt", "SaSsdt ", 0x00003000)
                     0xFFFFFFFF, 
                     0xFFFFFFFF
                 })
-                Index (TMP4, Zero) = (0x00010000 | DID1)
-                Index (TMP4, One) = (0x00010000 | DID2)
-                Index (TMP4, 0x02) = (0x00010000 | DID3)
+                TMP4 [Zero] = (0x00010000 | DID1)
+                TMP4 [One] = (0x00010000 | DID2)
+                TMP4 [0x02] = (0x00010000 | DID3)
                 If ((IMTP == One))
                 {
-                    Index (TMP4, 0x03) = 0x0002CA00
+                    TMP4 [0x03] = 0x0002CA00
                 }
                 Else
                 {
-                    Index (TMP4, 0x03) = (0x00010000 | DID4)
+                    TMP4 [0x03] = (0x00010000 | DID4)
                 }
 
                 Return (TMP4) /* \_SB_.PCI0.GFX0._DOD.TMP4 */
@@ -1289,17 +1220,17 @@ DefinitionBlock ("ssdt3.aml", "SSDT", 2, "SaSsdt", "SaSsdt ", 0x00003000)
                     0xFFFFFFFF, 
                     0xFFFFFFFF
                 })
-                Index (TMP5, Zero) = (0x00010000 | DID1)
-                Index (TMP5, One) = (0x00010000 | DID2)
-                Index (TMP5, 0x02) = (0x00010000 | DID3)
-                Index (TMP5, 0x03) = (0x00010000 | DID4)
+                TMP5 [Zero] = (0x00010000 | DID1)
+                TMP5 [One] = (0x00010000 | DID2)
+                TMP5 [0x02] = (0x00010000 | DID3)
+                TMP5 [0x03] = (0x00010000 | DID4)
                 If ((IMTP == One))
                 {
-                    Index (TMP5, 0x04) = 0x0002CA00
+                    TMP5 [0x04] = 0x0002CA00
                 }
                 Else
                 {
-                    Index (TMP5, 0x04) = (0x00010000 | DID5)
+                    TMP5 [0x04] = (0x00010000 | DID5)
                 }
 
                 Return (TMP5) /* \_SB_.PCI0.GFX0._DOD.TMP5 */
@@ -1316,18 +1247,18 @@ DefinitionBlock ("ssdt3.aml", "SSDT", 2, "SaSsdt", "SaSsdt ", 0x00003000)
                     0xFFFFFFFF, 
                     0xFFFFFFFF
                 })
-                Index (TMP6, Zero) = (0x00010000 | DID1)
-                Index (TMP6, One) = (0x00010000 | DID2)
-                Index (TMP6, 0x02) = (0x00010000 | DID3)
-                Index (TMP6, 0x03) = (0x00010000 | DID4)
-                Index (TMP6, 0x04) = (0x00010000 | DID5)
+                TMP6 [Zero] = (0x00010000 | DID1)
+                TMP6 [One] = (0x00010000 | DID2)
+                TMP6 [0x02] = (0x00010000 | DID3)
+                TMP6 [0x03] = (0x00010000 | DID4)
+                TMP6 [0x04] = (0x00010000 | DID5)
                 If ((IMTP == One))
                 {
-                    Index (TMP6, 0x05) = 0x0002CA00
+                    TMP6 [0x05] = 0x0002CA00
                 }
                 Else
                 {
-                    Index (TMP6, 0x05) = (0x00010000 | DID6)
+                    TMP6 [0x05] = (0x00010000 | DID6)
                 }
 
                 Return (TMP6) /* \_SB_.PCI0.GFX0._DOD.TMP6 */
@@ -1345,19 +1276,19 @@ DefinitionBlock ("ssdt3.aml", "SSDT", 2, "SaSsdt", "SaSsdt ", 0x00003000)
                     0xFFFFFFFF, 
                     0xFFFFFFFF
                 })
-                Index (TMP7, Zero) = (0x00010000 | DID1)
-                Index (TMP7, One) = (0x00010000 | DID2)
-                Index (TMP7, 0x02) = (0x00010000 | DID3)
-                Index (TMP7, 0x03) = (0x00010000 | DID4)
-                Index (TMP7, 0x04) = (0x00010000 | DID5)
-                Index (TMP7, 0x05) = (0x00010000 | DID6)
+                TMP7 [Zero] = (0x00010000 | DID1)
+                TMP7 [One] = (0x00010000 | DID2)
+                TMP7 [0x02] = (0x00010000 | DID3)
+                TMP7 [0x03] = (0x00010000 | DID4)
+                TMP7 [0x04] = (0x00010000 | DID5)
+                TMP7 [0x05] = (0x00010000 | DID6)
                 If ((IMTP == One))
                 {
-                    Index (TMP7, 0x06) = 0x0002CA00
+                    TMP7 [0x06] = 0x0002CA00
                 }
                 Else
                 {
-                    Index (TMP7, 0x06) = (0x00010000 | DID7)
+                    TMP7 [0x06] = (0x00010000 | DID7)
                 }
 
                 Return (TMP7) /* \_SB_.PCI0.GFX0._DOD.TMP7 */
@@ -1376,20 +1307,20 @@ DefinitionBlock ("ssdt3.aml", "SSDT", 2, "SaSsdt", "SaSsdt ", 0x00003000)
                     0xFFFFFFFF, 
                     0xFFFFFFFF
                 })
-                Index (TMP8, Zero) = (0x00010000 | DID1)
-                Index (TMP8, One) = (0x00010000 | DID2)
-                Index (TMP8, 0x02) = (0x00010000 | DID3)
-                Index (TMP8, 0x03) = (0x00010000 | DID4)
-                Index (TMP8, 0x04) = (0x00010000 | DID5)
-                Index (TMP8, 0x05) = (0x00010000 | DID6)
-                Index (TMP8, 0x06) = (0x00010000 | DID7)
+                TMP8 [Zero] = (0x00010000 | DID1)
+                TMP8 [One] = (0x00010000 | DID2)
+                TMP8 [0x02] = (0x00010000 | DID3)
+                TMP8 [0x03] = (0x00010000 | DID4)
+                TMP8 [0x04] = (0x00010000 | DID5)
+                TMP8 [0x05] = (0x00010000 | DID6)
+                TMP8 [0x06] = (0x00010000 | DID7)
                 If ((IMTP == One))
                 {
-                    Index (TMP8, 0x07) = 0x0002CA00
+                    TMP8 [0x07] = 0x0002CA00
                 }
                 Else
                 {
-                    Index (TMP8, 0x07) = (0x00010000 | DID8)
+                    TMP8 [0x07] = (0x00010000 | DID8)
                 }
 
                 Return (TMP8) /* \_SB_.PCI0.GFX0._DOD.TMP8 */
@@ -1409,21 +1340,21 @@ DefinitionBlock ("ssdt3.aml", "SSDT", 2, "SaSsdt", "SaSsdt ", 0x00003000)
                     0xFFFFFFFF, 
                     0xFFFFFFFF
                 })
-                Index (TMP9, Zero) = (0x00010000 | DID1)
-                Index (TMP9, One) = (0x00010000 | DID2)
-                Index (TMP9, 0x02) = (0x00010000 | DID3)
-                Index (TMP9, 0x03) = (0x00010000 | DID4)
-                Index (TMP9, 0x04) = (0x00010000 | DID5)
-                Index (TMP9, 0x05) = (0x00010000 | DID6)
-                Index (TMP9, 0x06) = (0x00010000 | DID7)
-                Index (TMP9, 0x07) = (0x00010000 | DID8)
+                TMP9 [Zero] = (0x00010000 | DID1)
+                TMP9 [One] = (0x00010000 | DID2)
+                TMP9 [0x02] = (0x00010000 | DID3)
+                TMP9 [0x03] = (0x00010000 | DID4)
+                TMP9 [0x04] = (0x00010000 | DID5)
+                TMP9 [0x05] = (0x00010000 | DID6)
+                TMP9 [0x06] = (0x00010000 | DID7)
+                TMP9 [0x07] = (0x00010000 | DID8)
                 If ((IMTP == One))
                 {
-                    Index (TMP9, 0x08) = 0x0002CA00
+                    TMP9 [0x08] = 0x0002CA00
                 }
                 Else
                 {
-                    Index (TMP9, 0x08) = (0x00010000 | DID9)
+                    TMP9 [0x08] = (0x00010000 | DID9)
                 }
 
                 Return (TMP9) /* \_SB_.PCI0.GFX0._DOD.TMP9 */
@@ -1444,22 +1375,22 @@ DefinitionBlock ("ssdt3.aml", "SSDT", 2, "SaSsdt", "SaSsdt ", 0x00003000)
                     0xFFFFFFFF, 
                     0xFFFFFFFF
                 })
-                Index (TMPA, Zero) = (0x00010000 | DID1)
-                Index (TMPA, One) = (0x00010000 | DID2)
-                Index (TMPA, 0x02) = (0x00010000 | DID3)
-                Index (TMPA, 0x03) = (0x00010000 | DID4)
-                Index (TMPA, 0x04) = (0x00010000 | DID5)
-                Index (TMPA, 0x05) = (0x00010000 | DID6)
-                Index (TMPA, 0x06) = (0x00010000 | DID7)
-                Index (TMPA, 0x07) = (0x00010000 | DID8)
-                Index (TMPA, 0x08) = (0x00010000 | DID9)
+                TMPA [Zero] = (0x00010000 | DID1)
+                TMPA [One] = (0x00010000 | DID2)
+                TMPA [0x02] = (0x00010000 | DID3)
+                TMPA [0x03] = (0x00010000 | DID4)
+                TMPA [0x04] = (0x00010000 | DID5)
+                TMPA [0x05] = (0x00010000 | DID6)
+                TMPA [0x06] = (0x00010000 | DID7)
+                TMPA [0x07] = (0x00010000 | DID8)
+                TMPA [0x08] = (0x00010000 | DID9)
                 If ((IMTP == One))
                 {
-                    Index (TMPA, 0x09) = 0x0002CA00
+                    TMPA [0x09] = 0x0002CA00
                 }
                 Else
                 {
-                    Index (TMPA, 0x09) = (0x00010000 | DIDA)
+                    TMPA [0x09] = (0x00010000 | DIDA)
                 }
 
                 Return (TMPA) /* \_SB_.PCI0.GFX0._DOD.TMPA */
@@ -1481,23 +1412,23 @@ DefinitionBlock ("ssdt3.aml", "SSDT", 2, "SaSsdt", "SaSsdt ", 0x00003000)
                     0xFFFFFFFF, 
                     0xFFFFFFFF
                 })
-                Index (TMPB, Zero) = (0x00010000 | DID1)
-                Index (TMPB, One) = (0x00010000 | DID2)
-                Index (TMPB, 0x02) = (0x00010000 | DID3)
-                Index (TMPB, 0x03) = (0x00010000 | DID4)
-                Index (TMPB, 0x04) = (0x00010000 | DID5)
-                Index (TMPB, 0x05) = (0x00010000 | DID6)
-                Index (TMPB, 0x06) = (0x00010000 | DID7)
-                Index (TMPB, 0x07) = (0x00010000 | DID8)
-                Index (TMPB, 0x08) = (0x00010000 | DID9)
-                Index (TMPB, 0x09) = (0x00010000 | DIDA)
+                TMPB [Zero] = (0x00010000 | DID1)
+                TMPB [One] = (0x00010000 | DID2)
+                TMPB [0x02] = (0x00010000 | DID3)
+                TMPB [0x03] = (0x00010000 | DID4)
+                TMPB [0x04] = (0x00010000 | DID5)
+                TMPB [0x05] = (0x00010000 | DID6)
+                TMPB [0x06] = (0x00010000 | DID7)
+                TMPB [0x07] = (0x00010000 | DID8)
+                TMPB [0x08] = (0x00010000 | DID9)
+                TMPB [0x09] = (0x00010000 | DIDA)
                 If ((IMTP == One))
                 {
-                    Index (TMPB, 0x0A) = 0x0002CA00
+                    TMPB [0x0A] = 0x0002CA00
                 }
                 Else
                 {
-                    Index (TMPB, 0x0A) = (0x00010000 | DIDB)
+                    TMPB [0x0A] = (0x00010000 | DIDB)
                 }
 
                 Return (TMPB) /* \_SB_.PCI0.GFX0._DOD.TMPB */
@@ -1520,24 +1451,24 @@ DefinitionBlock ("ssdt3.aml", "SSDT", 2, "SaSsdt", "SaSsdt ", 0x00003000)
                     0xFFFFFFFF, 
                     0xFFFFFFFF
                 })
-                Index (TMPC, Zero) = (0x00010000 | DID1)
-                Index (TMPC, One) = (0x00010000 | DID2)
-                Index (TMPC, 0x02) = (0x00010000 | DID3)
-                Index (TMPC, 0x03) = (0x00010000 | DID4)
-                Index (TMPC, 0x04) = (0x00010000 | DID5)
-                Index (TMPC, 0x05) = (0x00010000 | DID6)
-                Index (TMPC, 0x06) = (0x00010000 | DID7)
-                Index (TMPC, 0x07) = (0x00010000 | DID8)
-                Index (TMPC, 0x08) = (0x00010000 | DID9)
-                Index (TMPC, 0x09) = (0x00010000 | DIDA)
-                Index (TMPC, 0x0A) = (0x00010000 | DIDB)
+                TMPC [Zero] = (0x00010000 | DID1)
+                TMPC [One] = (0x00010000 | DID2)
+                TMPC [0x02] = (0x00010000 | DID3)
+                TMPC [0x03] = (0x00010000 | DID4)
+                TMPC [0x04] = (0x00010000 | DID5)
+                TMPC [0x05] = (0x00010000 | DID6)
+                TMPC [0x06] = (0x00010000 | DID7)
+                TMPC [0x07] = (0x00010000 | DID8)
+                TMPC [0x08] = (0x00010000 | DID9)
+                TMPC [0x09] = (0x00010000 | DIDA)
+                TMPC [0x0A] = (0x00010000 | DIDB)
                 If ((IMTP == One))
                 {
-                    Index (TMPC, 0x0B) = 0x0002CA00
+                    TMPC [0x0B] = 0x0002CA00
                 }
                 Else
                 {
-                    Index (TMPC, 0x0B) = (0x00010000 | DIDC)
+                    TMPC [0x0B] = (0x00010000 | DIDC)
                 }
 
                 Return (TMPC) /* \_SB_.PCI0.GFX0._DOD.TMPC */
@@ -1561,25 +1492,25 @@ DefinitionBlock ("ssdt3.aml", "SSDT", 2, "SaSsdt", "SaSsdt ", 0x00003000)
                     0xFFFFFFFF, 
                     0xFFFFFFFF
                 })
-                Index (TMPD, Zero) = (0x00010000 | DID1)
-                Index (TMPD, One) = (0x00010000 | DID2)
-                Index (TMPD, 0x02) = (0x00010000 | DID3)
-                Index (TMPD, 0x03) = (0x00010000 | DID4)
-                Index (TMPD, 0x04) = (0x00010000 | DID5)
-                Index (TMPD, 0x05) = (0x00010000 | DID6)
-                Index (TMPD, 0x06) = (0x00010000 | DID7)
-                Index (TMPD, 0x07) = (0x00010000 | DID8)
-                Index (TMPD, 0x08) = (0x00010000 | DID9)
-                Index (TMPD, 0x09) = (0x00010000 | DIDA)
-                Index (TMPD, 0x0A) = (0x00010000 | DIDB)
-                Index (TMPD, 0x0B) = (0x00010000 | DIDC)
+                TMPD [Zero] = (0x00010000 | DID1)
+                TMPD [One] = (0x00010000 | DID2)
+                TMPD [0x02] = (0x00010000 | DID3)
+                TMPD [0x03] = (0x00010000 | DID4)
+                TMPD [0x04] = (0x00010000 | DID5)
+                TMPD [0x05] = (0x00010000 | DID6)
+                TMPD [0x06] = (0x00010000 | DID7)
+                TMPD [0x07] = (0x00010000 | DID8)
+                TMPD [0x08] = (0x00010000 | DID9)
+                TMPD [0x09] = (0x00010000 | DIDA)
+                TMPD [0x0A] = (0x00010000 | DIDB)
+                TMPD [0x0B] = (0x00010000 | DIDC)
                 If ((IMTP == One))
                 {
-                    Index (TMPD, 0x0C) = 0x0002CA00
+                    TMPD [0x0C] = 0x0002CA00
                 }
                 Else
                 {
-                    Index (TMPD, 0x0C) = (0x00010000 | DIDD)
+                    TMPD [0x0C] = (0x00010000 | DIDD)
                 }
 
                 Return (TMPD) /* \_SB_.PCI0.GFX0._DOD.TMPD */
@@ -1604,26 +1535,26 @@ DefinitionBlock ("ssdt3.aml", "SSDT", 2, "SaSsdt", "SaSsdt ", 0x00003000)
                     0xFFFFFFFF, 
                     0xFFFFFFFF
                 })
-                Index (TMPE, Zero) = (0x00010000 | DID1)
-                Index (TMPE, One) = (0x00010000 | DID2)
-                Index (TMPE, 0x02) = (0x00010000 | DID3)
-                Index (TMPE, 0x03) = (0x00010000 | DID4)
-                Index (TMPE, 0x04) = (0x00010000 | DID5)
-                Index (TMPE, 0x05) = (0x00010000 | DID6)
-                Index (TMPE, 0x06) = (0x00010000 | DID7)
-                Index (TMPE, 0x07) = (0x00010000 | DID8)
-                Index (TMPE, 0x08) = (0x00010000 | DID9)
-                Index (TMPE, 0x09) = (0x00010000 | DIDA)
-                Index (TMPE, 0x0A) = (0x00010000 | DIDB)
-                Index (TMPE, 0x0B) = (0x00010000 | DIDC)
-                Index (TMPE, 0x0C) = (0x00010000 | DIDD)
+                TMPE [Zero] = (0x00010000 | DID1)
+                TMPE [One] = (0x00010000 | DID2)
+                TMPE [0x02] = (0x00010000 | DID3)
+                TMPE [0x03] = (0x00010000 | DID4)
+                TMPE [0x04] = (0x00010000 | DID5)
+                TMPE [0x05] = (0x00010000 | DID6)
+                TMPE [0x06] = (0x00010000 | DID7)
+                TMPE [0x07] = (0x00010000 | DID8)
+                TMPE [0x08] = (0x00010000 | DID9)
+                TMPE [0x09] = (0x00010000 | DIDA)
+                TMPE [0x0A] = (0x00010000 | DIDB)
+                TMPE [0x0B] = (0x00010000 | DIDC)
+                TMPE [0x0C] = (0x00010000 | DIDD)
                 If ((IMTP == One))
                 {
-                    Index (TMPE, 0x0D) = 0x0002CA00
+                    TMPE [0x0D] = 0x0002CA00
                 }
                 Else
                 {
-                    Index (TMPE, 0x0D) = (0x00010000 | DIDE)
+                    TMPE [0x0D] = (0x00010000 | DIDE)
                 }
 
                 Return (TMPE) /* \_SB_.PCI0.GFX0._DOD.TMPE */
@@ -1649,27 +1580,27 @@ DefinitionBlock ("ssdt3.aml", "SSDT", 2, "SaSsdt", "SaSsdt ", 0x00003000)
                     0xFFFFFFFF, 
                     0xFFFFFFFF
                 })
-                Index (TMPF, Zero) = (0x00010000 | DID1)
-                Index (TMPF, One) = (0x00010000 | DID2)
-                Index (TMPF, 0x02) = (0x00010000 | DID3)
-                Index (TMPF, 0x03) = (0x00010000 | DID4)
-                Index (TMPF, 0x04) = (0x00010000 | DID5)
-                Index (TMPF, 0x05) = (0x00010000 | DID6)
-                Index (TMPF, 0x06) = (0x00010000 | DID7)
-                Index (TMPF, 0x07) = (0x00010000 | DID8)
-                Index (TMPF, 0x08) = (0x00010000 | DID9)
-                Index (TMPF, 0x09) = (0x00010000 | DIDA)
-                Index (TMPF, 0x0A) = (0x00010000 | DIDB)
-                Index (TMPF, 0x0B) = (0x00010000 | DIDC)
-                Index (TMPF, 0x0C) = (0x00010000 | DIDD)
-                Index (TMPF, 0x0D) = (0x00010000 | DIDE)
+                TMPF [Zero] = (0x00010000 | DID1)
+                TMPF [One] = (0x00010000 | DID2)
+                TMPF [0x02] = (0x00010000 | DID3)
+                TMPF [0x03] = (0x00010000 | DID4)
+                TMPF [0x04] = (0x00010000 | DID5)
+                TMPF [0x05] = (0x00010000 | DID6)
+                TMPF [0x06] = (0x00010000 | DID7)
+                TMPF [0x07] = (0x00010000 | DID8)
+                TMPF [0x08] = (0x00010000 | DID9)
+                TMPF [0x09] = (0x00010000 | DIDA)
+                TMPF [0x0A] = (0x00010000 | DIDB)
+                TMPF [0x0B] = (0x00010000 | DIDC)
+                TMPF [0x0C] = (0x00010000 | DIDD)
+                TMPF [0x0D] = (0x00010000 | DIDE)
                 If ((IMTP == One))
                 {
-                    Index (TMPF, 0x0E) = 0x0002CA00
+                    TMPF [0x0E] = 0x0002CA00
                 }
                 Else
                 {
-                    Index (TMPF, 0x0E) = (0x00010000 | DIDF)
+                    TMPF [0x0E] = (0x00010000 | DIDF)
                 }
 
                 Return (TMPF) /* \_SB_.PCI0.GFX0._DOD.TMPF */
@@ -1696,22 +1627,22 @@ DefinitionBlock ("ssdt3.aml", "SSDT", 2, "SaSsdt", "SaSsdt ", 0x00003000)
                     0xFFFFFFFF, 
                     0xFFFFFFFF
                 })
-                Index (TMPG, Zero) = (0x00010000 | DID1)
-                Index (TMPG, One) = (0x00010000 | DID2)
-                Index (TMPG, 0x02) = (0x00010000 | DID3)
-                Index (TMPG, 0x03) = (0x00010000 | DID4)
-                Index (TMPG, 0x04) = (0x00010000 | DID5)
-                Index (TMPG, 0x05) = (0x00010000 | DID6)
-                Index (TMPG, 0x06) = (0x00010000 | DID7)
-                Index (TMPG, 0x07) = (0x00010000 | DID8)
-                Index (TMPG, 0x08) = (0x00010000 | DID9)
-                Index (TMPG, 0x09) = (0x00010000 | DIDA)
-                Index (TMPG, 0x0A) = (0x00010000 | DIDB)
-                Index (TMPG, 0x0B) = (0x00010000 | DIDC)
-                Index (TMPG, 0x0C) = (0x00010000 | DIDD)
-                Index (TMPG, 0x0D) = (0x00010000 | DIDE)
-                Index (TMPG, 0x0E) = (0x00010000 | DIDF)
-                Index (TMPG, 0x0F) = 0x0002CA00
+                TMPG [Zero] = (0x00010000 | DID1)
+                TMPG [One] = (0x00010000 | DID2)
+                TMPG [0x02] = (0x00010000 | DID3)
+                TMPG [0x03] = (0x00010000 | DID4)
+                TMPG [0x04] = (0x00010000 | DID5)
+                TMPG [0x05] = (0x00010000 | DID6)
+                TMPG [0x06] = (0x00010000 | DID7)
+                TMPG [0x07] = (0x00010000 | DID8)
+                TMPG [0x08] = (0x00010000 | DID9)
+                TMPG [0x09] = (0x00010000 | DIDA)
+                TMPG [0x0A] = (0x00010000 | DIDB)
+                TMPG [0x0B] = (0x00010000 | DIDC)
+                TMPG [0x0C] = (0x00010000 | DIDD)
+                TMPG [0x0D] = (0x00010000 | DIDE)
+                TMPG [0x0E] = (0x00010000 | DIDF)
+                TMPG [0x0F] = 0x0002CA00
                 Return (TMPG) /* \_SB_.PCI0.GFX0._DOD.TMPG */
             }
 
@@ -3111,7 +3042,7 @@ DefinitionBlock ("ssdt3.aml", "SSDT", 2, "SaSsdt", "SaSsdt ", 0x00003000)
                 If ((GESF == 0x04))
                 {
                     PARM &= 0xEFFF0000
-                    PARM &= (DerefOf (Index (DBTB, IBTT)) << 0x10)
+                    PARM &= (DerefOf (DBTB [IBTT]) << 0x10)
                     PARM |= IBTT /* \_SB_.PCI0.GFX0.PARM */
                     GESF = Zero
                     Return (SUCC) /* \_SB_.PCI0.GFX0.SUCC */
@@ -3136,7 +3067,7 @@ DefinitionBlock ("ssdt3.aml", "SSDT", 2, "SaSsdt", "SaSsdt ", 0x00003000)
                     PARM |= (GMFN << One)
                     PARM |= 0x1800
                     PARM |= (IDMS << 0x11)
-                    PARM |= (DerefOf (Index (DerefOf (Index (CDCT, HVCO)), CDVL)) << 
+                    PARM |= (DerefOf (DerefOf (CDCT [HVCO]) [CDVL]) << 
                         0x15) /* \_SB_.PCI0.GFX0.PARM */
                     GESF = One
                     Return (SUCC) /* \_SB_.PCI0.GFX0.SUCC */
@@ -3490,16 +3421,13 @@ DefinitionBlock ("ssdt3.aml", "SSDT", 2, "SaSsdt", "SaSsdt ", 0x00003000)
                         {
                             PFIT = 0x06
                         }
+                        ElseIf ((Local1 & 0x08))
+                        {
+                            PFIT = 0x08
+                        }
                         Else
                         {
-                            If ((Local1 & 0x08))
-                            {
-                                PFIT = 0x08
-                            }
-                            Else
-                            {
-                                PFIT = One
-                            }
+                            PFIT = One
                         }
                     }
 
@@ -3509,16 +3437,13 @@ DefinitionBlock ("ssdt3.aml", "SSDT", 2, "SaSsdt", "SaSsdt ", 0x00003000)
                         {
                             PFIT = 0x08
                         }
+                        ElseIf ((Local1 & One))
+                        {
+                            PFIT = One
+                        }
                         Else
                         {
-                            If ((Local1 & One))
-                            {
-                                PFIT = One
-                            }
-                            Else
-                            {
-                                PFIT = 0x06
-                            }
+                            PFIT = 0x06
                         }
                     }
 
@@ -3528,16 +3453,13 @@ DefinitionBlock ("ssdt3.aml", "SSDT", 2, "SaSsdt", "SaSsdt ", 0x00003000)
                         {
                             PFIT = One
                         }
+                        ElseIf ((Local1 & 0x06))
+                        {
+                            PFIT = 0x06
+                        }
                         Else
                         {
-                            If ((Local1 & 0x06))
-                            {
-                                PFIT = 0x06
-                            }
-                            Else
-                            {
-                                PFIT = 0x08
-                            }
+                            PFIT = 0x08
                         }
                     }
                 }
@@ -3549,26 +3471,20 @@ DefinitionBlock ("ssdt3.aml", "SSDT", 2, "SaSsdt", "SaSsdt ", 0x00003000)
                 PFIT |= 0x80000000
                 ASLC = 0x04
             }
+            ElseIf ((Arg0 == One))
+            {
+                BCLP = ((Arg1 * 0xFF) / 0x64)
+                BCLP |= 0x80000000
+                ASLC = 0x02
+            }
+            ElseIf ((Arg0 == Zero))
+            {
+                ALSI = Arg1
+                ASLC = One
+            }
             Else
             {
-                If ((Arg0 == One))
-                {
-                    BCLP = ((Arg1 * 0xFF) / 0x64)
-                    BCLP |= 0x80000000
-                    ASLC = 0x02
-                }
-                Else
-                {
-                    If ((Arg0 == Zero))
-                    {
-                        ALSI = Arg1
-                        ASLC = One
-                    }
-                    Else
-                    {
-                        Return (One)
-                    }
-                }
+                Return (One)
             }
 
             ASLE = One
@@ -3591,222 +3507,180 @@ DefinitionBlock ("ssdt3.aml", "SSDT", 2, "SaSsdt", "SaSsdt ", 0x00003000)
                             Return (0x0001E7FF)
                         }
                     }
-                    Else
+                    ElseIf ((_T_0 == One))
                     {
-                        If ((_T_0 == One))
+                        If ((Arg1 == One))
                         {
-                            If ((Arg1 == One))
+                            Debug = " Adapter Power State Notification "
+                            If (((S0ID == One) && (OSYS < 0x07DF)))
                             {
-                                Debug = " Adapter Power State Notification "
-                                If (((S0ID == One) && (OSYS < 0x07DF)))
+                                If (((DerefOf (Arg3 [Zero]) & 0xFF) == One))
                                 {
-                                    If (((DerefOf (Index (Arg3, Zero)) & 0xFF) == One))
-                                    {
-                                        \GUAM (One)
-                                    }
-
-                                    Local0 = (DerefOf (Index (Arg3, One)) & 0xFF)
-                                    If ((Local0 == Zero))
-                                    {
-                                        \GUAM (0x02)
-                                    }
+                                    \GUAM (One)
                                 }
 
-                                If ((DerefOf (Index (Arg3, Zero)) == Zero))
+                                Local0 = (DerefOf (Arg3 [One]) & 0xFF)
+                                If ((Local0 == Zero))
                                 {
-                                    Local0 = CLID /* \_SB_.PCI0.GFX0.CLID */
+                                    \GUAM (0x02)
                                 }
-
-                                Return (One)
                             }
+
+                            If ((DerefOf (Arg3 [Zero]) == Zero))
+                            {
+                                Local0 = CLID /* \_SB_.PCI0.GFX0.CLID */
+                            }
+
+                            Return (One)
                         }
-                        Else
+                    }
+                    ElseIf ((_T_0 == 0x02))
+                    {
+                        If ((Arg1 == One))
                         {
-                            If ((_T_0 == 0x02))
+                            Debug = "Display Power State Notification "
+                            If (((S0ID == One) && (OSYS < 0x07DF)))
                             {
-                                If ((Arg1 == One))
+                                Local0 = (DerefOf (Arg3 [One]) & 0xFF)
+                                If ((Local0 == Zero))
                                 {
-                                    Debug = "Display Power State Notification "
-                                    If (((S0ID == One) && (OSYS < 0x07DF)))
-                                    {
-                                        Local0 = (DerefOf (Index (Arg3, One)) & 0xFF)
-                                        If ((Local0 == Zero))
-                                        {
-                                            \GUAM (Zero)
-                                        }
-                                    }
-
-                                    Return (One)
+                                    \GUAM (Zero)
                                 }
                             }
-                            Else
-                            {
-                                If ((_T_0 == 0x03))
-                                {
-                                    If ((Arg1 == One))
-                                    {
-                                        Debug = "BIOS POST Completion Notification "
-                                        Return (One)
-                                    }
-                                }
-                                Else
-                                {
-                                    If ((_T_0 == 0x04))
-                                    {
-                                        If ((Arg1 == One))
-                                        {
-                                            Debug = "Pre-Hires Set Mode "
-                                            Return (One)
-                                        }
-                                    }
-                                    Else
-                                    {
-                                        If ((_T_0 == 0x05))
-                                        {
-                                            If ((Arg1 == One))
-                                            {
-                                                Debug = "Post-Hires Set Mode "
-                                                Return (One)
-                                            }
-                                        }
-                                        Else
-                                        {
-                                            If ((_T_0 == 0x06))
-                                            {
-                                                If ((Arg1 == One))
-                                                {
-                                                    Debug = "SetDisplayDeviceNotification"
-                                                    Return (One)
-                                                }
-                                            }
-                                            Else
-                                            {
-                                                If ((_T_0 == 0x07))
-                                                {
-                                                    If ((Arg1 == One))
-                                                    {
-                                                        Debug = "SetBootDevicePreference "
-                                                        IBTT = (DerefOf (Index (Arg3, Zero)) & 0xFF)
-                                                        Return (One)
-                                                    }
-                                                }
-                                                Else
-                                                {
-                                                    If ((_T_0 == 0x08))
-                                                    {
-                                                        If ((Arg1 == One))
-                                                        {
-                                                            Debug = "SetPanelPreference "
-                                                            IPSC = (DerefOf (Index (Arg3, Zero)) & 0xFF)
-                                                            If ((DerefOf (Index (Arg3, One)) & 0xFF))
-                                                            {
-                                                                IPAT = (DerefOf (Index (Arg3, One)) & 0xFF)
-                                                                IPAT--
-                                                            }
 
-                                                            IBIA = ((DerefOf (Index (Arg3, 0x02)) >> 0x04) & 0x07)
-                                                            Return (One)
-                                                        }
-                                                    }
-                                                    Else
-                                                    {
-                                                        If ((_T_0 == 0x09))
-                                                        {
-                                                            If ((Arg1 == One))
-                                                            {
-                                                                Debug = "FullScreenDOS "
-                                                                Return (One)
-                                                            }
-                                                        }
-                                                        Else
-                                                        {
-                                                            If ((_T_0 == 0x0A))
-                                                            {
-                                                                If ((Arg1 == One))
-                                                                {
-                                                                    Debug = "APM Complete "
-                                                                    Local0 = (LIDS << 0x08)
-                                                                    Local0 += 0x0100
-                                                                    Return (Local0)
-                                                                }
-                                                            }
-                                                            Else
-                                                            {
-                                                                If ((_T_0 == 0x0D))
-                                                                {
-                                                                    If ((Arg1 == One))
-                                                                    {
-                                                                        Debug = "GetBootDisplayPreference "
-                                                                        Local0 = ((DerefOf (Index (Arg3, 0x03)) << 0x18) | (DerefOf (
-                                                                            Index (Arg3, 0x02)) << 0x10))
-                                                                        Local0 &= 0xEFFF0000
-                                                                        Local0 &= (DerefOf (Index (DBTB, IBTT)) << 0x10)
-                                                                        Local0 |= IBTT
-                                                                        Return (Local0)
-                                                                    }
-                                                                }
-                                                                Else
-                                                                {
-                                                                    If ((_T_0 == 0x0E))
-                                                                    {
-                                                                        If ((Arg1 == One))
-                                                                        {
-                                                                            Debug = "GetPanelDetails "
-                                                                            Local0 = IPSC /* \IPSC */
-                                                                            Local0 |= (IPAT << 0x08)
-                                                                            Local0 += 0x0100
-                                                                            Local0 |= (LIDS << 0x10)
-                                                                            Local0 += 0x00010000
-                                                                            Local0 |= (IBIA << 0x14)
-                                                                            Return (Local0)
-                                                                        }
-                                                                    }
-                                                                    Else
-                                                                    {
-                                                                        If ((_T_0 == 0x0F))
-                                                                        {
-                                                                            If ((Arg1 == One))
-                                                                            {
-                                                                                Debug = "GetInternalGraphics "
-                                                                                Local0 = GIVD /* \_SB_.PCI0.GFX0.GIVD */
-                                                                                Local0 ^= One
-                                                                                Local0 |= (GMFN << One)
-                                                                                Local0 |= 0x1800
-                                                                                Local0 |= (IDMS << 0x11)
-                                                                                Local0 |= (DerefOf (Index (DerefOf (Index (CDCT, HVCO)), CDVL)) << 
-                                                                                    0x15)
-                                                                                Return (Local0)
-                                                                            }
-                                                                        }
-                                                                        Else
-                                                                        {
-                                                                            If ((_T_0 == 0x10))
-                                                                            {
-                                                                                If ((Arg1 == One))
-                                                                                {
-                                                                                    Debug = "GetAKSV "
-                                                                                    Name (KSVP, Package (0x02)
-                                                                                    {
-                                                                                        0x80000000, 
-                                                                                        0x8000
-                                                                                    })
-                                                                                    Index (KSVP, Zero) = KSV0 /* \KSV0 */
-                                                                                    Index (KSVP, One) = KSV1 /* \KSV1 */
-                                                                                    Return (KSVP) /* \_SB_.PCI0.GFX0._DSM.KSVP */
-                                                                                }
-                                                                            }
-                                                                        }
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
+                            Return (One)
+                        }
+                    }
+                    ElseIf ((_T_0 == 0x03))
+                    {
+                        If ((Arg1 == One))
+                        {
+                            Debug = "BIOS POST Completion Notification "
+                            Return (One)
+                        }
+                    }
+                    ElseIf ((_T_0 == 0x04))
+                    {
+                        If ((Arg1 == One))
+                        {
+                            Debug = "Pre-Hires Set Mode "
+                            Return (One)
+                        }
+                    }
+                    ElseIf ((_T_0 == 0x05))
+                    {
+                        If ((Arg1 == One))
+                        {
+                            Debug = "Post-Hires Set Mode "
+                            Return (One)
+                        }
+                    }
+                    ElseIf ((_T_0 == 0x06))
+                    {
+                        If ((Arg1 == One))
+                        {
+                            Debug = "SetDisplayDeviceNotification"
+                            Return (One)
+                        }
+                    }
+                    ElseIf ((_T_0 == 0x07))
+                    {
+                        If ((Arg1 == One))
+                        {
+                            Debug = "SetBootDevicePreference "
+                            IBTT = (DerefOf (Arg3 [Zero]) & 0xFF)
+                            Return (One)
+                        }
+                    }
+                    ElseIf ((_T_0 == 0x08))
+                    {
+                        If ((Arg1 == One))
+                        {
+                            Debug = "SetPanelPreference "
+                            IPSC = (DerefOf (Arg3 [Zero]) & 0xFF)
+                            If ((DerefOf (Arg3 [One]) & 0xFF))
+                            {
+                                IPAT = (DerefOf (Arg3 [One]) & 0xFF)
+                                IPAT--
                             }
+
+                            IBIA = ((DerefOf (Arg3 [0x02]) >> 0x04) & 0x07)
+                            Return (One)
+                        }
+                    }
+                    ElseIf ((_T_0 == 0x09))
+                    {
+                        If ((Arg1 == One))
+                        {
+                            Debug = "FullScreenDOS "
+                            Return (One)
+                        }
+                    }
+                    ElseIf ((_T_0 == 0x0A))
+                    {
+                        If ((Arg1 == One))
+                        {
+                            Debug = "APM Complete "
+                            Local0 = (LIDS << 0x08)
+                            Local0 += 0x0100
+                            Return (Local0)
+                        }
+                    }
+                    ElseIf ((_T_0 == 0x0D))
+                    {
+                        If ((Arg1 == One))
+                        {
+                            Debug = "GetBootDisplayPreference "
+                            Local0 = ((DerefOf (Arg3 [0x03]) << 0x18) | (DerefOf (
+                                Arg3 [0x02]) << 0x10))
+                            Local0 &= 0xEFFF0000
+                            Local0 &= (DerefOf (DBTB [IBTT]) << 0x10)
+                            Local0 |= IBTT
+                            Return (Local0)
+                        }
+                    }
+                    ElseIf ((_T_0 == 0x0E))
+                    {
+                        If ((Arg1 == One))
+                        {
+                            Debug = "GetPanelDetails "
+                            Local0 = IPSC /* \IPSC */
+                            Local0 |= (IPAT << 0x08)
+                            Local0 += 0x0100
+                            Local0 |= (LIDS << 0x10)
+                            Local0 += 0x00010000
+                            Local0 |= (IBIA << 0x14)
+                            Return (Local0)
+                        }
+                    }
+                    ElseIf ((_T_0 == 0x0F))
+                    {
+                        If ((Arg1 == One))
+                        {
+                            Debug = "GetInternalGraphics "
+                            Local0 = GIVD /* \_SB_.PCI0.GFX0.GIVD */
+                            Local0 ^= One
+                            Local0 |= (GMFN << One)
+                            Local0 |= 0x1800
+                            Local0 |= (IDMS << 0x11)
+                            Local0 |= (DerefOf (DerefOf (CDCT [HVCO]) [CDVL]) << 
+                                0x15)
+                            Return (Local0)
+                        }
+                    }
+                    ElseIf ((_T_0 == 0x10))
+                    {
+                        If ((Arg1 == One))
+                        {
+                            Debug = "GetAKSV "
+                            Name (KSVP, Package (0x02)
+                            {
+                                0x80000000, 
+                                0x8000
+                            })
+                            KSVP [Zero] = KSV0 /* \KSV0 */
+                            KSVP [One] = KSV1 /* \KSV1 */
+                            Return (KSVP) /* \_SB_.PCI0.GFX0._DSM.KSVP */
                         }
                     }
 
@@ -4134,24 +4008,18 @@ DefinitionBlock ("ssdt3.aml", "SSDT", 2, "SaSsdt", "SaSsdt ", 0x00003000)
                     Return (Zero)
                 }
             }
-            Else
+            ElseIf ((PION == One))
             {
-                If ((PION == One))
+                If ((P1GP == Zero))
                 {
-                    If ((P1GP == Zero))
-                    {
-                        Return (Zero)
-                    }
+                    Return (Zero)
                 }
-                Else
+            }
+            ElseIf ((PION == 0x02))
+            {
+                If ((P2GP == Zero))
                 {
-                    If ((PION == 0x02))
-                    {
-                        If ((P2GP == Zero))
-                        {
-                            Return (Zero)
-                        }
-                    }
+                    Return (Zero)
                 }
             }
 
@@ -4164,10 +4032,9 @@ DefinitionBlock ("ssdt3.aml", "SSDT", 2, "SaSsdt", "SaSsdt ", 0x00003000)
                 0x0100, 
                 Zero
             })
-            If ((DerefOf (Index (SCLK, Zero)) != Zero))
+            If ((DerefOf (SCLK [Zero]) != Zero))
             {
-                PCRA (0xDC, 0x100C)
-                ~DerefOf (Index (SCLK, One))
+                PCRA (0xDC, 0x100C, ~DerefOf (SCLK [One]))
                 Sleep (0x10)
             }
 
@@ -4184,21 +4051,15 @@ DefinitionBlock ("ssdt3.aml", "SSDT", 2, "SaSsdt", "SaSsdt ", 0x00003000)
                     P0AP = Zero
                     P0RM = Zero
                 }
-                Else
+                ElseIf ((PION == One))
                 {
-                    If ((PION == One))
-                    {
-                        P1AP = Zero
-                        P1RM = Zero
-                    }
-                    Else
-                    {
-                        If ((PION == 0x02))
-                        {
-                            P2AP = Zero
-                            P2RM = Zero
-                        }
-                    }
+                    P1AP = Zero
+                    P1RM = Zero
+                }
+                ElseIf ((PION == 0x02))
+                {
+                    P2AP = Zero
+                    P2RM = Zero
                 }
 
                 If ((PBGE != Zero))
@@ -4233,42 +4094,36 @@ DefinitionBlock ("ssdt3.aml", "SSDT", 2, "SaSsdt", "SaSsdt ", 0x00003000)
                         TCNT += 0x10
                     }
                 }
-                Else
+                ElseIf ((PION == One))
                 {
-                    If ((PION == One))
+                    P1LD = Zero
+                    P1TR = One
+                    TCNT = Zero
+                    While ((TCNT < LDLY))
                     {
-                        P1LD = Zero
-                        P1TR = One
-                        TCNT = Zero
-                        While ((TCNT < LDLY))
+                        If ((P1VC == Zero))
                         {
-                            If ((P1VC == Zero))
-                            {
-                                Break
-                            }
-
-                            Sleep (0x10)
-                            TCNT += 0x10
+                            Break
                         }
+
+                        Sleep (0x10)
+                        TCNT += 0x10
                     }
-                    Else
+                }
+                ElseIf ((PION == 0x02))
+                {
+                    P2LD = Zero
+                    P2TR = One
+                    TCNT = Zero
+                    While ((TCNT < LDLY))
                     {
-                        If ((PION == 0x02))
+                        If ((P2VC == Zero))
                         {
-                            P2LD = Zero
-                            P2TR = One
-                            TCNT = Zero
-                            While ((TCNT < LDLY))
-                            {
-                                If ((P2VC == Zero))
-                                {
-                                    Break
-                                }
-
-                                Sleep (0x10)
-                                TCNT += 0x10
-                            }
+                            Break
                         }
+
+                        Sleep (0x10)
+                        TCNT += 0x10
                     }
                 }
             }
@@ -4308,23 +4163,17 @@ DefinitionBlock ("ssdt3.aml", "SSDT", 2, "SaSsdt", "SaSsdt ", 0x00003000)
                 S0DI = H0DI /* \_SB_.PCI0.H0DI */
                 LCT0 = ((ELC0 & 0x43) | (LCT0 & 0xFFBC))
             }
-            Else
+            ElseIf ((PION == One))
             {
-                If ((PION == One))
-                {
-                    S1VI = H1VI /* \_SB_.PCI0.H1VI */
-                    S1DI = H1DI /* \_SB_.PCI0.H1DI */
-                    LCT1 = ((ELC1 & 0x43) | (LCT1 & 0xFFBC))
-                }
-                Else
-                {
-                    If ((PION == 0x02))
-                    {
-                        S2VI = H2VI /* \_SB_.PCI0.H2VI */
-                        S2DI = H2DI /* \_SB_.PCI0.H2DI */
-                        LCT2 = ((ELC2 & 0x43) | (LCT2 & 0xFFBC))
-                    }
-                }
+                S1VI = H1VI /* \_SB_.PCI0.H1VI */
+                S1DI = H1DI /* \_SB_.PCI0.H1DI */
+                LCT1 = ((ELC1 & 0x43) | (LCT1 & 0xFFBC))
+            }
+            ElseIf ((PION == 0x02))
+            {
+                S2VI = H2VI /* \_SB_.PCI0.H2VI */
+                S2DI = H2DI /* \_SB_.PCI0.H2DI */
+                LCT2 = ((ELC2 & 0x43) | (LCT2 & 0xFFBC))
             }
 
             Return (Zero)
@@ -4341,24 +4190,18 @@ DefinitionBlock ("ssdt3.aml", "SSDT", 2, "SaSsdt", "SaSsdt ", 0x00003000)
                     Return (Zero)
                 }
             }
-            Else
+            ElseIf ((PIOF == One))
             {
-                If ((PIOF == One))
+                If ((P1GP == Zero))
                 {
-                    If ((P1GP == Zero))
-                    {
-                        Return (Zero)
-                    }
+                    Return (Zero)
                 }
-                Else
+            }
+            ElseIf ((PIOF == 0x02))
+            {
+                If ((P2GP == Zero))
                 {
-                    If ((PIOF == 0x02))
-                    {
-                        If ((P2GP == Zero))
-                        {
-                            Return (Zero)
-                        }
-                    }
+                    Return (Zero)
                 }
             }
 
@@ -4383,25 +4226,19 @@ DefinitionBlock ("ssdt3.aml", "SSDT", 2, "SaSsdt", "SaSsdt ", 0x00003000)
                 H0DI = S0DI /* \_SB_.PCI0.S0DI */
                 ECP0 = LCP0 /* \_SB_.PCI0.LCP0 */
             }
-            Else
+            ElseIf ((Arg0 == One))
             {
-                If ((Arg0 == One))
-                {
-                    ELC1 = LCT1 /* \_SB_.PCI0.LCT1 */
-                    H1VI = S1VI /* \_SB_.PCI0.S1VI */
-                    H1DI = S1DI /* \_SB_.PCI0.S1DI */
-                    ECP1 = LCP1 /* \_SB_.PCI0.LCP1 */
-                }
-                Else
-                {
-                    If ((Arg0 == 0x02))
-                    {
-                        ELC2 = LCT2 /* \_SB_.PCI0.LCT2 */
-                        H2VI = S2VI /* \_SB_.PCI0.S2VI */
-                        H2DI = S2DI /* \_SB_.PCI0.S2DI */
-                        ECP2 = LCP2 /* \_SB_.PCI0.LCP2 */
-                    }
-                }
+                ELC1 = LCT1 /* \_SB_.PCI0.LCT1 */
+                H1VI = S1VI /* \_SB_.PCI0.S1VI */
+                H1DI = S1DI /* \_SB_.PCI0.S1DI */
+                ECP1 = LCP1 /* \_SB_.PCI0.LCP1 */
+            }
+            ElseIf ((Arg0 == 0x02))
+            {
+                ELC2 = LCT2 /* \_SB_.PCI0.LCT2 */
+                H2VI = S2VI /* \_SB_.PCI0.S2VI */
+                H2DI = S2DI /* \_SB_.PCI0.S2DI */
+                ECP2 = LCP2 /* \_SB_.PCI0.LCP2 */
             }
 
             If ((OSYS != 0x07DF))
@@ -4424,47 +4261,41 @@ DefinitionBlock ("ssdt3.aml", "SSDT", 2, "SaSsdt", "SaSsdt ", 0x00003000)
                     P0RM = One
                     P0AP = 0x03
                 }
-                Else
+                ElseIf ((PIOF == One))
                 {
-                    If ((PIOF == One))
+                    P1LD = One
+                    TCNT = Zero
+                    While ((TCNT < LDLY))
                     {
-                        P1LD = One
-                        TCNT = Zero
-                        While ((TCNT < LDLY))
+                        If ((P1LT == 0x08))
                         {
-                            If ((P1LT == 0x08))
-                            {
-                                Break
-                            }
-
-                            Sleep (0x10)
-                            TCNT += 0x10
+                            Break
                         }
 
-                        P1RM = One
-                        P1AP = 0x03
+                        Sleep (0x10)
+                        TCNT += 0x10
                     }
-                    Else
+
+                    P1RM = One
+                    P1AP = 0x03
+                }
+                ElseIf ((PIOF == 0x02))
+                {
+                    P2LD = One
+                    TCNT = Zero
+                    While ((TCNT < LDLY))
                     {
-                        If ((PIOF == 0x02))
+                        If ((P2LT == 0x08))
                         {
-                            P2LD = One
-                            TCNT = Zero
-                            While ((TCNT < LDLY))
-                            {
-                                If ((P2LT == 0x08))
-                                {
-                                    Break
-                                }
-
-                                Sleep (0x10)
-                                TCNT += 0x10
-                            }
-
-                            P2RM = One
-                            P2AP = 0x03
+                            Break
                         }
+
+                        Sleep (0x10)
+                        TCNT += 0x10
                     }
+
+                    P2RM = One
+                    P2AP = 0x03
                 }
 
                 If ((PBGE != Zero))
@@ -4481,10 +4312,9 @@ DefinitionBlock ("ssdt3.aml", "SSDT", 2, "SaSsdt", "SaSsdt ", 0x00003000)
                 LKDS (PIOF)
             }
 
-            If ((DerefOf (Index (SCLK, Zero)) != Zero))
+            If ((DerefOf (SCLK [Zero]) != Zero))
             {
-                PCRO (0xDC, 0x100C)
-                DerefOf (Index (SCLK, One))
+                PCRO (0xDC, 0x100C, DerefOf (SCLK [One]))
                 Sleep (0x10)
             }
 
@@ -4619,19 +4449,13 @@ DefinitionBlock ("ssdt3.aml", "SSDT", 2, "SaSsdt", "SaSsdt ", 0x00003000)
             {
                 HSTR = HST0 /* \_SB_.PCI0.HST0 */
             }
-            Else
+            ElseIf ((Arg0 == One))
             {
-                If ((Arg0 == One))
-                {
-                    HSTR = HST1 /* \_SB_.PCI0.HST1 */
-                }
-                Else
-                {
-                    If ((Arg0 == 0x02))
-                    {
-                        HSTR = HST2 /* \_SB_.PCI0.HST2 */
-                    }
-                }
+                HSTR = HST1 /* \_SB_.PCI0.HST1 */
+            }
+            ElseIf ((Arg0 == 0x02))
+            {
+                HSTR = HST2 /* \_SB_.PCI0.HST2 */
             }
 
             HSTR >>= 0x10
@@ -4647,31 +4471,22 @@ DefinitionBlock ("ssdt3.aml", "SSDT", 2, "SaSsdt", "SaSsdt ", 0x00003000)
                     Local0 = 0x04
                 }
             }
-            Else
+            ElseIf ((Arg0 == One))
             {
-                If ((Arg0 == One))
+                If ((HSTR == 0x02))
                 {
-                    If ((HSTR == 0x02))
-                    {
-                        Local0 = 0x04
-                    }
-                    Else
-                    {
-                        If ((HSTR == Zero))
-                        {
-                            Local0 = 0x02
-                        }
-                    }
+                    Local0 = 0x04
                 }
-                Else
+                ElseIf ((HSTR == Zero))
                 {
-                    If ((Arg0 == 0x02))
-                    {
-                        If ((HSTR == Zero))
-                        {
-                            Local0 = 0x02
-                        }
-                    }
+                    Local0 = 0x02
+                }
+            }
+            ElseIf ((Arg0 == 0x02))
+            {
+                If ((HSTR == Zero))
+                {
+                    Local0 = 0x02
                 }
             }
 
@@ -4687,21 +4502,15 @@ DefinitionBlock ("ssdt3.aml", "SSDT", 2, "SaSsdt", "SaSsdt ", 0x00003000)
                 HSTR = HST0 /* \_SB_.PCI0.HST0 */
                 LREV = LRV0 /* \_SB_.PCI0.LRV0 */
             }
-            Else
+            ElseIf ((Arg0 == One))
             {
-                If ((Arg0 == One))
-                {
-                    HSTR = HST1 /* \_SB_.PCI0.HST1 */
-                    LREV = LRV1 /* \_SB_.PCI0.LRV1 */
-                }
-                Else
-                {
-                    If ((Arg0 == 0x02))
-                    {
-                        HSTR = HST2 /* \_SB_.PCI0.HST2 */
-                        LREV = LRV2 /* \_SB_.PCI0.LRV2 */
-                    }
-                }
+                HSTR = HST1 /* \_SB_.PCI0.HST1 */
+                LREV = LRV1 /* \_SB_.PCI0.LRV1 */
+            }
+            ElseIf ((Arg0 == 0x02))
+            {
+                HSTR = HST2 /* \_SB_.PCI0.HST2 */
+                LREV = LRV2 /* \_SB_.PCI0.LRV2 */
             }
 
             HSTR >>= 0x10
@@ -4715,71 +4524,59 @@ DefinitionBlock ("ssdt3.aml", "SSDT", 2, "SaSsdt", "SaSsdt ", 0x00003000)
                     FBDL = Zero
                     CBDL = 0x08
                 }
+                ElseIf ((LREV == Zero))
+                {
+                    FBDL = Zero
+                    CBDL = 0x04
+                }
                 Else
                 {
+                    FBDL = 0x04
+                    CBDL = 0x04
+                }
+            }
+            ElseIf ((Arg0 == One))
+            {
+                If ((HSTR == 0x02))
+                {
                     If ((LREV == Zero))
-                    {
-                        FBDL = Zero
-                        CBDL = 0x04
-                    }
-                    Else
                     {
                         FBDL = 0x04
                         CBDL = 0x04
                     }
-                }
-            }
-            Else
-            {
-                If ((Arg0 == One))
-                {
-                    If ((HSTR == 0x02))
+                    Else
                     {
-                        If ((LREV == Zero))
-                        {
-                            FBDL = 0x04
-                            CBDL = 0x04
-                        }
-                        Else
-                        {
-                            FBDL = Zero
-                            CBDL = 0x04
-                        }
+                        FBDL = Zero
+                        CBDL = 0x04
+                    }
+                }
+                ElseIf ((HSTR == Zero))
+                {
+                    If ((LREV == Zero))
+                    {
+                        FBDL = 0x04
+                        CBDL = 0x02
                     }
                     Else
                     {
-                        If ((HSTR == Zero))
-                        {
-                            If ((LREV == Zero))
-                            {
-                                FBDL = 0x04
-                                CBDL = 0x02
-                            }
-                            Else
-                            {
-                                FBDL = 0x02
-                                CBDL = 0x02
-                            }
-                        }
+                        FBDL = 0x02
+                        CBDL = 0x02
                     }
                 }
-                Else
+            }
+            ElseIf ((Arg0 == 0x02))
+            {
+                If ((HSTR == Zero))
                 {
-                    If ((Arg0 == 0x02))
+                    If ((LREV == Zero))
                     {
-                        If ((HSTR == Zero))
-                        {
-                            If ((LREV == Zero))
-                            {
-                                FBDL = 0x06
-                                CBDL = 0x02
-                            }
-                            Else
-                            {
-                                FBDL = Zero
-                                CBDL = 0x02
-                            }
-                        }
+                        FBDL = 0x06
+                        CBDL = 0x02
+                    }
+                    Else
+                    {
+                        FBDL = Zero
+                        CBDL = 0x02
                     }
                 }
             }
@@ -4790,49 +4587,46 @@ DefinitionBlock ("ssdt3.aml", "SSDT", 2, "SaSsdt", "SaSsdt ", 0x00003000)
                 While ((INDX <= CBDL))
                 {
                     If ((P0VI == IVID)) {}
-                    Else
+                    ElseIf ((P0VI != IVID))
                     {
-                        If ((P0VI != IVID))
+                        If ((FBDL == Zero))
                         {
-                            If ((FBDL == Zero))
-                            {
-                                BSP1 = Zero
-                            }
+                            BSP1 = Zero
+                        }
 
-                            If ((FBDL == One))
-                            {
-                                BSP2 = Zero
-                            }
+                        If ((FBDL == One))
+                        {
+                            BSP2 = Zero
+                        }
 
-                            If ((FBDL == 0x02))
-                            {
-                                BSP3 = Zero
-                            }
+                        If ((FBDL == 0x02))
+                        {
+                            BSP3 = Zero
+                        }
 
-                            If ((FBDL == 0x03))
-                            {
-                                BSP4 = Zero
-                            }
+                        If ((FBDL == 0x03))
+                        {
+                            BSP4 = Zero
+                        }
 
-                            If ((FBDL == 0x04))
-                            {
-                                BSP5 = Zero
-                            }
+                        If ((FBDL == 0x04))
+                        {
+                            BSP5 = Zero
+                        }
 
-                            If ((FBDL == 0x05))
-                            {
-                                BSP6 = Zero
-                            }
+                        If ((FBDL == 0x05))
+                        {
+                            BSP6 = Zero
+                        }
 
-                            If ((FBDL == 0x06))
-                            {
-                                BSP7 = Zero
-                            }
+                        If ((FBDL == 0x06))
+                        {
+                            BSP7 = Zero
+                        }
 
-                            If ((FBDL == 0x07))
-                            {
-                                BSP8 = Zero
-                            }
+                        If ((FBDL == 0x07))
+                        {
+                            BSP8 = Zero
                         }
                     }
 
@@ -4856,21 +4650,15 @@ DefinitionBlock ("ssdt3.aml", "SSDT", 2, "SaSsdt", "SaSsdt ", 0x00003000)
                 HSTR = HST0 /* \_SB_.PCI0.HST0 */
                 LREV = LRV0 /* \_SB_.PCI0.LRV0 */
             }
-            Else
+            ElseIf ((Arg0 == One))
             {
-                If ((Arg0 == One))
-                {
-                    HSTR = HST1 /* \_SB_.PCI0.HST1 */
-                    LREV = LRV1 /* \_SB_.PCI0.LRV1 */
-                }
-                Else
-                {
-                    If ((Arg0 == 0x02))
-                    {
-                        HSTR = HST2 /* \_SB_.PCI0.HST2 */
-                        LREV = LRV2 /* \_SB_.PCI0.LRV2 */
-                    }
-                }
+                HSTR = HST1 /* \_SB_.PCI0.HST1 */
+                LREV = LRV1 /* \_SB_.PCI0.LRV1 */
+            }
+            ElseIf ((Arg0 == 0x02))
+            {
+                HSTR = HST2 /* \_SB_.PCI0.HST2 */
+                LREV = LRV2 /* \_SB_.PCI0.LRV2 */
             }
 
             HSTR >>= 0x10
@@ -4890,63 +4678,51 @@ DefinitionBlock ("ssdt3.aml", "SSDT", 2, "SaSsdt", "SaSsdt ", 0x00003000)
                         FBDL = Zero
                     }
                 }
+                ElseIf ((LREV == Zero))
+                {
+                    FBDL = (0x04 - CBDL)
+                }
                 Else
+                {
+                    FBDL = 0x04
+                }
+            }
+            ElseIf ((Arg0 == One))
+            {
+                If ((HSTR == 0x02))
                 {
                     If ((LREV == Zero))
                     {
-                        FBDL = (0x04 - CBDL)
+                        FBDL = (0x08 - CBDL)
                     }
                     Else
                     {
-                        FBDL = 0x04
+                        FBDL = Zero
+                    }
+                }
+                ElseIf ((HSTR == Zero))
+                {
+                    If ((LREV == Zero))
+                    {
+                        FBDL = (0x06 - CBDL)
+                    }
+                    Else
+                    {
+                        FBDL = 0x02
                     }
                 }
             }
-            Else
+            ElseIf ((Arg0 == 0x02))
             {
-                If ((Arg0 == One))
+                If ((HSTR == Zero))
                 {
-                    If ((HSTR == 0x02))
+                    If ((LREV == Zero))
                     {
-                        If ((LREV == Zero))
-                        {
-                            FBDL = (0x08 - CBDL)
-                        }
-                        Else
-                        {
-                            FBDL = Zero
-                        }
+                        FBDL = (0x08 - CBDL)
                     }
                     Else
                     {
-                        If ((HSTR == Zero))
-                        {
-                            If ((LREV == Zero))
-                            {
-                                FBDL = (0x06 - CBDL)
-                            }
-                            Else
-                            {
-                                FBDL = 0x02
-                            }
-                        }
-                    }
-                }
-                Else
-                {
-                    If ((Arg0 == 0x02))
-                    {
-                        If ((HSTR == Zero))
-                        {
-                            If ((LREV == Zero))
-                            {
-                                FBDL = (0x08 - CBDL)
-                            }
-                            Else
-                            {
-                                FBDL = Zero
-                            }
-                        }
+                        FBDL = Zero
                     }
                 }
             }
@@ -4955,49 +4731,46 @@ DefinitionBlock ("ssdt3.aml", "SSDT", 2, "SaSsdt", "SaSsdt ", 0x00003000)
             While ((INDX <= CBDL))
             {
                 If ((P0VI == IVID)) {}
-                Else
+                ElseIf ((P0VI != IVID))
                 {
-                    If ((P0VI != IVID))
+                    If ((FBDL == Zero))
                     {
-                        If ((FBDL == Zero))
-                        {
-                            BSP1 = One
-                        }
+                        BSP1 = One
+                    }
 
-                        If ((FBDL == One))
-                        {
-                            BSP2 = One
-                        }
+                    If ((FBDL == One))
+                    {
+                        BSP2 = One
+                    }
 
-                        If ((FBDL == 0x02))
-                        {
-                            BSP3 = One
-                        }
+                    If ((FBDL == 0x02))
+                    {
+                        BSP3 = One
+                    }
 
-                        If ((FBDL == 0x03))
-                        {
-                            BSP4 = One
-                        }
+                    If ((FBDL == 0x03))
+                    {
+                        BSP4 = One
+                    }
 
-                        If ((FBDL == 0x04))
-                        {
-                            BSP5 = One
-                        }
+                    If ((FBDL == 0x04))
+                    {
+                        BSP5 = One
+                    }
 
-                        If ((FBDL == 0x05))
-                        {
-                            BSP6 = One
-                        }
+                    If ((FBDL == 0x05))
+                    {
+                        BSP6 = One
+                    }
 
-                        If ((FBDL == 0x06))
-                        {
-                            BSP7 = One
-                        }
+                    If ((FBDL == 0x06))
+                    {
+                        BSP7 = One
+                    }
 
-                        If ((FBDL == 0x07))
-                        {
-                            BSP8 = One
-                        }
+                    If ((FBDL == 0x07))
+                    {
+                        BSP8 = One
                     }
                 }
 
@@ -5015,29 +4788,23 @@ DefinitionBlock ("ssdt3.aml", "SSDT", 2, "SaSsdt", "SaSsdt ", 0x00003000)
                     Return (Zero)
                 }
             }
+            ElseIf ((Arg0 == One))
+            {
+                If ((P1UB == Zero))
+                {
+                    Return (Zero)
+                }
+            }
+            ElseIf ((Arg0 == 0x02))
+            {
+                If ((P2UB == Zero))
+                {
+                    Return (Zero)
+                }
+            }
             Else
             {
-                If ((Arg0 == One))
-                {
-                    If ((P1UB == Zero))
-                    {
-                        Return (Zero)
-                    }
-                }
-                Else
-                {
-                    If ((Arg0 == 0x02))
-                    {
-                        If ((P2UB == Zero))
-                        {
-                            Return (Zero)
-                        }
-                    }
-                    Else
-                    {
-                        Return (Zero)
-                    }
-                }
+                Return (Zero)
             }
 
             Return (One)
@@ -5050,19 +4817,13 @@ DefinitionBlock ("ssdt3.aml", "SSDT", 2, "SaSsdt", "SaSsdt ", 0x00003000)
             {
                 Local6 = LCP0 /* \_SB_.PCI0.LCP0 */
             }
-            Else
+            ElseIf ((Arg0 == One))
             {
-                If ((Arg0 == One))
-                {
-                    Local6 = LCP1 /* \_SB_.PCI0.LCP1 */
-                }
-                Else
-                {
-                    If ((Arg0 == 0x02))
-                    {
-                        Local6 = LCP2 /* \_SB_.PCI0.LCP2 */
-                    }
-                }
+                Local6 = LCP1 /* \_SB_.PCI0.LCP1 */
+            }
+            ElseIf ((Arg0 == 0x02))
+            {
+                Local6 = LCP2 /* \_SB_.PCI0.LCP2 */
             }
 
             If ((Arg0 == Zero))
@@ -5072,48 +4833,33 @@ DefinitionBlock ("ssdt3.aml", "SSDT", 2, "SaSsdt", "SaSsdt ", 0x00003000)
                     Local5 = GULC (Local6)
                     Local7 = (Local5 / 0x02)
                 }
-                Else
+                ElseIf ((P0UB != Zero))
                 {
-                    If ((P0UB != Zero))
-                    {
-                        Local7 = P0UB /* \P0UB */
-                    }
+                    Local7 = P0UB /* \P0UB */
                 }
             }
-            Else
+            ElseIf ((Arg0 == One))
             {
-                If ((Arg0 == One))
+                If ((P1UB == 0xFF))
                 {
-                    If ((P1UB == 0xFF))
-                    {
-                        Local5 = GULC (Local6)
-                        Local7 = (Local5 / 0x02)
-                    }
-                    Else
-                    {
-                        If ((P1UB != Zero))
-                        {
-                            Local7 = P1UB /* \P1UB */
-                        }
-                    }
+                    Local5 = GULC (Local6)
+                    Local7 = (Local5 / 0x02)
                 }
-                Else
+                ElseIf ((P1UB != Zero))
                 {
-                    If ((Arg0 == 0x02))
-                    {
-                        If ((P2UB == 0xFF))
-                        {
-                            Local5 = GULC (Local6)
-                            Local7 = (Local5 / 0x02)
-                        }
-                        Else
-                        {
-                            If ((P2UB != Zero))
-                            {
-                                Local7 = P2UB /* \P2UB */
-                            }
-                        }
-                    }
+                    Local7 = P1UB /* \P1UB */
+                }
+            }
+            ElseIf ((Arg0 == 0x02))
+            {
+                If ((P2UB == 0xFF))
+                {
+                    Local5 = GULC (Local6)
+                    Local7 = (Local5 / 0x02)
+                }
+                ElseIf ((P2UB != Zero))
+                {
+                    Local7 = P2UB /* \P2UB */
                 }
             }
 
@@ -5141,102 +4887,87 @@ DefinitionBlock ("ssdt3.aml", "SSDT", 2, "SaSsdt", "SaSsdt ", 0x00003000)
                         Local0++
                     }
                 }
-                Else
+                ElseIf ((Arg0 == One))
                 {
-                    If ((Arg0 == One))
+                    P1L0 = One
+                    Sleep (0x10)
+                    Local0 = Zero
+                    While (P0L0)
                     {
-                        P1L0 = One
+                        If ((Local0 > 0x04))
+                        {
+                            Break
+                        }
+
                         Sleep (0x10)
-                        Local0 = Zero
-                        While (P0L0)
-                        {
-                            If ((Local0 > 0x04))
-                            {
-                                Break
-                            }
-
-                            Sleep (0x10)
-                            Local0++
-                        }
+                        Local0++
                     }
-                    Else
+                }
+                ElseIf ((Arg0 == 0x02))
+                {
+                    P2L0 = One
+                    Sleep (0x10)
+                    Local0 = Zero
+                    While (P0L0)
                     {
-                        If ((Arg0 == 0x02))
+                        If ((Local0 > 0x04))
                         {
-                            P2L0 = One
-                            Sleep (0x10)
-                            Local0 = Zero
-                            While (P0L0)
-                            {
-                                If ((Local0 > 0x04))
-                                {
-                                    Break
-                                }
-
-                                Sleep (0x10)
-                                Local0++
-                            }
+                            Break
                         }
+
+                        Sleep (0x10)
+                        Local0++
                     }
                 }
             }
-            Else
+            ElseIf ((Local3 != Zero))
             {
-                If ((Local3 != Zero))
+                If ((Arg0 == Zero))
                 {
-                    If ((Arg0 == Zero))
+                    Q0L0 = One
+                    Sleep (0x10)
+                    Local0 = Zero
+                    While (Q0L0)
                     {
-                        Q0L0 = One
+                        If ((Local0 > 0x04))
+                        {
+                            Break
+                        }
+
                         Sleep (0x10)
-                        Local0 = Zero
-                        While (Q0L0)
-                        {
-                            If ((Local0 > 0x04))
-                            {
-                                Break
-                            }
-
-                            Sleep (0x10)
-                            Local0++
-                        }
+                        Local0++
                     }
-                    Else
+                }
+                ElseIf ((Arg0 == One))
+                {
+                    Q1L0 = One
+                    Sleep (0x10)
+                    Local0 = Zero
+                    While (Q1L0)
                     {
-                        If ((Arg0 == One))
+                        If ((Local0 > 0x04))
                         {
-                            Q1L0 = One
-                            Sleep (0x10)
-                            Local0 = Zero
-                            While (Q1L0)
-                            {
-                                If ((Local0 > 0x04))
-                                {
-                                    Break
-                                }
-
-                                Sleep (0x10)
-                                Local0++
-                            }
+                            Break
                         }
-                        Else
+
+                        Sleep (0x10)
+                        Local0++
+                    }
+                }
+                ElseIf ((Arg0 == 0x02))
+                {
+                    Q2L0 = One
+                    Sleep (0x10)
+                    Local0 = Zero
+                    While (Q2L0)
+                    {
+                        If ((Local0 > 0x04))
                         {
-                            If ((Arg0 == 0x02))
-                            {
-                                Q2L0 = One
-                                Sleep (0x10)
-                                Local0 = Zero
-                                While (Q2L0)
-                                {
-                                    If ((Local0 > 0x04))
-                                    {
-                                        Break
-                                    }
-
-                                    Sleep (0x10)
-                                    Local0++
-                                }
-                            }
+                            Break
                         }
+
+                        Sleep (0x10)
+                        Local0++
                     }
                 }
             }
@@ -5263,102 +4994,87 @@ DefinitionBlock ("ssdt3.aml", "SSDT", 2, "SaSsdt", "SaSsdt ", 0x00003000)
                         Local0++
                     }
                 }
-                Else
+                ElseIf ((Arg0 == One))
                 {
-                    If ((Arg0 == One))
+                    P1L2 = One
+                    Sleep (0x10)
+                    Local0 = Zero
+                    While (P1L2)
                     {
-                        P1L2 = One
+                        If ((Local0 > 0x04))
+                        {
+                            Break
+                        }
+
                         Sleep (0x10)
-                        Local0 = Zero
-                        While (P1L2)
-                        {
-                            If ((Local0 > 0x04))
-                            {
-                                Break
-                            }
-
-                            Sleep (0x10)
-                            Local0++
-                        }
+                        Local0++
                     }
-                    Else
+                }
+                ElseIf ((Arg0 == 0x02))
+                {
+                    P2L2 = One
+                    Sleep (0x10)
+                    Local0 = Zero
+                    While (P2L2)
                     {
-                        If ((Arg0 == 0x02))
+                        If ((Local0 > 0x04))
                         {
-                            P2L2 = One
-                            Sleep (0x10)
-                            Local0 = Zero
-                            While (P2L2)
-                            {
-                                If ((Local0 > 0x04))
-                                {
-                                    Break
-                                }
-
-                                Sleep (0x10)
-                                Local0++
-                            }
+                            Break
                         }
+
+                        Sleep (0x10)
+                        Local0++
                     }
                 }
             }
-            Else
+            ElseIf ((Local3 != Zero))
             {
-                If ((Local3 != Zero))
+                If ((Arg0 == Zero))
                 {
-                    If ((Arg0 == Zero))
+                    Q0L2 = One
+                    Sleep (0x10)
+                    Local0 = Zero
+                    While (Q0L2)
                     {
-                        Q0L2 = One
+                        If ((Local0 > 0x04))
+                        {
+                            Break
+                        }
+
                         Sleep (0x10)
-                        Local0 = Zero
-                        While (Q0L2)
-                        {
-                            If ((Local0 > 0x04))
-                            {
-                                Break
-                            }
-
-                            Sleep (0x10)
-                            Local0++
-                        }
+                        Local0++
                     }
-                    Else
+                }
+                ElseIf ((Arg0 == One))
+                {
+                    Q1L2 = One
+                    Sleep (0x10)
+                    Local0 = Zero
+                    While (Q1L2)
                     {
-                        If ((Arg0 == One))
+                        If ((Local0 > 0x04))
                         {
-                            Q1L2 = One
-                            Sleep (0x10)
-                            Local0 = Zero
-                            While (Q1L2)
-                            {
-                                If ((Local0 > 0x04))
-                                {
-                                    Break
-                                }
-
-                                Sleep (0x10)
-                                Local0++
-                            }
+                            Break
                         }
-                        Else
+
+                        Sleep (0x10)
+                        Local0++
+                    }
+                }
+                ElseIf ((Arg0 == 0x02))
+                {
+                    Q2L2 = One
+                    Sleep (0x10)
+                    Local0 = Zero
+                    While (Q2L2)
+                    {
+                        If ((Local0 > 0x04))
                         {
-                            If ((Arg0 == 0x02))
-                            {
-                                Q2L2 = One
-                                Sleep (0x10)
-                                Local0 = Zero
-                                While (Q2L2)
-                                {
-                                    If ((Local0 > 0x04))
-                                    {
-                                        Break
-                                    }
-
-                                    Sleep (0x10)
-                                    Local0++
-                                }
-                            }
+                            Break
                         }
+
+                        Sleep (0x10)
+                        Local0++
                     }
                 }
             }
@@ -5370,19 +5086,13 @@ DefinitionBlock ("ssdt3.aml", "SSDT", 2, "SaSsdt", "SaSsdt ", 0x00003000)
             {
                 \_SB.PCI0.PEG0.P0EW ()
             }
-            Else
+            ElseIf ((Arg0 == One))
             {
-                If ((Arg0 == One))
-                {
-                    \_SB.PCI0.PEG1.P1EW ()
-                }
-                Else
-                {
-                    If ((Arg0 == 0x02))
-                    {
-                        \_SB.PCI0.PEG2.P2EW ()
-                    }
-                }
+                \_SB.PCI0.PEG1.P1EW ()
+            }
+            ElseIf ((Arg0 == 0x02))
+            {
+                \_SB.PCI0.PEG2.P2EW ()
             }
         }
 
@@ -5392,12 +5102,9 @@ DefinitionBlock ("ssdt3.aml", "SSDT", 2, "SaSsdt", "SaSsdt ", 0x00003000)
             {
                 Local0 = One
             }
-            Else
+            ElseIf ((Arg0 == One))
             {
-                If ((Arg0 == One))
-                {
-                    Local0 = One
-                }
+                Local0 = One
             }
 
             If ((Arg0 == 0x02))
@@ -5414,12 +5121,9 @@ DefinitionBlock ("ssdt3.aml", "SSDT", 2, "SaSsdt", "SaSsdt ", 0x00003000)
             {
                 Local0 = Zero
             }
-            Else
+            ElseIf ((Arg0 == One))
             {
-                If ((Arg0 == One))
-                {
-                    Local0 = One
-                }
+                Local0 = One
             }
 
             If ((Arg0 == 0x02))
@@ -5436,19 +5140,13 @@ DefinitionBlock ("ssdt3.aml", "SSDT", 2, "SaSsdt", "SaSsdt ", 0x00003000)
             {
                 Local7 = P0VI /* \_SB_.PCI0.P0VI */
             }
-            Else
+            ElseIf ((Arg0 == One))
             {
-                If ((Arg0 == One))
-                {
-                    Local7 = P1VI /* \_SB_.PCI0.P1VI */
-                }
-                Else
-                {
-                    If ((Arg0 == 0x02))
-                    {
-                        Local7 = P2VI /* \_SB_.PCI0.P2VI */
-                    }
-                }
+                Local7 = P1VI /* \_SB_.PCI0.P1VI */
+            }
+            ElseIf ((Arg0 == 0x02))
+            {
+                Local7 = P2VI /* \_SB_.PCI0.P2VI */
             }
 
             If ((Local7 == IVID))
@@ -5491,32 +5189,29 @@ DefinitionBlock ("ssdt3.aml", "SSDT", 2, "SaSsdt", "SaSsdt ", 0x00003000)
                     }
                 }
             }
-            Else
+            ElseIf ((Arg1 == One))
             {
-                If ((Arg1 == One))
+                If ((Arg0 == Zero))
                 {
-                    If ((Arg0 == Zero))
+                    If ((SGPI (SGGP, PWE0, PWG0, PWA0) == One))
                     {
-                        If ((SGPI (SGGP, PWE0, PWG0, PWA0) == One))
-                        {
-                            Return (Zero)
-                        }
+                        Return (Zero)
                     }
+                }
 
-                    If ((Arg0 == One))
+                If ((Arg0 == One))
+                {
+                    If ((SGPI (P1GP, PWE1, PWG1, PWA1) == One))
                     {
-                        If ((SGPI (P1GP, PWE1, PWG1, PWA1) == One))
-                        {
-                            Return (Zero)
-                        }
+                        Return (Zero)
                     }
+                }
 
-                    If ((Arg0 == 0x02))
+                If ((Arg0 == 0x02))
+                {
+                    If ((SGPI (P2GP, PWE2, PWG2, PWA2) == One))
                     {
-                        If ((SGPI (P2GP, PWE2, PWG2, PWA2) == One))
-                        {
-                            Return (Zero)
-                        }
+                        Return (Zero)
                     }
                 }
             }
@@ -5530,19 +5225,13 @@ DefinitionBlock ("ssdt3.aml", "SSDT", 2, "SaSsdt", "SaSsdt ", 0x00003000)
             {
                 Notify (\_SB.PCI0.PEG0, Arg1)
             }
-            Else
+            ElseIf ((Arg0 == One))
             {
-                If ((Arg0 == One))
-                {
-                    Notify (\_SB.PCI0.PEG1, Arg1)
-                }
-                Else
-                {
-                    If ((Arg0 == 0x02))
-                    {
-                        Notify (\_SB.PCI0.PEG2, Arg1)
-                    }
-                }
+                Notify (\_SB.PCI0.PEG1, Arg1)
+            }
+            ElseIf ((Arg0 == 0x02))
+            {
+                Notify (\_SB.PCI0.PEG2, Arg1)
             }
         }
 
@@ -5568,42 +5257,39 @@ DefinitionBlock ("ssdt3.aml", "SSDT", 2, "SaSsdt", "SaSsdt ", 0x00003000)
                     SGPO (P2GP, PWE2, PWG2, PWA2, Zero)
                 }
             }
-            Else
+            ElseIf ((Arg1 == One))
             {
-                If ((Arg1 == One))
+                If ((Arg0 == Zero))
                 {
-                    If ((Arg0 == Zero))
+                    SGPO (SGGP, HRE0, HRG0, HRA0, One)
+                    SGPO (SGGP, PWE0, PWG0, PWA0, One)
+                    INDX = 0x46
+                    While ((INDX > Zero))
                     {
-                        SGPO (SGGP, HRE0, HRG0, HRA0, One)
-                        SGPO (SGGP, PWE0, PWG0, PWA0, One)
-                        INDX = 0x46
-                        While ((INDX > Zero))
-                        {
-                            Stall (0x64)
-                            INDX--
-                        }
-
-                        SGPO (SGGP, HRE0, HRG0, HRA0, Zero)
-                        Sleep (DLHR)
+                        Stall (0x64)
+                        INDX--
                     }
 
-                    If ((Arg0 == One))
-                    {
-                        SGPO (P1GP, HRE1, HRG1, HRA1, One)
-                        SGPO (P1GP, PWE1, PWG1, PWA1, One)
-                        Sleep (DLPW)
-                        SGPO (P1GP, HRE1, HRG1, HRA1, Zero)
-                        Sleep (DLHR)
-                    }
+                    SGPO (SGGP, HRE0, HRG0, HRA0, Zero)
+                    Sleep (DLHR)
+                }
 
-                    If ((Arg0 == 0x02))
-                    {
-                        SGPO (P2GP, HRE2, HRG2, HRA2, One)
-                        SGPO (P2GP, PWE2, PWG2, PWA2, One)
-                        Sleep (DLPW)
-                        SGPO (P2GP, HRE2, HRG2, HRA2, Zero)
-                        Sleep (DLHR)
-                    }
+                If ((Arg0 == One))
+                {
+                    SGPO (P1GP, HRE1, HRG1, HRA1, One)
+                    SGPO (P1GP, PWE1, PWG1, PWA1, One)
+                    Sleep (DLPW)
+                    SGPO (P1GP, HRE1, HRG1, HRA1, Zero)
+                    Sleep (DLHR)
+                }
+
+                If ((Arg0 == 0x02))
+                {
+                    SGPO (P2GP, HRE2, HRG2, HRA2, One)
+                    SGPO (P2GP, PWE2, PWG2, PWA2, One)
+                    Sleep (DLPW)
+                    SGPO (P2GP, HRE2, HRG2, HRA2, Zero)
+                    Sleep (DLHR)
                 }
             }
         }
@@ -5631,8 +5317,7 @@ DefinitionBlock ("ssdt3.aml", "SSDT", 2, "SaSsdt", "SaSsdt ", 0x00003000)
             {
                 If (CondRefOf (\_SB.GGOV))
                 {
-                    Arg2 = \_SB.GGOV /* External reference */
-                    Local0
+                    Local0 = \_SB.GGOV (Arg2)
                 }
             }
 

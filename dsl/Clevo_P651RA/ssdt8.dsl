@@ -1,11 +1,11 @@
 /*
  * Intel ACPI Component Architecture
- * AML/ASL+ Disassembler version 20150717-64
- * Copyright (c) 2000 - 2015 Intel Corporation
+ * AML/ASL+ Disassembler version 20160212-64
+ * Copyright (c) 2000 - 2016 Intel Corporation
  * 
  * Disassembling to symbolic ASL+ operators
  *
- * Disassembly of ssdt8.dat, Mon Jan 18 23:32:36 2016
+ * Disassembly of ssdt8.dat, Sat May 14 22:16:15 2016
  *
  * Original Table Header:
  *     Signature        "SSDT"
@@ -21,19 +21,19 @@
 DefinitionBlock ("ssdt8.aml", "SSDT", 2, "PmRef", "Cpu0Cst", 0x00003001)
 {
 
-    External (_PR_.CPU0, DeviceObj)
-    External (C3LT, IntObj)
-    External (C3MW, IntObj)
-    External (C6LT, IntObj)
-    External (C6MW, IntObj)
-    External (C7LT, IntObj)
-    External (C7MW, IntObj)
-    External (CDLT, IntObj)
-    External (CDLV, IntObj)
-    External (CDMW, IntObj)
-    External (CDPW, IntObj)
-    External (CFGD, UnknownObj)
-    External (PDC0, UnknownObj)
+    External (_PR_.C3LT, FieldUnitObj)
+    External (_PR_.C3MW, FieldUnitObj)
+    External (_PR_.C6LT, FieldUnitObj)
+    External (_PR_.C6MW, FieldUnitObj)
+    External (_PR_.C7LT, FieldUnitObj)
+    External (_PR_.C7MW, FieldUnitObj)
+    External (_PR_.CDLT, FieldUnitObj)
+    External (_PR_.CDLV, FieldUnitObj)
+    External (_PR_.CDMW, FieldUnitObj)
+    External (_PR_.CDPW, FieldUnitObj)
+    External (_PR_.CFGD, FieldUnitObj)
+    External (_PR_.CPU0, ProcessorObj)
+    External (PDC0, IntObj)
 
     Scope (\_PR.CPU0)
     {
@@ -146,30 +146,27 @@ DefinitionBlock ("ssdt8.aml", "SSDT", 2, "PmRef", "Cpu0Cst", 0x00003001)
         {
             If (!CSTF)
             {
-                Index (C3TM, 0x02) = C3LT /* External reference */
-                Index (C6TM, 0x02) = C6LT /* External reference */
-                Index (C7TM, 0x02) = C7LT /* External reference */
-                Index (CDTM, 0x02) = CDLT /* External reference */
-                Index (CDTM, 0x03) = CDPW /* External reference */
-                Index (DerefOf (Index (CDTM, Zero)), 0x07) = CDLV /* External reference */
+                C3TM [0x02] = C3LT /* \_PR_.C3LT */
+                C6TM [0x02] = C6LT /* \_PR_.C6LT */
+                C7TM [0x02] = C7LT /* \_PR_.C7LT */
+                CDTM [0x02] = CDLT /* \_PR_.CDLT */
+                CDTM [0x03] = CDPW /* \_PR_.CDPW */
+                DerefOf (CDTM [Zero]) [0x07] = CDLV /* \_PR_.CDLV */
                 If (((CFGD & 0x0800) && (PDC0 & 0x0200)))
                 {
-                    Index (C1TM, Zero) = MWES /* \_PR_.CPU0.MWES */
-                    Index (C3TM, Zero) = MWES /* \_PR_.CPU0.MWES */
-                    Index (C6TM, Zero) = MWES /* \_PR_.CPU0.MWES */
-                    Index (C7TM, Zero) = MWES /* \_PR_.CPU0.MWES */
-                    Index (CDTM, Zero) = MWES /* \_PR_.CPU0.MWES */
-                    Index (DerefOf (Index (C3TM, Zero)), 0x07) = C3MW /* External reference */
-                    Index (DerefOf (Index (C6TM, Zero)), 0x07) = C6MW /* External reference */
-                    Index (DerefOf (Index (C7TM, Zero)), 0x07) = C7MW /* External reference */
-                    Index (DerefOf (Index (CDTM, Zero)), 0x07) = CDMW /* External reference */
+                    C1TM [Zero] = MWES /* \_PR_.CPU0.MWES */
+                    C3TM [Zero] = MWES /* \_PR_.CPU0.MWES */
+                    C6TM [Zero] = MWES /* \_PR_.CPU0.MWES */
+                    C7TM [Zero] = MWES /* \_PR_.CPU0.MWES */
+                    CDTM [Zero] = MWES /* \_PR_.CPU0.MWES */
+                    DerefOf (C3TM [Zero]) [0x07] = C3MW /* \_PR_.C3MW */
+                    DerefOf (C6TM [Zero]) [0x07] = C6MW /* \_PR_.C6MW */
+                    DerefOf (C7TM [Zero]) [0x07] = C7MW /* \_PR_.C7MW */
+                    DerefOf (CDTM [Zero]) [0x07] = CDMW /* \_PR_.CDMW */
                 }
-                Else
+                ElseIf (((CFGD & 0x0800) && (PDC0 & 0x0100)))
                 {
-                    If (((CFGD & 0x0800) && (PDC0 & 0x0100)))
-                    {
-                        Index (C1TM, Zero) = MWES /* \_PR_.CPU0.MWES */
-                    }
+                    C1TM [Zero] = MWES /* \_PR_.CPU0.MWES */
                 }
 
                 CSTF = Ones
@@ -177,32 +174,26 @@ DefinitionBlock ("ssdt8.aml", "SSDT", 2, "PmRef", "Cpu0Cst", 0x00003001)
 
             AC2V = Zero
             AC3V = Zero
-            Index (C3ST, One) = C1TM /* \_PR_.CPU0.C1TM */
+            C3ST [One] = C1TM /* \_PR_.CPU0.C1TM */
             If ((CFGD & 0x20))
             {
-                Index (C3ST, 0x02) = C7TM /* \_PR_.CPU0.C7TM */
+                C3ST [0x02] = C7TM /* \_PR_.CPU0.C7TM */
                 AC2V = Ones
             }
-            Else
+            ElseIf ((CFGD & 0x10))
             {
-                If ((CFGD & 0x10))
-                {
-                    Index (C3ST, 0x02) = C6TM /* \_PR_.CPU0.C6TM */
-                    AC2V = Ones
-                }
-                Else
-                {
-                    If ((CFGD & 0x08))
-                    {
-                        Index (C3ST, 0x02) = C3TM /* \_PR_.CPU0.C3TM */
-                        AC2V = Ones
-                    }
-                }
+                C3ST [0x02] = C6TM /* \_PR_.CPU0.C6TM */
+                AC2V = Ones
+            }
+            ElseIf ((CFGD & 0x08))
+            {
+                C3ST [0x02] = C3TM /* \_PR_.CPU0.C3TM */
+                AC2V = Ones
             }
 
             If ((CFGD & 0x4000))
             {
-                Index (C3ST, 0x03) = CDTM /* \_PR_.CPU0.CDTM */
+                C3ST [0x03] = CDTM /* \_PR_.CPU0.CDTM */
                 AC3V = Ones
             }
 
@@ -210,29 +201,23 @@ DefinitionBlock ("ssdt8.aml", "SSDT", 2, "PmRef", "Cpu0Cst", 0x00003001)
             {
                 Return (C3ST) /* \_PR_.CPU0.C3ST */
             }
+            ElseIf (AC2V)
+            {
+                C2ST [One] = DerefOf (C3ST [One])
+                C2ST [0x02] = DerefOf (C3ST [0x02])
+                Return (C2ST) /* \_PR_.CPU0.C2ST */
+            }
+            ElseIf (AC3V)
+            {
+                C2ST [One] = DerefOf (C3ST [One])
+                C2ST [0x02] = DerefOf (C3ST [0x03])
+                DerefOf (C2ST [0x02]) [One] = 0x02
+                Return (C2ST) /* \_PR_.CPU0.C2ST */
+            }
             Else
             {
-                If (AC2V)
-                {
-                    Index (C2ST, One) = DerefOf (Index (C3ST, One))
-                    Index (C2ST, 0x02) = DerefOf (Index (C3ST, 0x02))
-                    Return (C2ST) /* \_PR_.CPU0.C2ST */
-                }
-                Else
-                {
-                    If (AC3V)
-                    {
-                        Index (C2ST, One) = DerefOf (Index (C3ST, One))
-                        Index (C2ST, 0x02) = DerefOf (Index (C3ST, 0x03))
-                        Index (DerefOf (Index (C2ST, 0x02)), One) = 0x02
-                        Return (C2ST) /* \_PR_.CPU0.C2ST */
-                    }
-                    Else
-                    {
-                        Index (C1ST, One) = DerefOf (Index (C3ST, One))
-                        Return (C1ST) /* \_PR_.CPU0.C1ST */
-                    }
-                }
+                C1ST [One] = DerefOf (C3ST [One])
+                Return (C1ST) /* \_PR_.CPU0.C1ST */
             }
         }
     }

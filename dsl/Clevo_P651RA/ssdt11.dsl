@@ -1,11 +1,11 @@
 /*
  * Intel ACPI Component Architecture
- * AML/ASL+ Disassembler version 20150717-64
- * Copyright (c) 2000 - 2015 Intel Corporation
+ * AML/ASL+ Disassembler version 20160212-64
+ * Copyright (c) 2000 - 2016 Intel Corporation
  * 
  * Disassembling to symbolic ASL+ operators
  *
- * Disassembly of ssdt11.dat, Mon Jan 18 23:32:36 2016
+ * Disassembly of ssdt11.dat, Sat May 14 22:16:15 2016
  *
  * Original Table Header:
  *     Signature        "SSDT"
@@ -21,20 +21,20 @@
 DefinitionBlock ("ssdt11.aml", "SSDT", 2, "PmRef", "ApCst", 0x00003000)
 {
 
-    External (_PR_.CPU0._CST, IntObj)
-    External (_PR_.CPU1, DeviceObj)
-    External (_PR_.CPU2, DeviceObj)
-    External (_PR_.CPU3, DeviceObj)
-    External (_PR_.CPU4, DeviceObj)
-    External (_PR_.CPU5, DeviceObj)
-    External (_PR_.CPU6, DeviceObj)
-    External (_PR_.CPU7, DeviceObj)
+    External (_PR_.CPU0._CST, MethodObj)    // 0 Arguments
+    External (_PR_.CPU1, ProcessorObj)
+    External (_PR_.CPU2, ProcessorObj)
+    External (_PR_.CPU3, ProcessorObj)
+    External (_PR_.CPU4, ProcessorObj)
+    External (_PR_.CPU5, ProcessorObj)
+    External (_PR_.CPU6, ProcessorObj)
+    External (_PR_.CPU7, ProcessorObj)
 
     Scope (\_PR.CPU1)
     {
         Method (_CST, 0, NotSerialized)  // _CST: C-States
         {
-            Return (\_PR.CPU0._CST) /* External reference */
+            Return (\_PR.CPU0._CST ())
         }
     }
 
@@ -42,7 +42,7 @@ DefinitionBlock ("ssdt11.aml", "SSDT", 2, "PmRef", "ApCst", 0x00003000)
     {
         Method (_CST, 0, NotSerialized)  // _CST: C-States
         {
-            Return (\_PR.CPU0._CST) /* External reference */
+            Return (\_PR.CPU0._CST ())
         }
     }
 
@@ -50,7 +50,7 @@ DefinitionBlock ("ssdt11.aml", "SSDT", 2, "PmRef", "ApCst", 0x00003000)
     {
         Method (_CST, 0, NotSerialized)  // _CST: C-States
         {
-            Return (\_PR.CPU0._CST) /* External reference */
+            Return (\_PR.CPU0._CST ())
         }
     }
 
@@ -58,7 +58,7 @@ DefinitionBlock ("ssdt11.aml", "SSDT", 2, "PmRef", "ApCst", 0x00003000)
     {
         Method (_CST, 0, NotSerialized)  // _CST: C-States
         {
-            Return (\_PR.CPU0._CST) /* External reference */
+            Return (\_PR.CPU0._CST ())
         }
     }
 
@@ -66,7 +66,7 @@ DefinitionBlock ("ssdt11.aml", "SSDT", 2, "PmRef", "ApCst", 0x00003000)
     {
         Method (_CST, 0, NotSerialized)  // _CST: C-States
         {
-            Return (\_PR.CPU0._CST) /* External reference */
+            Return (\_PR.CPU0._CST ())
         }
     }
 
@@ -74,7 +74,7 @@ DefinitionBlock ("ssdt11.aml", "SSDT", 2, "PmRef", "ApCst", 0x00003000)
     {
         Method (_CST, 0, NotSerialized)  // _CST: C-States
         {
-            Return (\_PR.CPU0._CST) /* External reference */
+            Return (\_PR.CPU0._CST ())
         }
     }
 
@@ -82,7 +82,7 @@ DefinitionBlock ("ssdt11.aml", "SSDT", 2, "PmRef", "ApCst", 0x00003000)
     {
         Method (_CST, 0, NotSerialized)  // _CST: C-States
         {
-            Return (\_PR.CPU0._CST) /* External reference */
+            Return (\_PR.CPU0._CST ())
         }
     }
 }

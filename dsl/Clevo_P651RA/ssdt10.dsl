@@ -1,11 +1,11 @@
 /*
  * Intel ACPI Component Architecture
- * AML/ASL+ Disassembler version 20150717-64
- * Copyright (c) 2000 - 2015 Intel Corporation
+ * AML/ASL+ Disassembler version 20160212-64
+ * Copyright (c) 2000 - 2016 Intel Corporation
  * 
  * Disassembling to symbolic ASL+ operators
  *
- * Disassembly of ssdt10.dat, Mon Jan 18 23:32:36 2016
+ * Disassembly of ssdt10.dat, Sat May 14 22:16:15 2016
  *
  * Original Table Header:
  *     Signature        "SSDT"
@@ -21,34 +21,34 @@
 DefinitionBlock ("ssdt10.aml", "SSDT", 2, "PmRef", "ApIst", 0x00003000)
 {
 
-    External (_PR_.CPU0._PCT, IntObj)
-    External (_PR_.CPU0._PPC, IntObj)
-    External (_PR_.CPU0._PSS, IntObj)
-    External (_PR_.CPU1, DeviceObj)
-    External (_PR_.CPU2, DeviceObj)
-    External (_PR_.CPU3, DeviceObj)
-    External (_PR_.CPU4, DeviceObj)
-    External (_PR_.CPU5, DeviceObj)
-    External (_PR_.CPU6, DeviceObj)
-    External (_PR_.CPU7, DeviceObj)
-    External (PDC0, UnknownObj)
-    External (TCNT, IntObj)
+    External (_PR_.CPU0._PCT, MethodObj)    // 0 Arguments
+    External (_PR_.CPU0._PPC, MethodObj)    // 0 Arguments
+    External (_PR_.CPU0._PSS, MethodObj)    // 0 Arguments
+    External (_PR_.CPU1, ProcessorObj)
+    External (_PR_.CPU2, ProcessorObj)
+    External (_PR_.CPU3, ProcessorObj)
+    External (_PR_.CPU4, ProcessorObj)
+    External (_PR_.CPU5, ProcessorObj)
+    External (_PR_.CPU6, ProcessorObj)
+    External (_PR_.CPU7, ProcessorObj)
+    External (PDC0, IntObj)
+    External (TCNT, FieldUnitObj)
 
     Scope (\_PR.CPU1)
     {
         Method (_PPC, 0, NotSerialized)  // _PPC: Performance Present Capabilities
         {
-            Return (\_PR.CPU0._PPC) /* External reference */
+            Return (\_PR.CPU0._PPC ())
         }
 
         Method (_PCT, 0, NotSerialized)  // _PCT: Performance Control
         {
-            Return (\_PR.CPU0._PCT) /* External reference */
+            Return (\_PR.CPU0._PCT ())
         }
 
         Method (_PSS, 0, NotSerialized)  // _PSS: Performance Supported States
         {
-            Return (\_PR.CPU0._PSS) /* External reference */
+            Return (\_PR.CPU0._PSS ())
         }
 
         Name (PSDF, Zero)
@@ -56,8 +56,8 @@ DefinitionBlock ("ssdt10.aml", "SSDT", 2, "PmRef", "ApIst", 0x00003000)
         {
             If (!PSDF)
             {
-                Index (DerefOf (Index (HPSD, Zero)), 0x04) = TCNT /* External reference */
-                Index (DerefOf (Index (SPSD, Zero)), 0x04) = TCNT /* External reference */
+                DerefOf (HPSD [Zero]) [0x04] = TCNT /* External reference */
+                DerefOf (SPSD [Zero]) [0x04] = TCNT /* External reference */
                 PSDF = Ones
             }
 
@@ -97,17 +97,17 @@ DefinitionBlock ("ssdt10.aml", "SSDT", 2, "PmRef", "ApIst", 0x00003000)
     {
         Method (_PPC, 0, NotSerialized)  // _PPC: Performance Present Capabilities
         {
-            Return (\_PR.CPU0._PPC) /* External reference */
+            Return (\_PR.CPU0._PPC ())
         }
 
         Method (_PCT, 0, NotSerialized)  // _PCT: Performance Control
         {
-            Return (\_PR.CPU0._PCT) /* External reference */
+            Return (\_PR.CPU0._PCT ())
         }
 
         Method (_PSS, 0, NotSerialized)  // _PSS: Performance Supported States
         {
-            Return (\_PR.CPU0._PSS) /* External reference */
+            Return (\_PR.CPU0._PSS ())
         }
 
         Name (PSDF, Zero)
@@ -115,8 +115,8 @@ DefinitionBlock ("ssdt10.aml", "SSDT", 2, "PmRef", "ApIst", 0x00003000)
         {
             If (!PSDF)
             {
-                Index (DerefOf (Index (HPSD, Zero)), 0x04) = TCNT /* External reference */
-                Index (DerefOf (Index (SPSD, Zero)), 0x04) = TCNT /* External reference */
+                DerefOf (HPSD [Zero]) [0x04] = TCNT /* External reference */
+                DerefOf (SPSD [Zero]) [0x04] = TCNT /* External reference */
                 PSDF = Ones
             }
 
@@ -156,17 +156,17 @@ DefinitionBlock ("ssdt10.aml", "SSDT", 2, "PmRef", "ApIst", 0x00003000)
     {
         Method (_PPC, 0, NotSerialized)  // _PPC: Performance Present Capabilities
         {
-            Return (\_PR.CPU0._PPC) /* External reference */
+            Return (\_PR.CPU0._PPC ())
         }
 
         Method (_PCT, 0, NotSerialized)  // _PCT: Performance Control
         {
-            Return (\_PR.CPU0._PCT) /* External reference */
+            Return (\_PR.CPU0._PCT ())
         }
 
         Method (_PSS, 0, NotSerialized)  // _PSS: Performance Supported States
         {
-            Return (\_PR.CPU0._PSS) /* External reference */
+            Return (\_PR.CPU0._PSS ())
         }
 
         Name (PSDF, Zero)
@@ -174,8 +174,8 @@ DefinitionBlock ("ssdt10.aml", "SSDT", 2, "PmRef", "ApIst", 0x00003000)
         {
             If (!PSDF)
             {
-                Index (DerefOf (Index (HPSD, Zero)), 0x04) = TCNT /* External reference */
-                Index (DerefOf (Index (SPSD, Zero)), 0x04) = TCNT /* External reference */
+                DerefOf (HPSD [Zero]) [0x04] = TCNT /* External reference */
+                DerefOf (SPSD [Zero]) [0x04] = TCNT /* External reference */
                 PSDF = Ones
             }
 
@@ -215,17 +215,17 @@ DefinitionBlock ("ssdt10.aml", "SSDT", 2, "PmRef", "ApIst", 0x00003000)
     {
         Method (_PPC, 0, NotSerialized)  // _PPC: Performance Present Capabilities
         {
-            Return (\_PR.CPU0._PPC) /* External reference */
+            Return (\_PR.CPU0._PPC ())
         }
 
         Method (_PCT, 0, NotSerialized)  // _PCT: Performance Control
         {
-            Return (\_PR.CPU0._PCT) /* External reference */
+            Return (\_PR.CPU0._PCT ())
         }
 
         Method (_PSS, 0, NotSerialized)  // _PSS: Performance Supported States
         {
-            Return (\_PR.CPU0._PSS) /* External reference */
+            Return (\_PR.CPU0._PSS ())
         }
 
         Name (PSDF, Zero)
@@ -233,8 +233,8 @@ DefinitionBlock ("ssdt10.aml", "SSDT", 2, "PmRef", "ApIst", 0x00003000)
         {
             If (!PSDF)
             {
-                Index (DerefOf (Index (HPSD, Zero)), 0x04) = TCNT /* External reference */
-                Index (DerefOf (Index (SPSD, Zero)), 0x04) = TCNT /* External reference */
+                DerefOf (HPSD [Zero]) [0x04] = TCNT /* External reference */
+                DerefOf (SPSD [Zero]) [0x04] = TCNT /* External reference */
                 PSDF = Ones
             }
 
@@ -274,17 +274,17 @@ DefinitionBlock ("ssdt10.aml", "SSDT", 2, "PmRef", "ApIst", 0x00003000)
     {
         Method (_PPC, 0, NotSerialized)  // _PPC: Performance Present Capabilities
         {
-            Return (\_PR.CPU0._PPC) /* External reference */
+            Return (\_PR.CPU0._PPC ())
         }
 
         Method (_PCT, 0, NotSerialized)  // _PCT: Performance Control
         {
-            Return (\_PR.CPU0._PCT) /* External reference */
+            Return (\_PR.CPU0._PCT ())
         }
 
         Method (_PSS, 0, NotSerialized)  // _PSS: Performance Supported States
         {
-            Return (\_PR.CPU0._PSS) /* External reference */
+            Return (\_PR.CPU0._PSS ())
         }
 
         Name (PSDF, Zero)
@@ -292,8 +292,8 @@ DefinitionBlock ("ssdt10.aml", "SSDT", 2, "PmRef", "ApIst", 0x00003000)
         {
             If (!PSDF)
             {
-                Index (DerefOf (Index (HPSD, Zero)), 0x04) = TCNT /* External reference */
-                Index (DerefOf (Index (SPSD, Zero)), 0x04) = TCNT /* External reference */
+                DerefOf (HPSD [Zero]) [0x04] = TCNT /* External reference */
+                DerefOf (SPSD [Zero]) [0x04] = TCNT /* External reference */
                 PSDF = Ones
             }
 
@@ -333,17 +333,17 @@ DefinitionBlock ("ssdt10.aml", "SSDT", 2, "PmRef", "ApIst", 0x00003000)
     {
         Method (_PPC, 0, NotSerialized)  // _PPC: Performance Present Capabilities
         {
-            Return (\_PR.CPU0._PPC) /* External reference */
+            Return (\_PR.CPU0._PPC ())
         }
 
         Method (_PCT, 0, NotSerialized)  // _PCT: Performance Control
         {
-            Return (\_PR.CPU0._PCT) /* External reference */
+            Return (\_PR.CPU0._PCT ())
         }
 
         Method (_PSS, 0, NotSerialized)  // _PSS: Performance Supported States
         {
-            Return (\_PR.CPU0._PSS) /* External reference */
+            Return (\_PR.CPU0._PSS ())
         }
 
         Name (PSDF, Zero)
@@ -351,8 +351,8 @@ DefinitionBlock ("ssdt10.aml", "SSDT", 2, "PmRef", "ApIst", 0x00003000)
         {
             If (!PSDF)
             {
-                Index (DerefOf (Index (HPSD, Zero)), 0x04) = TCNT /* External reference */
-                Index (DerefOf (Index (SPSD, Zero)), 0x04) = TCNT /* External reference */
+                DerefOf (HPSD [Zero]) [0x04] = TCNT /* External reference */
+                DerefOf (SPSD [Zero]) [0x04] = TCNT /* External reference */
                 PSDF = Ones
             }
 
@@ -392,17 +392,17 @@ DefinitionBlock ("ssdt10.aml", "SSDT", 2, "PmRef", "ApIst", 0x00003000)
     {
         Method (_PPC, 0, NotSerialized)  // _PPC: Performance Present Capabilities
         {
-            Return (\_PR.CPU0._PPC) /* External reference */
+            Return (\_PR.CPU0._PPC ())
         }
 
         Method (_PCT, 0, NotSerialized)  // _PCT: Performance Control
         {
-            Return (\_PR.CPU0._PCT) /* External reference */
+            Return (\_PR.CPU0._PCT ())
         }
 
         Method (_PSS, 0, NotSerialized)  // _PSS: Performance Supported States
         {
-            Return (\_PR.CPU0._PSS) /* External reference */
+            Return (\_PR.CPU0._PSS ())
         }
 
         Name (PSDF, Zero)
@@ -410,8 +410,8 @@ DefinitionBlock ("ssdt10.aml", "SSDT", 2, "PmRef", "ApIst", 0x00003000)
         {
             If (!PSDF)
             {
-                Index (DerefOf (Index (HPSD, Zero)), 0x04) = TCNT /* External reference */
-                Index (DerefOf (Index (SPSD, Zero)), 0x04) = TCNT /* External reference */
+                DerefOf (HPSD [Zero]) [0x04] = TCNT /* External reference */
+                DerefOf (SPSD [Zero]) [0x04] = TCNT /* External reference */
                 PSDF = Ones
             }
 

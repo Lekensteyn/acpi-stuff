@@ -1,11 +1,11 @@
 /*
  * Intel ACPI Component Architecture
- * AML/ASL+ Disassembler version 20150717-64
- * Copyright (c) 2000 - 2015 Intel Corporation
+ * AML/ASL+ Disassembler version 20160212-64
+ * Copyright (c) 2000 - 2016 Intel Corporation
  * 
  * Disassembling to symbolic ASL+ operators
  *
- * Disassembly of ssdt9.dat, Mon Jan 18 23:32:36 2016
+ * Disassembly of ssdt9.dat, Sat May 14 22:16:15 2016
  *
  * Original Table Header:
  *     Signature        "SSDT"
@@ -21,18 +21,18 @@
 DefinitionBlock ("ssdt9.aml", "SSDT", 2, "PmRef", "Cpu0Ist", 0x00003000)
 {
 
-    External (_PR_.CPPC, IntObj)
-    External (_PR_.CPU0, DeviceObj)
-    External (_SB_.OSCP, UnknownObj)
-    External (CFGD, UnknownObj)
-    External (PDC0, UnknownObj)
-    External (TCNT, IntObj)
+    External (_PR_.CFGD, FieldUnitObj)
+    External (_PR_.CPPC, FieldUnitObj)
+    External (_PR_.CPU0, ProcessorObj)
+    External (_SB_.OSCP, IntObj)
+    External (PDC0, IntObj)
+    External (TCNT, FieldUnitObj)
 
     Scope (\_PR.CPU0)
     {
         Method (_PPC, 0, NotSerialized)  // _PPC: Performance Present Capabilities
         {
-            Return (\_PR.CPPC) /* External reference */
+            Return (\_PR.CPPC)
         }
 
         Method (_PCT, 0, NotSerialized)  // _PCT: Performance Control
@@ -609,8 +609,8 @@ DefinitionBlock ("ssdt9.aml", "SSDT", 2, "PmRef", "Cpu0Ist", 0x00003000)
         {
             If (!PSDF)
             {
-                Index (DerefOf (Index (HPSD, Zero)), 0x04) = TCNT /* External reference */
-                Index (DerefOf (Index (SPSD, Zero)), 0x04) = TCNT /* External reference */
+                DerefOf (HPSD [Zero]) [0x04] = TCNT /* \TCNT */
+                DerefOf (SPSD [Zero]) [0x04] = TCNT /* \TCNT */
                 PSDF = Ones
             }
 

@@ -1,11 +1,11 @@
 /*
  * Intel ACPI Component Architecture
- * AML/ASL+ Disassembler version 20150717-64
- * Copyright (c) 2000 - 2015 Intel Corporation
+ * AML/ASL+ Disassembler version 20160212-64
+ * Copyright (c) 2000 - 2016 Intel Corporation
  * 
  * Disassembling to symbolic ASL+ operators
  *
- * Disassembly of dsdt.dat, Mon Jan 18 23:32:36 2016
+ * Disassembly of dsdt.dat, Sat May 14 22:16:15 2016
  *
  * Original Table Header:
  *     Signature        "DSDT"
@@ -20,82 +20,57 @@
  */
 DefinitionBlock ("dsdt.aml", "DSDT", 2, "ALASKA", "A M I ", 0x01072009)
 {
-    /*
-     * iASL Warning: There were 12 external control methods found during
-     * disassembly, but additional ACPI tables to resolve these externals
-     * were not specified. This resulting disassembler output file may not
-     * compile because the disassembler did not know how many arguments
-     * to assign to these methods. To specify the tables needed to resolve
-     * external control method references, the -e option can be used to
-     * specify the filenames. Note: SSDTs can be dynamically loaded at
-     * runtime and may or may not be available via the host OS.
-     * Example iASL invocations:
-     *     iasl -e ssdt1.aml ssdt2.aml ssdt3.aml -d dsdt.aml
-     *     iasl -e dsdt.aml ssdt2.aml -d ssdt1.aml
-     *     iasl -e ssdt*.aml -d dsdt.aml
-     *
-     * In addition, the -fe option can be used to specify a file containing
-     * control method external declarations with the associated method
-     * argument counts. Each line of the file must be of the form:
-     *     External (<method pathname>, MethodObj, <argument count>)
-     * Invocation:
-     *     iasl -fe refs.txt -d dsdt.aml
-     *
-     * The following methods were unresolved and many not compile properly
-     * because the disassembler had to guess at the number of arguments
-     * required for each:
-     */
-    External (_SB_.PCI0.GFX0.GSCI, MethodObj)    // Warning: Unresolved method, guessing 0 arguments
-    External (_SB_.PCI0.GFX0.PDDS, MethodObj)    // Warning: Unresolved method, guessing 1 arguments
-    External (_SB_.PCI0.PEG0.HPME, MethodObj)    // Warning: Unresolved method, guessing 0 arguments
-    External (_SB_.PCI0.PEG1.HPME, MethodObj)    // Warning: Unresolved method, guessing 0 arguments
-    External (_SB_.PCI0.PEG2.HPME, MethodObj)    // Warning: Unresolved method, guessing 0 arguments
-    External (_SB_.PCI0.XHC_.RHUB.INIR, MethodObj)    // Warning: Unresolved method, guessing 0 arguments
-    External (_SB_.TPM_.PTS_, MethodObj)    // Warning: Unresolved method, guessing 1 arguments
-    External (AL6F, MethodObj)    // Warning: Unresolved method, guessing 0 arguments
-    External (HLVT, MethodObj)    // Warning: Unresolved method, guessing 0 arguments
-    External (PS0X, MethodObj)    // Warning: Unresolved method, guessing 0 arguments
-    External (PS2X, MethodObj)    // Warning: Unresolved method, guessing 0 arguments
-    External (PS3X, MethodObj)    // Warning: Unresolved method, guessing 0 arguments
 
-    External (_PR_.BGIA, IntObj)
-    External (_PR_.BGMA, IntObj)
-    External (_PR_.BGMS, IntObj)
-    External (_PR_.CFGD, UnknownObj)
-    External (_PR_.CPPC, UnknownObj)
-    External (_PR_.CPU0._PPC, IntObj)
-    External (_PR_.CPU0._PSS, IntObj)
-    External (_PR_.DSAE, UnknownObj)
-    External (_PR_.DTSE, UnknownObj)
-    External (_PR_.DTSF, IntObj)
-    External (_PR_.ELNG, IntObj)
-    External (_PR_.EMNA, IntObj)
-    External (_PR_.EPCS, UnknownObj)
-    External (_PR_.TRPD, UnknownObj)
-    External (_PR_.TRPF, UnknownObj)
-    External (_SB_.PCI0.GFX0.CDDS, UnknownObj)
-    External (_SB_.PCI0.GFX0.CLID, UnknownObj)
+    External (_PR_.BGIA, FieldUnitObj)
+    External (_PR_.BGMA, FieldUnitObj)
+    External (_PR_.BGMS, FieldUnitObj)
+    External (_PR_.CFGD, FieldUnitObj)
+    External (_PR_.CPPC, FieldUnitObj)
+    External (_PR_.CPU0._PPC, MethodObj)    // 0 Arguments
+    External (_PR_.CPU0._PSS, MethodObj)    // 0 Arguments
+    External (_PR_.DSAE, FieldUnitObj)
+    External (_PR_.DTSE, FieldUnitObj)
+    External (_PR_.DTSF, FieldUnitObj)
+    External (_PR_.ELNG, FieldUnitObj)
+    External (_PR_.EMNA, FieldUnitObj)
+    External (_PR_.EPCS, FieldUnitObj)
+    External (_PR_.TRPD, FieldUnitObj)
+    External (_PR_.TRPF, FieldUnitObj)
+    External (_SB_.PCI0.GFX0.CDDS, MethodObj)    // 1 Arguments
+    External (_SB_.PCI0.GFX0.CLID, FieldUnitObj)
     External (_SB_.PCI0.GFX0.DD1F, UnknownObj)
-    External (_SB_.PCI0.GFX0.GSSE, UnknownObj)
+    External (_SB_.PCI0.GFX0.GSCI, MethodObj)    // 0 Arguments
+    External (_SB_.PCI0.GFX0.GSSE, FieldUnitObj)
+    External (_SB_.PCI0.GFX0.PDDS, MethodObj)    // 1 Arguments
+    External (_SB_.PCI0.PEG0.HPME, MethodObj)    // 0 Arguments
     External (_SB_.PCI0.PEG0.PEGP.LCD0, UnknownObj)
-    External (_SB_.PCI0.PEG0.PEGP.NHDA, UnknownObj)
-    External (GSMI, UnknownObj)
-    External (LIDS, IntObj)
-    External (M32B, IntObj)
-    External (M32L, IntObj)
-    External (M64B, IntObj)
-    External (M64L, IntObj)
+    External (_SB_.PCI0.PEG0.PEGP.NHDA, FieldUnitObj)
+    External (_SB_.PCI0.PEG1.HPME, MethodObj)    // 0 Arguments
+    External (_SB_.PCI0.PEG2.HPME, MethodObj)    // 0 Arguments
+    External (_SB_.PCI0.XHC_.RHUB.INIR, MethodObj)    // 0 Arguments
+    External (_SB_.TPM_.PTS_, MethodObj)    // 1 Arguments
+    External (AL6F, MethodObj)    // 0 Arguments
+    External (GSMI, FieldUnitObj)
+    External (HLVT, MethodObj)    // 0 Arguments
+    External (LIDS, FieldUnitObj)
+    External (M32B, FieldUnitObj)
+    External (M32L, FieldUnitObj)
+    External (M64B, FieldUnitObj)
+    External (M64L, FieldUnitObj)
     External (MDBG, IntObj)
-    External (PDC0, UnknownObj)
-    External (PDC1, UnknownObj)
-    External (PDC2, UnknownObj)
-    External (PDC3, UnknownObj)
-    External (PDC4, UnknownObj)
-    External (PDC5, UnknownObj)
-    External (PDC6, UnknownObj)
-    External (PDC7, UnknownObj)
+    External (PDC0, IntObj)
+    External (PDC1, IntObj)
+    External (PDC2, IntObj)
+    External (PDC3, IntObj)
+    External (PDC4, IntObj)
+    External (PDC5, IntObj)
+    External (PDC6, IntObj)
+    External (PDC7, IntObj)
+    External (PS0X, MethodObj)    // 0 Arguments
+    External (PS2X, MethodObj)    // 0 Arguments
+    External (PS3X, MethodObj)    // 0 Arguments
     External (SDSM, IntObj)
-    External (SGMD, UnknownObj)
+    External (SGMD, FieldUnitObj)
 
     Name (PEBS, 0xE0000000)
     Name (PELN, 0x10000000)
@@ -4032,16 +4007,13 @@ DefinitionBlock ("dsdt.aml", "DSDT", 2, "ALASKA", "A M I ", 0x01072009)
                                 {
                                     ^EC.ECOS = One
                                 }
+                                ElseIf ((OSYS == 0x07D9))
+                                {
+                                    ^EC.ECOS = 0x08
+                                }
                                 Else
                                 {
-                                    If ((OSYS == 0x07D9))
-                                    {
-                                        ^EC.ECOS = 0x08
-                                    }
-                                    Else
-                                    {
-                                        ^EC.ECOS = Zero
-                                    }
+                                    ^EC.ECOS = Zero
                                 }
                             }
                             Else
@@ -4053,12 +4025,9 @@ DefinitionBlock ("dsdt.aml", "DSDT", 2, "ALASKA", "A M I ", 0x01072009)
                             {
                                 ^EC.WINF |= One
                             }
-                            Else
+                            ElseIf ((OSYS == 0x03E8))
                             {
-                                If ((OSYS == 0x03E8))
-                                {
-                                    ^EC.WINF |= One
-                                }
+                                ^EC.WINF |= One
                             }
 
                             If ((PSF0 & 0x20))
@@ -4244,60 +4213,48 @@ DefinitionBlock ("dsdt.aml", "DSDT", 2, "ALASKA", "A M I ", 0x01072009)
 
                                 Return (OPTS) /* \_SB_.PCI0.RP17._DSM.OPTS */
                             }
-                            Else
+                            ElseIf ((_T_0 == 0x04))
                             {
-                                If ((_T_0 == 0x04))
+                                If ((Arg1 >= 0x02))
                                 {
-                                    If ((Arg1 >= 0x02))
+                                    Return (Buffer (0x10)
                                     {
-                                        Return (Buffer (0x10)
-                                        {
-                                            /* 0000 */  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,  /* ........ */
-                                            /* 0008 */  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00   /* ........ */
-                                        })
+                                        /* 0000 */  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,  /* ........ */
+                                        /* 0008 */  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00   /* ........ */
+                                    })
+                                }
+                            }
+                            ElseIf ((_T_0 == 0x06))
+                            {
+                                If ((Arg1 >= 0x02))
+                                {
+                                    Return (Zero)
+                                }
+                            }
+                            ElseIf ((_T_0 == 0x08))
+                            {
+                                If ((ECR1 == One))
+                                {
+                                    If ((Arg1 >= 0x03))
+                                    {
+                                        Return (One)
                                     }
                                 }
-                                Else
+                            }
+                            ElseIf ((_T_0 == 0x09))
+                            {
+                                If ((ECR1 == One))
                                 {
-                                    If ((_T_0 == 0x06))
+                                    If ((Arg1 >= 0x03))
                                     {
-                                        If ((Arg1 >= 0x02))
+                                        Return (Package (0x05)
                                         {
-                                            Return (Zero)
-                                        }
-                                    }
-                                    Else
-                                    {
-                                        If ((_T_0 == 0x08))
-                                        {
-                                            If ((ECR1 == One))
-                                            {
-                                                If ((Arg1 >= 0x03))
-                                                {
-                                                    Return (One)
-                                                }
-                                            }
-                                        }
-                                        Else
-                                        {
-                                            If ((_T_0 == 0x09))
-                                            {
-                                                If ((ECR1 == One))
-                                                {
-                                                    If ((Arg1 >= 0x03))
-                                                    {
-                                                        Return (Package (0x05)
-                                                        {
-                                                            0xC350, 
-                                                            Ones, 
-                                                            Ones, 
-                                                            0xC350, 
-                                                            Ones
-                                                        })
-                                                    }
-                                                }
-                                            }
-                                        }
+                                            0xC350, 
+                                            Ones, 
+                                            Ones, 
+                                            0xC350, 
+                                            Ones
+                                        })
                                     }
                                 }
                             }
@@ -4487,60 +4444,48 @@ DefinitionBlock ("dsdt.aml", "DSDT", 2, "ALASKA", "A M I ", 0x01072009)
 
                                 Return (OPTS) /* \_SB_.PCI0.RP18._DSM.OPTS */
                             }
-                            Else
+                            ElseIf ((_T_0 == 0x04))
                             {
-                                If ((_T_0 == 0x04))
+                                If ((Arg1 >= 0x02))
                                 {
-                                    If ((Arg1 >= 0x02))
+                                    Return (Buffer (0x10)
                                     {
-                                        Return (Buffer (0x10)
-                                        {
-                                            /* 0000 */  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,  /* ........ */
-                                            /* 0008 */  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00   /* ........ */
-                                        })
+                                        /* 0000 */  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,  /* ........ */
+                                        /* 0008 */  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00   /* ........ */
+                                    })
+                                }
+                            }
+                            ElseIf ((_T_0 == 0x06))
+                            {
+                                If ((Arg1 >= 0x02))
+                                {
+                                    Return (Zero)
+                                }
+                            }
+                            ElseIf ((_T_0 == 0x08))
+                            {
+                                If ((ECR1 == One))
+                                {
+                                    If ((Arg1 >= 0x03))
+                                    {
+                                        Return (One)
                                     }
                                 }
-                                Else
+                            }
+                            ElseIf ((_T_0 == 0x09))
+                            {
+                                If ((ECR1 == One))
                                 {
-                                    If ((_T_0 == 0x06))
+                                    If ((Arg1 >= 0x03))
                                     {
-                                        If ((Arg1 >= 0x02))
+                                        Return (Package (0x05)
                                         {
-                                            Return (Zero)
-                                        }
-                                    }
-                                    Else
-                                    {
-                                        If ((_T_0 == 0x08))
-                                        {
-                                            If ((ECR1 == One))
-                                            {
-                                                If ((Arg1 >= 0x03))
-                                                {
-                                                    Return (One)
-                                                }
-                                            }
-                                        }
-                                        Else
-                                        {
-                                            If ((_T_0 == 0x09))
-                                            {
-                                                If ((ECR1 == One))
-                                                {
-                                                    If ((Arg1 >= 0x03))
-                                                    {
-                                                        Return (Package (0x05)
-                                                        {
-                                                            0xC350, 
-                                                            Ones, 
-                                                            Ones, 
-                                                            0xC350, 
-                                                            Ones
-                                                        })
-                                                    }
-                                                }
-                                            }
-                                        }
+                                            0xC350, 
+                                            Ones, 
+                                            Ones, 
+                                            0xC350, 
+                                            Ones
+                                        })
                                     }
                                 }
                             }
@@ -4730,60 +4675,48 @@ DefinitionBlock ("dsdt.aml", "DSDT", 2, "ALASKA", "A M I ", 0x01072009)
 
                                 Return (OPTS) /* \_SB_.PCI0.RP19._DSM.OPTS */
                             }
-                            Else
+                            ElseIf ((_T_0 == 0x04))
                             {
-                                If ((_T_0 == 0x04))
+                                If ((Arg1 >= 0x02))
                                 {
-                                    If ((Arg1 >= 0x02))
+                                    Return (Buffer (0x10)
                                     {
-                                        Return (Buffer (0x10)
-                                        {
-                                            /* 0000 */  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,  /* ........ */
-                                            /* 0008 */  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00   /* ........ */
-                                        })
+                                        /* 0000 */  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,  /* ........ */
+                                        /* 0008 */  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00   /* ........ */
+                                    })
+                                }
+                            }
+                            ElseIf ((_T_0 == 0x06))
+                            {
+                                If ((Arg1 >= 0x02))
+                                {
+                                    Return (Zero)
+                                }
+                            }
+                            ElseIf ((_T_0 == 0x08))
+                            {
+                                If ((ECR1 == One))
+                                {
+                                    If ((Arg1 >= 0x03))
+                                    {
+                                        Return (One)
                                     }
                                 }
-                                Else
+                            }
+                            ElseIf ((_T_0 == 0x09))
+                            {
+                                If ((ECR1 == One))
                                 {
-                                    If ((_T_0 == 0x06))
+                                    If ((Arg1 >= 0x03))
                                     {
-                                        If ((Arg1 >= 0x02))
+                                        Return (Package (0x05)
                                         {
-                                            Return (Zero)
-                                        }
-                                    }
-                                    Else
-                                    {
-                                        If ((_T_0 == 0x08))
-                                        {
-                                            If ((ECR1 == One))
-                                            {
-                                                If ((Arg1 >= 0x03))
-                                                {
-                                                    Return (One)
-                                                }
-                                            }
-                                        }
-                                        Else
-                                        {
-                                            If ((_T_0 == 0x09))
-                                            {
-                                                If ((ECR1 == One))
-                                                {
-                                                    If ((Arg1 >= 0x03))
-                                                    {
-                                                        Return (Package (0x05)
-                                                        {
-                                                            0xC350, 
-                                                            Ones, 
-                                                            Ones, 
-                                                            0xC350, 
-                                                            Ones
-                                                        })
-                                                    }
-                                                }
-                                            }
-                                        }
+                                            0xC350, 
+                                            Ones, 
+                                            Ones, 
+                                            0xC350, 
+                                            Ones
+                                        })
                                     }
                                 }
                             }
@@ -4973,60 +4906,48 @@ DefinitionBlock ("dsdt.aml", "DSDT", 2, "ALASKA", "A M I ", 0x01072009)
 
                                 Return (OPTS) /* \_SB_.PCI0.RP20._DSM.OPTS */
                             }
-                            Else
+                            ElseIf ((_T_0 == 0x04))
                             {
-                                If ((_T_0 == 0x04))
+                                If ((Arg1 >= 0x02))
                                 {
-                                    If ((Arg1 >= 0x02))
+                                    Return (Buffer (0x10)
                                     {
-                                        Return (Buffer (0x10)
-                                        {
-                                            /* 0000 */  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,  /* ........ */
-                                            /* 0008 */  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00   /* ........ */
-                                        })
+                                        /* 0000 */  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,  /* ........ */
+                                        /* 0008 */  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00   /* ........ */
+                                    })
+                                }
+                            }
+                            ElseIf ((_T_0 == 0x06))
+                            {
+                                If ((Arg1 >= 0x02))
+                                {
+                                    Return (Zero)
+                                }
+                            }
+                            ElseIf ((_T_0 == 0x08))
+                            {
+                                If ((ECR1 == One))
+                                {
+                                    If ((Arg1 >= 0x03))
+                                    {
+                                        Return (One)
                                     }
                                 }
-                                Else
+                            }
+                            ElseIf ((_T_0 == 0x09))
+                            {
+                                If ((ECR1 == One))
                                 {
-                                    If ((_T_0 == 0x06))
+                                    If ((Arg1 >= 0x03))
                                     {
-                                        If ((Arg1 >= 0x02))
+                                        Return (Package (0x05)
                                         {
-                                            Return (Zero)
-                                        }
-                                    }
-                                    Else
-                                    {
-                                        If ((_T_0 == 0x08))
-                                        {
-                                            If ((ECR1 == One))
-                                            {
-                                                If ((Arg1 >= 0x03))
-                                                {
-                                                    Return (One)
-                                                }
-                                            }
-                                        }
-                                        Else
-                                        {
-                                            If ((_T_0 == 0x09))
-                                            {
-                                                If ((ECR1 == One))
-                                                {
-                                                    If ((Arg1 >= 0x03))
-                                                    {
-                                                        Return (Package (0x05)
-                                                        {
-                                                            0xC350, 
-                                                            Ones, 
-                                                            Ones, 
-                                                            0xC350, 
-                                                            Ones
-                                                        })
-                                                    }
-                                                }
-                                            }
-                                        }
+                                            0xC350, 
+                                            Ones, 
+                                            Ones, 
+                                            0xC350, 
+                                            Ones
+                                        })
                                     }
                                 }
                             }
@@ -5216,60 +5137,48 @@ DefinitionBlock ("dsdt.aml", "DSDT", 2, "ALASKA", "A M I ", 0x01072009)
 
                                 Return (OPTS) /* \_SB_.PCI0.RP01._DSM.OPTS */
                             }
-                            Else
+                            ElseIf ((_T_0 == 0x04))
                             {
-                                If ((_T_0 == 0x04))
+                                If ((Arg1 >= 0x02))
                                 {
-                                    If ((Arg1 >= 0x02))
+                                    Return (Buffer (0x10)
                                     {
-                                        Return (Buffer (0x10)
-                                        {
-                                            /* 0000 */  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,  /* ........ */
-                                            /* 0008 */  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00   /* ........ */
-                                        })
+                                        /* 0000 */  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,  /* ........ */
+                                        /* 0008 */  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00   /* ........ */
+                                    })
+                                }
+                            }
+                            ElseIf ((_T_0 == 0x06))
+                            {
+                                If ((Arg1 >= 0x02))
+                                {
+                                    Return (Zero)
+                                }
+                            }
+                            ElseIf ((_T_0 == 0x08))
+                            {
+                                If ((ECR1 == One))
+                                {
+                                    If ((Arg1 >= 0x03))
+                                    {
+                                        Return (One)
                                     }
                                 }
-                                Else
+                            }
+                            ElseIf ((_T_0 == 0x09))
+                            {
+                                If ((ECR1 == One))
                                 {
-                                    If ((_T_0 == 0x06))
+                                    If ((Arg1 >= 0x03))
                                     {
-                                        If ((Arg1 >= 0x02))
+                                        Return (Package (0x05)
                                         {
-                                            Return (Zero)
-                                        }
-                                    }
-                                    Else
-                                    {
-                                        If ((_T_0 == 0x08))
-                                        {
-                                            If ((ECR1 == One))
-                                            {
-                                                If ((Arg1 >= 0x03))
-                                                {
-                                                    Return (One)
-                                                }
-                                            }
-                                        }
-                                        Else
-                                        {
-                                            If ((_T_0 == 0x09))
-                                            {
-                                                If ((ECR1 == One))
-                                                {
-                                                    If ((Arg1 >= 0x03))
-                                                    {
-                                                        Return (Package (0x05)
-                                                        {
-                                                            0xC350, 
-                                                            Ones, 
-                                                            Ones, 
-                                                            0xC350, 
-                                                            Ones
-                                                        })
-                                                    }
-                                                }
-                                            }
-                                        }
+                                            0xC350, 
+                                            Ones, 
+                                            Ones, 
+                                            0xC350, 
+                                            Ones
+                                        })
                                     }
                                 }
                             }
@@ -5464,60 +5373,48 @@ DefinitionBlock ("dsdt.aml", "DSDT", 2, "ALASKA", "A M I ", 0x01072009)
 
                                 Return (OPTS) /* \_SB_.PCI0.RP02._DSM.OPTS */
                             }
-                            Else
+                            ElseIf ((_T_0 == 0x04))
                             {
-                                If ((_T_0 == 0x04))
+                                If ((Arg1 >= 0x02))
                                 {
-                                    If ((Arg1 >= 0x02))
+                                    Return (Buffer (0x10)
                                     {
-                                        Return (Buffer (0x10)
-                                        {
-                                            /* 0000 */  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,  /* ........ */
-                                            /* 0008 */  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00   /* ........ */
-                                        })
+                                        /* 0000 */  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,  /* ........ */
+                                        /* 0008 */  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00   /* ........ */
+                                    })
+                                }
+                            }
+                            ElseIf ((_T_0 == 0x06))
+                            {
+                                If ((Arg1 >= 0x02))
+                                {
+                                    Return (Zero)
+                                }
+                            }
+                            ElseIf ((_T_0 == 0x08))
+                            {
+                                If ((ECR1 == One))
+                                {
+                                    If ((Arg1 >= 0x03))
+                                    {
+                                        Return (One)
                                     }
                                 }
-                                Else
+                            }
+                            ElseIf ((_T_0 == 0x09))
+                            {
+                                If ((ECR1 == One))
                                 {
-                                    If ((_T_0 == 0x06))
+                                    If ((Arg1 >= 0x03))
                                     {
-                                        If ((Arg1 >= 0x02))
+                                        Return (Package (0x05)
                                         {
-                                            Return (Zero)
-                                        }
-                                    }
-                                    Else
-                                    {
-                                        If ((_T_0 == 0x08))
-                                        {
-                                            If ((ECR1 == One))
-                                            {
-                                                If ((Arg1 >= 0x03))
-                                                {
-                                                    Return (One)
-                                                }
-                                            }
-                                        }
-                                        Else
-                                        {
-                                            If ((_T_0 == 0x09))
-                                            {
-                                                If ((ECR1 == One))
-                                                {
-                                                    If ((Arg1 >= 0x03))
-                                                    {
-                                                        Return (Package (0x05)
-                                                        {
-                                                            0xC350, 
-                                                            Ones, 
-                                                            Ones, 
-                                                            0xC350, 
-                                                            Ones
-                                                        })
-                                                    }
-                                                }
-                                            }
-                                        }
+                                            0xC350, 
+                                            Ones, 
+                                            Ones, 
+                                            0xC350, 
+                                            Ones
+                                        })
                                     }
                                 }
                             }
@@ -5707,60 +5604,48 @@ DefinitionBlock ("dsdt.aml", "DSDT", 2, "ALASKA", "A M I ", 0x01072009)
 
                                 Return (OPTS) /* \_SB_.PCI0.RP03._DSM.OPTS */
                             }
-                            Else
+                            ElseIf ((_T_0 == 0x04))
                             {
-                                If ((_T_0 == 0x04))
+                                If ((Arg1 >= 0x02))
                                 {
-                                    If ((Arg1 >= 0x02))
+                                    Return (Buffer (0x10)
                                     {
-                                        Return (Buffer (0x10)
-                                        {
-                                            /* 0000 */  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,  /* ........ */
-                                            /* 0008 */  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00   /* ........ */
-                                        })
+                                        /* 0000 */  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,  /* ........ */
+                                        /* 0008 */  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00   /* ........ */
+                                    })
+                                }
+                            }
+                            ElseIf ((_T_0 == 0x06))
+                            {
+                                If ((Arg1 >= 0x02))
+                                {
+                                    Return (Zero)
+                                }
+                            }
+                            ElseIf ((_T_0 == 0x08))
+                            {
+                                If ((ECR1 == One))
+                                {
+                                    If ((Arg1 >= 0x03))
+                                    {
+                                        Return (One)
                                     }
                                 }
-                                Else
+                            }
+                            ElseIf ((_T_0 == 0x09))
+                            {
+                                If ((ECR1 == One))
                                 {
-                                    If ((_T_0 == 0x06))
+                                    If ((Arg1 >= 0x03))
                                     {
-                                        If ((Arg1 >= 0x02))
+                                        Return (Package (0x05)
                                         {
-                                            Return (Zero)
-                                        }
-                                    }
-                                    Else
-                                    {
-                                        If ((_T_0 == 0x08))
-                                        {
-                                            If ((ECR1 == One))
-                                            {
-                                                If ((Arg1 >= 0x03))
-                                                {
-                                                    Return (One)
-                                                }
-                                            }
-                                        }
-                                        Else
-                                        {
-                                            If ((_T_0 == 0x09))
-                                            {
-                                                If ((ECR1 == One))
-                                                {
-                                                    If ((Arg1 >= 0x03))
-                                                    {
-                                                        Return (Package (0x05)
-                                                        {
-                                                            0xC350, 
-                                                            Ones, 
-                                                            Ones, 
-                                                            0xC350, 
-                                                            Ones
-                                                        })
-                                                    }
-                                                }
-                                            }
-                                        }
+                                            0xC350, 
+                                            Ones, 
+                                            Ones, 
+                                            0xC350, 
+                                            Ones
+                                        })
                                     }
                                 }
                             }
@@ -5950,60 +5835,48 @@ DefinitionBlock ("dsdt.aml", "DSDT", 2, "ALASKA", "A M I ", 0x01072009)
 
                                 Return (OPTS) /* \_SB_.PCI0.RP04._DSM.OPTS */
                             }
-                            Else
+                            ElseIf ((_T_0 == 0x04))
                             {
-                                If ((_T_0 == 0x04))
+                                If ((Arg1 >= 0x02))
                                 {
-                                    If ((Arg1 >= 0x02))
+                                    Return (Buffer (0x10)
                                     {
-                                        Return (Buffer (0x10)
-                                        {
-                                            /* 0000 */  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,  /* ........ */
-                                            /* 0008 */  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00   /* ........ */
-                                        })
+                                        /* 0000 */  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,  /* ........ */
+                                        /* 0008 */  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00   /* ........ */
+                                    })
+                                }
+                            }
+                            ElseIf ((_T_0 == 0x06))
+                            {
+                                If ((Arg1 >= 0x02))
+                                {
+                                    Return (Zero)
+                                }
+                            }
+                            ElseIf ((_T_0 == 0x08))
+                            {
+                                If ((ECR1 == One))
+                                {
+                                    If ((Arg1 >= 0x03))
+                                    {
+                                        Return (One)
                                     }
                                 }
-                                Else
+                            }
+                            ElseIf ((_T_0 == 0x09))
+                            {
+                                If ((ECR1 == One))
                                 {
-                                    If ((_T_0 == 0x06))
+                                    If ((Arg1 >= 0x03))
                                     {
-                                        If ((Arg1 >= 0x02))
+                                        Return (Package (0x05)
                                         {
-                                            Return (Zero)
-                                        }
-                                    }
-                                    Else
-                                    {
-                                        If ((_T_0 == 0x08))
-                                        {
-                                            If ((ECR1 == One))
-                                            {
-                                                If ((Arg1 >= 0x03))
-                                                {
-                                                    Return (One)
-                                                }
-                                            }
-                                        }
-                                        Else
-                                        {
-                                            If ((_T_0 == 0x09))
-                                            {
-                                                If ((ECR1 == One))
-                                                {
-                                                    If ((Arg1 >= 0x03))
-                                                    {
-                                                        Return (Package (0x05)
-                                                        {
-                                                            0xC350, 
-                                                            Ones, 
-                                                            Ones, 
-                                                            0xC350, 
-                                                            Ones
-                                                        })
-                                                    }
-                                                }
-                                            }
-                                        }
+                                            0xC350, 
+                                            Ones, 
+                                            Ones, 
+                                            0xC350, 
+                                            Ones
+                                        })
                                     }
                                 }
                             }
@@ -6193,60 +6066,48 @@ DefinitionBlock ("dsdt.aml", "DSDT", 2, "ALASKA", "A M I ", 0x01072009)
 
                                 Return (OPTS) /* \_SB_.PCI0.RP05._DSM.OPTS */
                             }
-                            Else
+                            ElseIf ((_T_0 == 0x04))
                             {
-                                If ((_T_0 == 0x04))
+                                If ((Arg1 >= 0x02))
                                 {
-                                    If ((Arg1 >= 0x02))
+                                    Return (Buffer (0x10)
                                     {
-                                        Return (Buffer (0x10)
-                                        {
-                                            /* 0000 */  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,  /* ........ */
-                                            /* 0008 */  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00   /* ........ */
-                                        })
+                                        /* 0000 */  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,  /* ........ */
+                                        /* 0008 */  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00   /* ........ */
+                                    })
+                                }
+                            }
+                            ElseIf ((_T_0 == 0x06))
+                            {
+                                If ((Arg1 >= 0x02))
+                                {
+                                    Return (Zero)
+                                }
+                            }
+                            ElseIf ((_T_0 == 0x08))
+                            {
+                                If ((ECR1 == One))
+                                {
+                                    If ((Arg1 >= 0x03))
+                                    {
+                                        Return (One)
                                     }
                                 }
-                                Else
+                            }
+                            ElseIf ((_T_0 == 0x09))
+                            {
+                                If ((ECR1 == One))
                                 {
-                                    If ((_T_0 == 0x06))
+                                    If ((Arg1 >= 0x03))
                                     {
-                                        If ((Arg1 >= 0x02))
+                                        Return (Package (0x05)
                                         {
-                                            Return (Zero)
-                                        }
-                                    }
-                                    Else
-                                    {
-                                        If ((_T_0 == 0x08))
-                                        {
-                                            If ((ECR1 == One))
-                                            {
-                                                If ((Arg1 >= 0x03))
-                                                {
-                                                    Return (One)
-                                                }
-                                            }
-                                        }
-                                        Else
-                                        {
-                                            If ((_T_0 == 0x09))
-                                            {
-                                                If ((ECR1 == One))
-                                                {
-                                                    If ((Arg1 >= 0x03))
-                                                    {
-                                                        Return (Package (0x05)
-                                                        {
-                                                            0xC350, 
-                                                            Ones, 
-                                                            Ones, 
-                                                            0xC350, 
-                                                            Ones
-                                                        })
-                                                    }
-                                                }
-                                            }
-                                        }
+                                            0xC350, 
+                                            Ones, 
+                                            Ones, 
+                                            0xC350, 
+                                            Ones
+                                        })
                                     }
                                 }
                             }
@@ -6441,60 +6302,48 @@ DefinitionBlock ("dsdt.aml", "DSDT", 2, "ALASKA", "A M I ", 0x01072009)
 
                                 Return (OPTS) /* \_SB_.PCI0.RP06._DSM.OPTS */
                             }
-                            Else
+                            ElseIf ((_T_0 == 0x04))
                             {
-                                If ((_T_0 == 0x04))
+                                If ((Arg1 >= 0x02))
                                 {
-                                    If ((Arg1 >= 0x02))
+                                    Return (Buffer (0x10)
                                     {
-                                        Return (Buffer (0x10)
-                                        {
-                                            /* 0000 */  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,  /* ........ */
-                                            /* 0008 */  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00   /* ........ */
-                                        })
+                                        /* 0000 */  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,  /* ........ */
+                                        /* 0008 */  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00   /* ........ */
+                                    })
+                                }
+                            }
+                            ElseIf ((_T_0 == 0x06))
+                            {
+                                If ((Arg1 >= 0x02))
+                                {
+                                    Return (Zero)
+                                }
+                            }
+                            ElseIf ((_T_0 == 0x08))
+                            {
+                                If ((ECR1 == One))
+                                {
+                                    If ((Arg1 >= 0x03))
+                                    {
+                                        Return (One)
                                     }
                                 }
-                                Else
+                            }
+                            ElseIf ((_T_0 == 0x09))
+                            {
+                                If ((ECR1 == One))
                                 {
-                                    If ((_T_0 == 0x06))
+                                    If ((Arg1 >= 0x03))
                                     {
-                                        If ((Arg1 >= 0x02))
+                                        Return (Package (0x05)
                                         {
-                                            Return (Zero)
-                                        }
-                                    }
-                                    Else
-                                    {
-                                        If ((_T_0 == 0x08))
-                                        {
-                                            If ((ECR1 == One))
-                                            {
-                                                If ((Arg1 >= 0x03))
-                                                {
-                                                    Return (One)
-                                                }
-                                            }
-                                        }
-                                        Else
-                                        {
-                                            If ((_T_0 == 0x09))
-                                            {
-                                                If ((ECR1 == One))
-                                                {
-                                                    If ((Arg1 >= 0x03))
-                                                    {
-                                                        Return (Package (0x05)
-                                                        {
-                                                            0xC350, 
-                                                            Ones, 
-                                                            Ones, 
-                                                            0xC350, 
-                                                            Ones
-                                                        })
-                                                    }
-                                                }
-                                            }
-                                        }
+                                            0xC350, 
+                                            Ones, 
+                                            Ones, 
+                                            0xC350, 
+                                            Ones
+                                        })
                                     }
                                 }
                             }
@@ -6684,60 +6533,48 @@ DefinitionBlock ("dsdt.aml", "DSDT", 2, "ALASKA", "A M I ", 0x01072009)
 
                                 Return (OPTS) /* \_SB_.PCI0.RP07._DSM.OPTS */
                             }
-                            Else
+                            ElseIf ((_T_0 == 0x04))
                             {
-                                If ((_T_0 == 0x04))
+                                If ((Arg1 >= 0x02))
                                 {
-                                    If ((Arg1 >= 0x02))
+                                    Return (Buffer (0x10)
                                     {
-                                        Return (Buffer (0x10)
-                                        {
-                                            /* 0000 */  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,  /* ........ */
-                                            /* 0008 */  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00   /* ........ */
-                                        })
+                                        /* 0000 */  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,  /* ........ */
+                                        /* 0008 */  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00   /* ........ */
+                                    })
+                                }
+                            }
+                            ElseIf ((_T_0 == 0x06))
+                            {
+                                If ((Arg1 >= 0x02))
+                                {
+                                    Return (Zero)
+                                }
+                            }
+                            ElseIf ((_T_0 == 0x08))
+                            {
+                                If ((ECR1 == One))
+                                {
+                                    If ((Arg1 >= 0x03))
+                                    {
+                                        Return (One)
                                     }
                                 }
-                                Else
+                            }
+                            ElseIf ((_T_0 == 0x09))
+                            {
+                                If ((ECR1 == One))
                                 {
-                                    If ((_T_0 == 0x06))
+                                    If ((Arg1 >= 0x03))
                                     {
-                                        If ((Arg1 >= 0x02))
+                                        Return (Package (0x05)
                                         {
-                                            Return (Zero)
-                                        }
-                                    }
-                                    Else
-                                    {
-                                        If ((_T_0 == 0x08))
-                                        {
-                                            If ((ECR1 == One))
-                                            {
-                                                If ((Arg1 >= 0x03))
-                                                {
-                                                    Return (One)
-                                                }
-                                            }
-                                        }
-                                        Else
-                                        {
-                                            If ((_T_0 == 0x09))
-                                            {
-                                                If ((ECR1 == One))
-                                                {
-                                                    If ((Arg1 >= 0x03))
-                                                    {
-                                                        Return (Package (0x05)
-                                                        {
-                                                            0xC350, 
-                                                            Ones, 
-                                                            Ones, 
-                                                            0xC350, 
-                                                            Ones
-                                                        })
-                                                    }
-                                                }
-                                            }
-                                        }
+                                            0xC350, 
+                                            Ones, 
+                                            Ones, 
+                                            0xC350, 
+                                            Ones
+                                        })
                                     }
                                 }
                             }
@@ -6927,60 +6764,48 @@ DefinitionBlock ("dsdt.aml", "DSDT", 2, "ALASKA", "A M I ", 0x01072009)
 
                                 Return (OPTS) /* \_SB_.PCI0.RP08._DSM.OPTS */
                             }
-                            Else
+                            ElseIf ((_T_0 == 0x04))
                             {
-                                If ((_T_0 == 0x04))
+                                If ((Arg1 >= 0x02))
                                 {
-                                    If ((Arg1 >= 0x02))
+                                    Return (Buffer (0x10)
                                     {
-                                        Return (Buffer (0x10)
-                                        {
-                                            /* 0000 */  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,  /* ........ */
-                                            /* 0008 */  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00   /* ........ */
-                                        })
+                                        /* 0000 */  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,  /* ........ */
+                                        /* 0008 */  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00   /* ........ */
+                                    })
+                                }
+                            }
+                            ElseIf ((_T_0 == 0x06))
+                            {
+                                If ((Arg1 >= 0x02))
+                                {
+                                    Return (Zero)
+                                }
+                            }
+                            ElseIf ((_T_0 == 0x08))
+                            {
+                                If ((ECR1 == One))
+                                {
+                                    If ((Arg1 >= 0x03))
+                                    {
+                                        Return (One)
                                     }
                                 }
-                                Else
+                            }
+                            ElseIf ((_T_0 == 0x09))
+                            {
+                                If ((ECR1 == One))
                                 {
-                                    If ((_T_0 == 0x06))
+                                    If ((Arg1 >= 0x03))
                                     {
-                                        If ((Arg1 >= 0x02))
+                                        Return (Package (0x05)
                                         {
-                                            Return (Zero)
-                                        }
-                                    }
-                                    Else
-                                    {
-                                        If ((_T_0 == 0x08))
-                                        {
-                                            If ((ECR1 == One))
-                                            {
-                                                If ((Arg1 >= 0x03))
-                                                {
-                                                    Return (One)
-                                                }
-                                            }
-                                        }
-                                        Else
-                                        {
-                                            If ((_T_0 == 0x09))
-                                            {
-                                                If ((ECR1 == One))
-                                                {
-                                                    If ((Arg1 >= 0x03))
-                                                    {
-                                                        Return (Package (0x05)
-                                                        {
-                                                            0xC350, 
-                                                            Ones, 
-                                                            Ones, 
-                                                            0xC350, 
-                                                            Ones
-                                                        })
-                                                    }
-                                                }
-                                            }
-                                        }
+                                            0xC350, 
+                                            Ones, 
+                                            Ones, 
+                                            0xC350, 
+                                            Ones
+                                        })
                                     }
                                 }
                             }
@@ -7170,60 +6995,48 @@ DefinitionBlock ("dsdt.aml", "DSDT", 2, "ALASKA", "A M I ", 0x01072009)
 
                                 Return (OPTS) /* \_SB_.PCI0.RP09._DSM.OPTS */
                             }
-                            Else
+                            ElseIf ((_T_0 == 0x04))
                             {
-                                If ((_T_0 == 0x04))
+                                If ((Arg1 >= 0x02))
                                 {
-                                    If ((Arg1 >= 0x02))
+                                    Return (Buffer (0x10)
                                     {
-                                        Return (Buffer (0x10)
-                                        {
-                                            /* 0000 */  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,  /* ........ */
-                                            /* 0008 */  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00   /* ........ */
-                                        })
+                                        /* 0000 */  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,  /* ........ */
+                                        /* 0008 */  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00   /* ........ */
+                                    })
+                                }
+                            }
+                            ElseIf ((_T_0 == 0x06))
+                            {
+                                If ((Arg1 >= 0x02))
+                                {
+                                    Return (Zero)
+                                }
+                            }
+                            ElseIf ((_T_0 == 0x08))
+                            {
+                                If ((ECR1 == One))
+                                {
+                                    If ((Arg1 >= 0x03))
+                                    {
+                                        Return (One)
                                     }
                                 }
-                                Else
+                            }
+                            ElseIf ((_T_0 == 0x09))
+                            {
+                                If ((ECR1 == One))
                                 {
-                                    If ((_T_0 == 0x06))
+                                    If ((Arg1 >= 0x03))
                                     {
-                                        If ((Arg1 >= 0x02))
+                                        Return (Package (0x05)
                                         {
-                                            Return (Zero)
-                                        }
-                                    }
-                                    Else
-                                    {
-                                        If ((_T_0 == 0x08))
-                                        {
-                                            If ((ECR1 == One))
-                                            {
-                                                If ((Arg1 >= 0x03))
-                                                {
-                                                    Return (One)
-                                                }
-                                            }
-                                        }
-                                        Else
-                                        {
-                                            If ((_T_0 == 0x09))
-                                            {
-                                                If ((ECR1 == One))
-                                                {
-                                                    If ((Arg1 >= 0x03))
-                                                    {
-                                                        Return (Package (0x05)
-                                                        {
-                                                            0xC350, 
-                                                            Ones, 
-                                                            Ones, 
-                                                            0xC350, 
-                                                            Ones
-                                                        })
-                                                    }
-                                                }
-                                            }
-                                        }
+                                            0xC350, 
+                                            Ones, 
+                                            Ones, 
+                                            0xC350, 
+                                            Ones
+                                        })
                                     }
                                 }
                             }
@@ -7413,60 +7226,48 @@ DefinitionBlock ("dsdt.aml", "DSDT", 2, "ALASKA", "A M I ", 0x01072009)
 
                                 Return (OPTS) /* \_SB_.PCI0.RP10._DSM.OPTS */
                             }
-                            Else
+                            ElseIf ((_T_0 == 0x04))
                             {
-                                If ((_T_0 == 0x04))
+                                If ((Arg1 >= 0x02))
                                 {
-                                    If ((Arg1 >= 0x02))
+                                    Return (Buffer (0x10)
                                     {
-                                        Return (Buffer (0x10)
-                                        {
-                                            /* 0000 */  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,  /* ........ */
-                                            /* 0008 */  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00   /* ........ */
-                                        })
+                                        /* 0000 */  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,  /* ........ */
+                                        /* 0008 */  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00   /* ........ */
+                                    })
+                                }
+                            }
+                            ElseIf ((_T_0 == 0x06))
+                            {
+                                If ((Arg1 >= 0x02))
+                                {
+                                    Return (Zero)
+                                }
+                            }
+                            ElseIf ((_T_0 == 0x08))
+                            {
+                                If ((ECR1 == One))
+                                {
+                                    If ((Arg1 >= 0x03))
+                                    {
+                                        Return (One)
                                     }
                                 }
-                                Else
+                            }
+                            ElseIf ((_T_0 == 0x09))
+                            {
+                                If ((ECR1 == One))
                                 {
-                                    If ((_T_0 == 0x06))
+                                    If ((Arg1 >= 0x03))
                                     {
-                                        If ((Arg1 >= 0x02))
+                                        Return (Package (0x05)
                                         {
-                                            Return (Zero)
-                                        }
-                                    }
-                                    Else
-                                    {
-                                        If ((_T_0 == 0x08))
-                                        {
-                                            If ((ECR1 == One))
-                                            {
-                                                If ((Arg1 >= 0x03))
-                                                {
-                                                    Return (One)
-                                                }
-                                            }
-                                        }
-                                        Else
-                                        {
-                                            If ((_T_0 == 0x09))
-                                            {
-                                                If ((ECR1 == One))
-                                                {
-                                                    If ((Arg1 >= 0x03))
-                                                    {
-                                                        Return (Package (0x05)
-                                                        {
-                                                            0xC350, 
-                                                            Ones, 
-                                                            Ones, 
-                                                            0xC350, 
-                                                            Ones
-                                                        })
-                                                    }
-                                                }
-                                            }
-                                        }
+                                            0xC350, 
+                                            Ones, 
+                                            Ones, 
+                                            0xC350, 
+                                            Ones
+                                        })
                                     }
                                 }
                             }
@@ -7656,60 +7457,48 @@ DefinitionBlock ("dsdt.aml", "DSDT", 2, "ALASKA", "A M I ", 0x01072009)
 
                                 Return (OPTS) /* \_SB_.PCI0.RP11._DSM.OPTS */
                             }
-                            Else
+                            ElseIf ((_T_0 == 0x04))
                             {
-                                If ((_T_0 == 0x04))
+                                If ((Arg1 >= 0x02))
                                 {
-                                    If ((Arg1 >= 0x02))
+                                    Return (Buffer (0x10)
                                     {
-                                        Return (Buffer (0x10)
-                                        {
-                                            /* 0000 */  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,  /* ........ */
-                                            /* 0008 */  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00   /* ........ */
-                                        })
+                                        /* 0000 */  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,  /* ........ */
+                                        /* 0008 */  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00   /* ........ */
+                                    })
+                                }
+                            }
+                            ElseIf ((_T_0 == 0x06))
+                            {
+                                If ((Arg1 >= 0x02))
+                                {
+                                    Return (Zero)
+                                }
+                            }
+                            ElseIf ((_T_0 == 0x08))
+                            {
+                                If ((ECR1 == One))
+                                {
+                                    If ((Arg1 >= 0x03))
+                                    {
+                                        Return (One)
                                     }
                                 }
-                                Else
+                            }
+                            ElseIf ((_T_0 == 0x09))
+                            {
+                                If ((ECR1 == One))
                                 {
-                                    If ((_T_0 == 0x06))
+                                    If ((Arg1 >= 0x03))
                                     {
-                                        If ((Arg1 >= 0x02))
+                                        Return (Package (0x05)
                                         {
-                                            Return (Zero)
-                                        }
-                                    }
-                                    Else
-                                    {
-                                        If ((_T_0 == 0x08))
-                                        {
-                                            If ((ECR1 == One))
-                                            {
-                                                If ((Arg1 >= 0x03))
-                                                {
-                                                    Return (One)
-                                                }
-                                            }
-                                        }
-                                        Else
-                                        {
-                                            If ((_T_0 == 0x09))
-                                            {
-                                                If ((ECR1 == One))
-                                                {
-                                                    If ((Arg1 >= 0x03))
-                                                    {
-                                                        Return (Package (0x05)
-                                                        {
-                                                            0xC350, 
-                                                            Ones, 
-                                                            Ones, 
-                                                            0xC350, 
-                                                            Ones
-                                                        })
-                                                    }
-                                                }
-                                            }
-                                        }
+                                            0xC350, 
+                                            Ones, 
+                                            Ones, 
+                                            0xC350, 
+                                            Ones
+                                        })
                                     }
                                 }
                             }
@@ -7899,60 +7688,48 @@ DefinitionBlock ("dsdt.aml", "DSDT", 2, "ALASKA", "A M I ", 0x01072009)
 
                                 Return (OPTS) /* \_SB_.PCI0.RP12._DSM.OPTS */
                             }
-                            Else
+                            ElseIf ((_T_0 == 0x04))
                             {
-                                If ((_T_0 == 0x04))
+                                If ((Arg1 >= 0x02))
                                 {
-                                    If ((Arg1 >= 0x02))
+                                    Return (Buffer (0x10)
                                     {
-                                        Return (Buffer (0x10)
-                                        {
-                                            /* 0000 */  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,  /* ........ */
-                                            /* 0008 */  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00   /* ........ */
-                                        })
+                                        /* 0000 */  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,  /* ........ */
+                                        /* 0008 */  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00   /* ........ */
+                                    })
+                                }
+                            }
+                            ElseIf ((_T_0 == 0x06))
+                            {
+                                If ((Arg1 >= 0x02))
+                                {
+                                    Return (Zero)
+                                }
+                            }
+                            ElseIf ((_T_0 == 0x08))
+                            {
+                                If ((ECR1 == One))
+                                {
+                                    If ((Arg1 >= 0x03))
+                                    {
+                                        Return (One)
                                     }
                                 }
-                                Else
+                            }
+                            ElseIf ((_T_0 == 0x09))
+                            {
+                                If ((ECR1 == One))
                                 {
-                                    If ((_T_0 == 0x06))
+                                    If ((Arg1 >= 0x03))
                                     {
-                                        If ((Arg1 >= 0x02))
+                                        Return (Package (0x05)
                                         {
-                                            Return (Zero)
-                                        }
-                                    }
-                                    Else
-                                    {
-                                        If ((_T_0 == 0x08))
-                                        {
-                                            If ((ECR1 == One))
-                                            {
-                                                If ((Arg1 >= 0x03))
-                                                {
-                                                    Return (One)
-                                                }
-                                            }
-                                        }
-                                        Else
-                                        {
-                                            If ((_T_0 == 0x09))
-                                            {
-                                                If ((ECR1 == One))
-                                                {
-                                                    If ((Arg1 >= 0x03))
-                                                    {
-                                                        Return (Package (0x05)
-                                                        {
-                                                            0xC350, 
-                                                            Ones, 
-                                                            Ones, 
-                                                            0xC350, 
-                                                            Ones
-                                                        })
-                                                    }
-                                                }
-                                            }
-                                        }
+                                            0xC350, 
+                                            Ones, 
+                                            Ones, 
+                                            0xC350, 
+                                            Ones
+                                        })
                                     }
                                 }
                             }
@@ -8142,60 +7919,48 @@ DefinitionBlock ("dsdt.aml", "DSDT", 2, "ALASKA", "A M I ", 0x01072009)
 
                                 Return (OPTS) /* \_SB_.PCI0.RP13._DSM.OPTS */
                             }
-                            Else
+                            ElseIf ((_T_0 == 0x04))
                             {
-                                If ((_T_0 == 0x04))
+                                If ((Arg1 >= 0x02))
                                 {
-                                    If ((Arg1 >= 0x02))
+                                    Return (Buffer (0x10)
                                     {
-                                        Return (Buffer (0x10)
-                                        {
-                                            /* 0000 */  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,  /* ........ */
-                                            /* 0008 */  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00   /* ........ */
-                                        })
+                                        /* 0000 */  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,  /* ........ */
+                                        /* 0008 */  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00   /* ........ */
+                                    })
+                                }
+                            }
+                            ElseIf ((_T_0 == 0x06))
+                            {
+                                If ((Arg1 >= 0x02))
+                                {
+                                    Return (Zero)
+                                }
+                            }
+                            ElseIf ((_T_0 == 0x08))
+                            {
+                                If ((ECR1 == One))
+                                {
+                                    If ((Arg1 >= 0x03))
+                                    {
+                                        Return (One)
                                     }
                                 }
-                                Else
+                            }
+                            ElseIf ((_T_0 == 0x09))
+                            {
+                                If ((ECR1 == One))
                                 {
-                                    If ((_T_0 == 0x06))
+                                    If ((Arg1 >= 0x03))
                                     {
-                                        If ((Arg1 >= 0x02))
+                                        Return (Package (0x05)
                                         {
-                                            Return (Zero)
-                                        }
-                                    }
-                                    Else
-                                    {
-                                        If ((_T_0 == 0x08))
-                                        {
-                                            If ((ECR1 == One))
-                                            {
-                                                If ((Arg1 >= 0x03))
-                                                {
-                                                    Return (One)
-                                                }
-                                            }
-                                        }
-                                        Else
-                                        {
-                                            If ((_T_0 == 0x09))
-                                            {
-                                                If ((ECR1 == One))
-                                                {
-                                                    If ((Arg1 >= 0x03))
-                                                    {
-                                                        Return (Package (0x05)
-                                                        {
-                                                            0xC350, 
-                                                            Ones, 
-                                                            Ones, 
-                                                            0xC350, 
-                                                            Ones
-                                                        })
-                                                    }
-                                                }
-                                            }
-                                        }
+                                            0xC350, 
+                                            Ones, 
+                                            Ones, 
+                                            0xC350, 
+                                            Ones
+                                        })
                                     }
                                 }
                             }
@@ -8385,60 +8150,48 @@ DefinitionBlock ("dsdt.aml", "DSDT", 2, "ALASKA", "A M I ", 0x01072009)
 
                                 Return (OPTS) /* \_SB_.PCI0.RP14._DSM.OPTS */
                             }
-                            Else
+                            ElseIf ((_T_0 == 0x04))
                             {
-                                If ((_T_0 == 0x04))
+                                If ((Arg1 >= 0x02))
                                 {
-                                    If ((Arg1 >= 0x02))
+                                    Return (Buffer (0x10)
                                     {
-                                        Return (Buffer (0x10)
-                                        {
-                                            /* 0000 */  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,  /* ........ */
-                                            /* 0008 */  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00   /* ........ */
-                                        })
+                                        /* 0000 */  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,  /* ........ */
+                                        /* 0008 */  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00   /* ........ */
+                                    })
+                                }
+                            }
+                            ElseIf ((_T_0 == 0x06))
+                            {
+                                If ((Arg1 >= 0x02))
+                                {
+                                    Return (Zero)
+                                }
+                            }
+                            ElseIf ((_T_0 == 0x08))
+                            {
+                                If ((ECR1 == One))
+                                {
+                                    If ((Arg1 >= 0x03))
+                                    {
+                                        Return (One)
                                     }
                                 }
-                                Else
+                            }
+                            ElseIf ((_T_0 == 0x09))
+                            {
+                                If ((ECR1 == One))
                                 {
-                                    If ((_T_0 == 0x06))
+                                    If ((Arg1 >= 0x03))
                                     {
-                                        If ((Arg1 >= 0x02))
+                                        Return (Package (0x05)
                                         {
-                                            Return (Zero)
-                                        }
-                                    }
-                                    Else
-                                    {
-                                        If ((_T_0 == 0x08))
-                                        {
-                                            If ((ECR1 == One))
-                                            {
-                                                If ((Arg1 >= 0x03))
-                                                {
-                                                    Return (One)
-                                                }
-                                            }
-                                        }
-                                        Else
-                                        {
-                                            If ((_T_0 == 0x09))
-                                            {
-                                                If ((ECR1 == One))
-                                                {
-                                                    If ((Arg1 >= 0x03))
-                                                    {
-                                                        Return (Package (0x05)
-                                                        {
-                                                            0xC350, 
-                                                            Ones, 
-                                                            Ones, 
-                                                            0xC350, 
-                                                            Ones
-                                                        })
-                                                    }
-                                                }
-                                            }
-                                        }
+                                            0xC350, 
+                                            Ones, 
+                                            Ones, 
+                                            0xC350, 
+                                            Ones
+                                        })
                                     }
                                 }
                             }
@@ -8628,60 +8381,48 @@ DefinitionBlock ("dsdt.aml", "DSDT", 2, "ALASKA", "A M I ", 0x01072009)
 
                                 Return (OPTS) /* \_SB_.PCI0.RP15._DSM.OPTS */
                             }
-                            Else
+                            ElseIf ((_T_0 == 0x04))
                             {
-                                If ((_T_0 == 0x04))
+                                If ((Arg1 >= 0x02))
                                 {
-                                    If ((Arg1 >= 0x02))
+                                    Return (Buffer (0x10)
                                     {
-                                        Return (Buffer (0x10)
-                                        {
-                                            /* 0000 */  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,  /* ........ */
-                                            /* 0008 */  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00   /* ........ */
-                                        })
+                                        /* 0000 */  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,  /* ........ */
+                                        /* 0008 */  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00   /* ........ */
+                                    })
+                                }
+                            }
+                            ElseIf ((_T_0 == 0x06))
+                            {
+                                If ((Arg1 >= 0x02))
+                                {
+                                    Return (Zero)
+                                }
+                            }
+                            ElseIf ((_T_0 == 0x08))
+                            {
+                                If ((ECR1 == One))
+                                {
+                                    If ((Arg1 >= 0x03))
+                                    {
+                                        Return (One)
                                     }
                                 }
-                                Else
+                            }
+                            ElseIf ((_T_0 == 0x09))
+                            {
+                                If ((ECR1 == One))
                                 {
-                                    If ((_T_0 == 0x06))
+                                    If ((Arg1 >= 0x03))
                                     {
-                                        If ((Arg1 >= 0x02))
+                                        Return (Package (0x05)
                                         {
-                                            Return (Zero)
-                                        }
-                                    }
-                                    Else
-                                    {
-                                        If ((_T_0 == 0x08))
-                                        {
-                                            If ((ECR1 == One))
-                                            {
-                                                If ((Arg1 >= 0x03))
-                                                {
-                                                    Return (One)
-                                                }
-                                            }
-                                        }
-                                        Else
-                                        {
-                                            If ((_T_0 == 0x09))
-                                            {
-                                                If ((ECR1 == One))
-                                                {
-                                                    If ((Arg1 >= 0x03))
-                                                    {
-                                                        Return (Package (0x05)
-                                                        {
-                                                            0xC350, 
-                                                            Ones, 
-                                                            Ones, 
-                                                            0xC350, 
-                                                            Ones
-                                                        })
-                                                    }
-                                                }
-                                            }
-                                        }
+                                            0xC350, 
+                                            Ones, 
+                                            Ones, 
+                                            0xC350, 
+                                            Ones
+                                        })
                                     }
                                 }
                             }
@@ -8871,60 +8612,48 @@ DefinitionBlock ("dsdt.aml", "DSDT", 2, "ALASKA", "A M I ", 0x01072009)
 
                                 Return (OPTS) /* \_SB_.PCI0.RP16._DSM.OPTS */
                             }
-                            Else
+                            ElseIf ((_T_0 == 0x04))
                             {
-                                If ((_T_0 == 0x04))
+                                If ((Arg1 >= 0x02))
                                 {
-                                    If ((Arg1 >= 0x02))
+                                    Return (Buffer (0x10)
                                     {
-                                        Return (Buffer (0x10)
-                                        {
-                                            /* 0000 */  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,  /* ........ */
-                                            /* 0008 */  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00   /* ........ */
-                                        })
+                                        /* 0000 */  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,  /* ........ */
+                                        /* 0008 */  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00   /* ........ */
+                                    })
+                                }
+                            }
+                            ElseIf ((_T_0 == 0x06))
+                            {
+                                If ((Arg1 >= 0x02))
+                                {
+                                    Return (Zero)
+                                }
+                            }
+                            ElseIf ((_T_0 == 0x08))
+                            {
+                                If ((ECR1 == One))
+                                {
+                                    If ((Arg1 >= 0x03))
+                                    {
+                                        Return (One)
                                     }
                                 }
-                                Else
+                            }
+                            ElseIf ((_T_0 == 0x09))
+                            {
+                                If ((ECR1 == One))
                                 {
-                                    If ((_T_0 == 0x06))
+                                    If ((Arg1 >= 0x03))
                                     {
-                                        If ((Arg1 >= 0x02))
+                                        Return (Package (0x05)
                                         {
-                                            Return (Zero)
-                                        }
-                                    }
-                                    Else
-                                    {
-                                        If ((_T_0 == 0x08))
-                                        {
-                                            If ((ECR1 == One))
-                                            {
-                                                If ((Arg1 >= 0x03))
-                                                {
-                                                    Return (One)
-                                                }
-                                            }
-                                        }
-                                        Else
-                                        {
-                                            If ((_T_0 == 0x09))
-                                            {
-                                                If ((ECR1 == One))
-                                                {
-                                                    If ((Arg1 >= 0x03))
-                                                    {
-                                                        Return (Package (0x05)
-                                                        {
-                                                            0xC350, 
-                                                            Ones, 
-                                                            Ones, 
-                                                            0xC350, 
-                                                            Ones
-                                                        })
-                                                    }
-                                                }
-                                            }
-                                        }
+                                            0xC350, 
+                                            Ones, 
+                                            Ones, 
+                                            0xC350, 
+                                            Ones
+                                        })
                                     }
                                 }
                             }
@@ -9976,7 +9705,7 @@ DefinitionBlock ("dsdt.aml", "DSDT", 2, "ALASKA", "A M I ", 0x01072009)
             Local3 = Zero
             While ((Local3 < Local2))
             {
-                Local1 += DerefOf (Index (DerefOf (Index (GPPG, Local0)), Local3))
+                Local1 += DerefOf (DerefOf (GPPG [Local0]) [Local3])
                 Local3++
             }
 
@@ -10020,9 +9749,9 @@ DefinitionBlock ("dsdt.aml", "DSDT", 2, "ALASKA", "A M I ", 0x01072009)
                 Local0 = One
             }
 
-            Local1 = (DerefOf (Index (DerefOf (Index (GCOM, Local0)), Arg0)) + 
+            Local1 = (DerefOf (DerefOf (GCOM [Local0]) [Arg0]) + 
                 SBRG)
-            Local2 = DerefOf (Index (DerefOf (Index (Arg1, Local0)), Arg0))
+            Local2 = DerefOf (DerefOf (Arg1 [Local0]) [Arg0])
             Return ((Local1 + Local2))
         }
 
@@ -10299,11 +10028,11 @@ DefinitionBlock ("dsdt.aml", "DSDT", 2, "ALASKA", "A M I ", 0x01072009)
             If ((((GPEM >> (Arg0 * 0x02)) & 0x03) == 
                 Zero))
             {
-                Index (GPES, Arg0) = (STSX & GENX)
+                GPES [Arg0] = (STSX & GENX)
             }
             Else
             {
-                Index (GPES, Arg0) = Zero
+                GPES [Arg0] = Zero
             }
         }
 
@@ -10376,72 +10105,45 @@ DefinitionBlock ("dsdt.aml", "DSDT", 2, "ALASKA", "A M I ", 0x01072009)
                 {
                     Local1 = G2L9 /* \G2L9 */
                 }
+                ElseIf ((Local0 == 0x08))
+                {
+                    Local1 = G2L8 /* \G2L8 */
+                }
+                ElseIf ((Local0 == 0x07))
+                {
+                    Local1 = G2L7 /* \G2L7 */
+                }
+                ElseIf ((Local0 == 0x06))
+                {
+                    Local1 = G2L6 /* \G2L6 */
+                }
+                ElseIf ((Local0 == 0x05))
+                {
+                    Local1 = G2L5 /* \G2L5 */
+                }
+                ElseIf ((Local0 == 0x04))
+                {
+                    Local1 = G2L4 /* \G2L4 */
+                }
+                ElseIf ((Local0 == 0x03))
+                {
+                    Local1 = G2L3 /* \G2L3 */
+                }
+                ElseIf ((Local0 == 0x02))
+                {
+                    Local1 = G2L2 /* \G2L2 */
+                }
+                ElseIf ((Local0 == One))
+                {
+                    Local1 = G2L1 /* \G2L1 */
+                }
+                ElseIf ((Local0 == Zero))
+                {
+                    Local1 = G2L0 /* \G2L0 */
+                }
                 Else
                 {
-                    If ((Local0 == 0x08))
-                    {
-                        Local1 = G2L8 /* \G2L8 */
-                    }
-                    Else
-                    {
-                        If ((Local0 == 0x07))
-                        {
-                            Local1 = G2L7 /* \G2L7 */
-                        }
-                        Else
-                        {
-                            If ((Local0 == 0x06))
-                            {
-                                Local1 = G2L6 /* \G2L6 */
-                            }
-                            Else
-                            {
-                                If ((Local0 == 0x05))
-                                {
-                                    Local1 = G2L5 /* \G2L5 */
-                                }
-                                Else
-                                {
-                                    If ((Local0 == 0x04))
-                                    {
-                                        Local1 = G2L4 /* \G2L4 */
-                                    }
-                                    Else
-                                    {
-                                        If ((Local0 == 0x03))
-                                        {
-                                            Local1 = G2L3 /* \G2L3 */
-                                        }
-                                        Else
-                                        {
-                                            If ((Local0 == 0x02))
-                                            {
-                                                Local1 = G2L2 /* \G2L2 */
-                                            }
-                                            Else
-                                            {
-                                                If ((Local0 == One))
-                                                {
-                                                    Local1 = G2L1 /* \G2L1 */
-                                                }
-                                                Else
-                                                {
-                                                    If ((Local0 == Zero))
-                                                    {
-                                                        Local1 = G2L0 /* \G2L0 */
-                                                    }
-                                                    Else
-                                                    {
-                                                        Continue
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
+                    Continue
                 }
 
                 CGP1 (Local0, Local1)
@@ -10471,7 +10173,7 @@ DefinitionBlock ("dsdt.aml", "DSDT", 2, "ALASKA", "A M I ", 0x01072009)
         {
             Local0 = GGRP (Arg0)
             Local1 = GNMB (Arg0)
-            Return (((DerefOf (Index (GPES, Local0)) >> Local1) & One))
+            Return (((DerefOf (GPES [Local0]) >> Local1) & One))
         }
 
         Method (DIPI, 1, Serialized)
@@ -10491,9 +10193,9 @@ DefinitionBlock ("dsdt.aml", "DSDT", 2, "ALASKA", "A M I ", 0x01072009)
 
             If ((RCFG != 0x02))
             {
-                Local3 = DerefOf (Index (RXEV, Local0))
+                Local3 = DerefOf (RXEV [Local0])
                 Local3 &= ~(0x03 << (Local1 * 0x02))
-                Index (RXEV, Local0) = (Local3 | (RCFG << (Local1 * 0x02)
+                RXEV [Local0] = (Local3 | (RCFG << (Local1 * 0x02)
                     ))
                 RCFG = 0x02
                 RDIS = One
@@ -10515,7 +10217,7 @@ DefinitionBlock ("dsdt.aml", "DSDT", 2, "ALASKA", "A M I ", 0x01072009)
                 Offset (0x04)
             }
 
-            Local3 = ((DerefOf (Index (RXEV, Local0)) >> (Local1 * 0x02
+            Local3 = ((DerefOf (RXEV [Local0]) >> (Local1 * 0x02
                 )) & 0x03)
             If ((Local3 != 0x02))
             {
@@ -10558,7 +10260,7 @@ DefinitionBlock ("dsdt.aml", "DSDT", 2, "ALASKA", "A M I ", 0x01072009)
             Local1 = Zero
             While ((Local1 < Arg2))
             {
-                Local2 = DerefOf (Index (Local3, (Arg1 + Local1)))
+                Local2 = DerefOf (Local3 [(Arg1 + Local1)])
                 Local0 += (Local2 << (0x08 * Local1))
                 Local1++
             }
@@ -11055,7 +10757,7 @@ DefinitionBlock ("dsdt.aml", "DSDT", 2, "ALASKA", "A M I ", 0x01072009)
                 HCOM = Arg1
                 DAT0 = SizeOf (Arg2)
                 Local1 = Zero
-                HBDR = DerefOf (Index (Arg2, Zero))
+                HBDR = DerefOf (Arg2 [Zero])
                 HCON = 0x54
                 While ((SizeOf (Arg2) > Local1))
                 {
@@ -11076,7 +10778,7 @@ DefinitionBlock ("dsdt.aml", "DSDT", 2, "ALASKA", "A M I ", 0x01072009)
                     Local1++
                     If ((SizeOf (Arg2) > Local1))
                     {
-                        HBDR = DerefOf (Index (Arg2, Local1))
+                        HBDR = DerefOf (Arg2 [Local1])
                     }
                 }
 
@@ -11115,10 +10817,10 @@ DefinitionBlock ("dsdt.aml", "DSDT", 2, "ALASKA", "A M I ", 0x01072009)
                     Return (Zero)
                 }
 
-                Index (TBUF, Zero) = DAT0 /* \_SB_.PCI0.SBUS.DAT0 */
+                TBUF [Zero] = DAT0 /* \_SB_.PCI0.SBUS.DAT0 */
                 HSTS = 0x80
                 Local1 = One
-                While ((Local1 < DerefOf (Index (TBUF, Zero))))
+                While ((Local1 < DerefOf (TBUF [Zero])))
                 {
                     Local0 = 0x0FA0
                     While ((!(HSTS & 0x80) && Local0))
@@ -11133,7 +10835,7 @@ DefinitionBlock ("dsdt.aml", "DSDT", 2, "ALASKA", "A M I ", 0x01072009)
                         Return (Zero)
                     }
 
-                    Index (TBUF, Local1) = HBDR /* \_SB_.PCI0.SBUS.HBDR */
+                    TBUF [Local1] = HBDR /* \_SB_.PCI0.SBUS.HBDR */
                     HSTS = 0x80
                     Local1++
                 }
@@ -12341,135 +12043,123 @@ DefinitionBlock ("dsdt.aml", "DSDT", 2, "ALASKA", "A M I ", 0x01072009)
                                      0x73                                             /* s */
                                 })
                             }
-                            Else
+                            ElseIf ((_T_0 == One))
                             {
-                                If ((_T_0 == One))
+                                Return (One)
+                            }
+                            ElseIf ((_T_0 == 0x04))
+                            {
+                                OperationRegion (XDBW, SystemMemory, XDBA (), 0x00110000)
+                                Field (XDBW, WordAcc, NoLock, Preserve)
                                 {
-                                    Return (One)
+                                    Offset (0x10F810), 
+                                    Offset (0x10F811), 
+                                    U2CP,   2, 
+                                    U3CP,   2, 
+                                    Offset (0x10F818), 
+                                    PUPS,   2, 
+                                        ,   1, 
+                                    PURC,   1, 
+                                    Offset (0x10F81A), 
+                                    Offset (0x10F81C), 
+                                        ,   3, 
+                                    UXPE,   2, 
+                                    Offset (0x10F81E)
                                 }
-                                Else
+
+                                Local1 = DerefOf (Arg3 [Zero])
+                                If ((Local1 == Zero))
                                 {
-                                    If ((_T_0 == 0x04))
+                                    UXPE = Zero
+                                    PURC = Zero
+                                    Local0 = Zero
+                                    While ((Local0 < 0x0A))
                                     {
-                                        OperationRegion (XDBW, SystemMemory, XDBA (), 0x00110000)
-                                        Field (XDBW, WordAcc, NoLock, Preserve)
-                                        {
-                                            Offset (0x10F810), 
-                                            Offset (0x10F811), 
-                                            U2CP,   2, 
-                                            U3CP,   2, 
-                                            Offset (0x10F818), 
-                                            PUPS,   2, 
-                                                ,   1, 
-                                            PURC,   1, 
-                                            Offset (0x10F81A), 
-                                            Offset (0x10F81C), 
-                                                ,   3, 
-                                            UXPE,   2, 
-                                            Offset (0x10F81E)
-                                        }
-
-                                        Local1 = DerefOf (Index (Arg3, Zero))
-                                        If ((Local1 == Zero))
-                                        {
-                                            UXPE = Zero
-                                            PURC = Zero
-                                            Local0 = Zero
-                                            While ((Local0 < 0x0A))
-                                            {
-                                                Stall (0x64)
-                                                Local0++
-                                            }
-
-                                            PUPS = Zero
-                                            Local0 = Zero
-                                            While ((Local0 < 0x07D0))
-                                            {
-                                                Stall (0x64)
-                                                If (((U2CP == Zero) && (U3CP == Zero)))
-                                                {
-                                                    Break
-                                                }
-
-                                                Local0++
-                                            }
-
-                                            If ((U2CP != Zero)) {}
-                                            If ((U3CP != Zero)) {}
-                                            Return (Zero)
-                                        }
-
-                                        If ((Local1 == 0x03))
-                                        {
-                                            If ((U2CP != Zero)) {}
-                                            If ((U3CP != Zero)) {}
-                                            PUPS = 0x03
-                                            Local0 = Zero
-                                            While ((Local0 < 0x07D0))
-                                            {
-                                                Stall (0x64)
-                                                If (((U2CP == 0x03) && (U3CP == 0x03)))
-                                                {
-                                                    Break
-                                                }
-
-                                                Local0++
-                                            }
-
-                                            If ((U2CP != 0x03)) {}
-                                            If ((U3CP != 0x03)) {}
-                                            PURC = One
-                                            UXPE = 0x03
-                                            Return (Zero)
-                                        }
+                                        Stall (0x64)
+                                        Local0++
                                     }
-                                    Else
+
+                                    PUPS = Zero
+                                    Local0 = Zero
+                                    While ((Local0 < 0x07D0))
                                     {
-                                        If ((_T_0 == 0x05))
+                                        Stall (0x64)
+                                        If (((U2CP == Zero) && (U3CP == Zero)))
                                         {
-                                            Return (Zero)
+                                            Break
                                         }
-                                        Else
+
+                                        Local0++
+                                    }
+
+                                    If ((U2CP != Zero)) {}
+                                    If ((U3CP != Zero)) {}
+                                    Return (Zero)
+                                }
+
+                                If ((Local1 == 0x03))
+                                {
+                                    If ((U2CP != Zero)) {}
+                                    If ((U3CP != Zero)) {}
+                                    PUPS = 0x03
+                                    Local0 = Zero
+                                    While ((Local0 < 0x07D0))
+                                    {
+                                        Stall (0x64)
+                                        If (((U2CP == 0x03) && (U3CP == 0x03)))
                                         {
-                                            If ((_T_0 == 0x06))
-                                            {
-                                                OperationRegion (XDBD, SystemMemory, XDBA (), 0x00110000)
-                                                Field (XDBD, DWordAcc, NoLock, Preserve)
-                                                {
-                                                    Offset (0xC704), 
-                                                        ,   30, 
-                                                    CSFR,   1, 
-                                                    Offset (0xC708)
-                                                }
-
-                                                OperationRegion (XDW2, SystemMemory, XDBA (), 0x00110000)
-                                                Field (XDW2, WordAcc, NoLock, Preserve)
-                                                {
-                                                    Offset (0x10F820), 
-                                                        ,   13, 
-                                                    OTHC,   1
-                                                }
-
-                                                If ((OTHC == Zero))
-                                                {
-                                                    CSFR = One
-                                                    Local0 = Zero
-                                                    While ((Local0 < 0x64))
-                                                    {
-                                                        If ((CSFR == Zero))
-                                                        {
-                                                            Break
-                                                        }
-
-                                                        Sleep (One)
-                                                    }
-                                                }
-
-                                                Return (Zero)
-                                            }
+                                            Break
                                         }
+
+                                        Local0++
+                                    }
+
+                                    If ((U2CP != 0x03)) {}
+                                    If ((U3CP != 0x03)) {}
+                                    PURC = One
+                                    UXPE = 0x03
+                                    Return (Zero)
+                                }
+                            }
+                            ElseIf ((_T_0 == 0x05))
+                            {
+                                Return (Zero)
+                            }
+                            ElseIf ((_T_0 == 0x06))
+                            {
+                                OperationRegion (XDBD, SystemMemory, XDBA (), 0x00110000)
+                                Field (XDBD, DWordAcc, NoLock, Preserve)
+                                {
+                                    Offset (0xC704), 
+                                        ,   30, 
+                                    CSFR,   1, 
+                                    Offset (0xC708)
+                                }
+
+                                OperationRegion (XDW2, SystemMemory, XDBA (), 0x00110000)
+                                Field (XDW2, WordAcc, NoLock, Preserve)
+                                {
+                                    Offset (0x10F820), 
+                                        ,   13, 
+                                    OTHC,   1
+                                }
+
+                                If ((OTHC == Zero))
+                                {
+                                    CSFR = One
+                                    Local0 = Zero
+                                    While ((Local0 < 0x64))
+                                    {
+                                        If ((CSFR == Zero))
+                                        {
+                                            Break
+                                        }
+
+                                        Sleep (One)
                                     }
                                 }
+
+                                Return (Zero)
                             }
 
                             Break
@@ -12643,22 +12333,9 @@ DefinitionBlock ("dsdt.aml", "DSDT", 2, "ALASKA", "A M I ", 0x01072009)
                         Return (One)
                     }
                 }
-                Else
+                ElseIf ((^^LPCB.CRID == Zero))
                 {
-                    If ((^^LPCB.CRID == Zero))
-                    {
-                        Return (One)
-                    }
-
-                    If ((^^LPCB.CRID == One))
-                    {
-                        Return (One)
-                    }
-
-                    If ((^^LPCB.CRID == 0x09))
-                    {
-                        Return (One)
-                    }
+                    Return (One)
                 }
 
                 Return (Zero)
@@ -12700,37 +12377,28 @@ DefinitionBlock ("dsdt.aml", "DSDT", 2, "ALASKA", "A M I ", 0x01072009)
                                  0x0F                                             /* . */
                             })
                         }
+                        ElseIf ((_T_0 == One))
+                        {
+                            ADBG ("_DSM Fun 1 NHLT")
+                            Return (NBUF) /* \_SB_.PCI0.HDAS.NBUF */
+                        }
+                        ElseIf ((_T_0 == 0x02))
+                        {
+                            ADBG ("_DSM Fun 2 FMSK")
+                            Return (ADFM) /* \ADFM */
+                        }
+                        ElseIf ((_T_0 == 0x03))
+                        {
+                            ADBG ("_DSM Fun 3 PPMS")
+                            Return (Zero)
+                        }
                         Else
                         {
-                            If ((_T_0 == One))
+                            ADBG ("_DSM Fun NOK")
+                            Return (Buffer (One)
                             {
-                                ADBG ("_DSM Fun 1 NHLT")
-                                Return (NBUF) /* \_SB_.PCI0.HDAS.NBUF */
-                            }
-                            Else
-                            {
-                                If ((_T_0 == 0x02))
-                                {
-                                    ADBG ("_DSM Fun 2 FMSK")
-                                    Return (ADFM) /* \ADFM */
-                                }
-                                Else
-                                {
-                                    If ((_T_0 == 0x03))
-                                    {
-                                        ADBG ("_DSM Fun 3 PPMS")
-                                        Return (Zero)
-                                    }
-                                    Else
-                                    {
-                                        ADBG ("_DSM Fun NOK")
-                                        Return (Buffer (One)
-                                        {
-                                             0x00                                             /* . */
-                                        })
-                                    }
-                                }
-                            }
+                                 0x00                                             /* . */
+                            })
                         }
 
                         Break
@@ -12831,36 +12499,27 @@ DefinitionBlock ("dsdt.aml", "DSDT", 2, "ALASKA", "A M I ", 0x01072009)
                     {
                         Return (RPCD) /* \_SB_.PCI0.SAT0.RDCA.RPCD */
                     }
+                    ElseIf ((_T_0 == 0x02))
+                    {
+                        CAIR = Arg1
+                        Return (CADR) /* \_SB_.PCI0.SAT0.RDCA.CADR */
+                    }
+                    ElseIf ((_T_0 == One))
+                    {
+                        Local0 = (Arg2 & RPCD) /* \_SB_.PCI0.SAT0.RDCA.RPCD */
+                        Local0 |= Arg3
+                        RPCD = Local0
+                    }
+                    ElseIf ((_T_0 == 0x03))
+                    {
+                        CAIR = Arg1
+                        Local0 = (Arg2 & CADR) /* \_SB_.PCI0.SAT0.RDCA.CADR */
+                        Local0 |= Arg3
+                        CADR = Local0
+                    }
                     Else
                     {
-                        If ((_T_0 == 0x02))
-                        {
-                            CAIR = Arg1
-                            Return (CADR) /* \_SB_.PCI0.SAT0.RDCA.CADR */
-                        }
-                        Else
-                        {
-                            If ((_T_0 == One))
-                            {
-                                Local0 = (Arg2 & RPCD) /* \_SB_.PCI0.SAT0.RDCA.RPCD */
-                                Local0 |= Arg3
-                                RPCD = Local0
-                            }
-                            Else
-                            {
-                                If ((_T_0 == 0x03))
-                                {
-                                    CAIR = Arg1
-                                    Local0 = (Arg2 & CADR) /* \_SB_.PCI0.SAT0.RDCA.CADR */
-                                    Local0 |= Arg3
-                                    CADR = Local0
-                                }
-                                Else
-                                {
-                                    Return (Zero)
-                                }
-                            }
-                        }
+                        Return (Zero)
                     }
 
                     Break
@@ -12975,13 +12634,10 @@ DefinitionBlock ("dsdt.aml", "DSDT", 2, "ALASKA", "A M I ", 0x01072009)
                         PRBI = 0x24
                         PRBD = RDCA (NCRN, 0x24, Zero, Zero, 0x02)
                     }
-                    Else
+                    ElseIf ((NITV == 0x02))
                     {
-                        If ((NITV == 0x02))
-                        {
-                            PRBI = 0x10
-                            PRBD = RDCA (NCRN, 0x10, Zero, Zero, 0x02)
-                        }
+                        PRBI = 0x10
+                        PRBD = RDCA (NCRN, 0x10, Zero, Zero, 0x02)
                     }
 
                     EPD3 ()
@@ -13124,13 +12780,10 @@ DefinitionBlock ("dsdt.aml", "DSDT", 2, "ALASKA", "A M I ", 0x01072009)
                         PRBI = 0x24
                         PRBD = RDCA (NCRN, 0x24, Zero, Zero, 0x02)
                     }
-                    Else
+                    ElseIf ((NITV == 0x02))
                     {
-                        If ((NITV == 0x02))
-                        {
-                            PRBI = 0x10
-                            PRBD = RDCA (NCRN, 0x10, Zero, Zero, 0x02)
-                        }
+                        PRBI = 0x10
+                        PRBD = RDCA (NCRN, 0x10, Zero, Zero, 0x02)
                     }
 
                     EPD3 ()
@@ -13273,13 +12926,10 @@ DefinitionBlock ("dsdt.aml", "DSDT", 2, "ALASKA", "A M I ", 0x01072009)
                         PRBI = 0x24
                         PRBD = RDCA (NCRN, 0x24, Zero, Zero, 0x02)
                     }
-                    Else
+                    ElseIf ((NITV == 0x02))
                     {
-                        If ((NITV == 0x02))
-                        {
-                            PRBI = 0x10
-                            PRBD = RDCA (NCRN, 0x10, Zero, Zero, 0x02)
-                        }
+                        PRBI = 0x10
+                        PRBD = RDCA (NCRN, 0x10, Zero, Zero, 0x02)
                     }
 
                     EPD3 ()
@@ -14913,48 +14563,33 @@ DefinitionBlock ("dsdt.aml", "DSDT", 2, "ALASKA", "A M I ", 0x01072009)
                         SPEX = 0x00989680
                         PHAX = Zero
                     }
+                    ElseIf ((_T_0 == 0x02))
+                    {
+                        SPEX = 0x002DC6C0
+                        PHAX = Zero
+                    }
+                    ElseIf ((_T_0 == 0x03))
+                    {
+                        SPEX = 0x007A1200
+                        PHAX = One
+                    }
+                    ElseIf ((_T_0 == 0x04))
+                    {
+                        SPEX = 0x007A1200
+                        PHAX = Zero
+                    }
+                    ElseIf ((_T_0 == 0x05))
+                    {
+                        SPEX = 0x00F42400
+                        PHAX = Zero
+                    }
+                    ElseIf ((_T_0 == 0x06))
+                    {
+                        SPEX = 0x002DC6C0
+                        PHAX = Zero
+                    }
                     Else
                     {
-                        If ((_T_0 == 0x02))
-                        {
-                            SPEX = 0x002DC6C0
-                            PHAX = Zero
-                        }
-                        Else
-                        {
-                            If ((_T_0 == 0x03))
-                            {
-                                SPEX = 0x007A1200
-                                PHAX = One
-                            }
-                            Else
-                            {
-                                If ((_T_0 == 0x04))
-                                {
-                                    SPEX = 0x007A1200
-                                    PHAX = Zero
-                                }
-                                Else
-                                {
-                                    If ((_T_0 == 0x05))
-                                    {
-                                        SPEX = 0x00F42400
-                                        PHAX = Zero
-                                    }
-                                    Else
-                                    {
-                                        If ((_T_0 == 0x06))
-                                        {
-                                            SPEX = 0x002DC6C0
-                                            PHAX = Zero
-                                        }
-                                        Else
-                                        {
-                                        }
-                                    }
-                                }
-                            }
-                        }
                     }
 
                     Break
@@ -15423,14 +15058,14 @@ DefinitionBlock ("dsdt.aml", "DSDT", 2, "ALASKA", "A M I ", 0x01072009)
             })
             Method (W3DC, 4, NotSerialized)
             {
-                Index (DerefOf (Index (DerefOf (Index (CACH, Arg0)), Arg1)), Arg2
-                    ) = Arg3
+                DerefOf (DerefOf (CACH [Arg0]) [Arg1]) [Arg2]
+                     = Arg3
             }
 
             Method (R3DC, 3, NotSerialized)
             {
-                Return (DerefOf (Index (DerefOf (Index (DerefOf (Index (CACH, Arg0)), Arg1)), 
-                    Arg2)))
+                Return (DerefOf (DerefOf (DerefOf (CACH [Arg0]) [Arg1]) [
+                    Arg2]))
             }
 
             Method (WREG, 4, Serialized)
@@ -15732,7 +15367,7 @@ DefinitionBlock ("dsdt.aml", "DSDT", 2, "ALASKA", "A M I ", 0x01072009)
 
                 PS0 (SB1X)
                 Divide (Arg2, PPR, PINN, REGN) /* \_SB_.PCI0.GEXP.CSER.REGN */
-                REGA = DerefOf (Index (Local0, REGN))
+                REGA = DerefOf (Local0 [REGN])
                 OLDV = RREG (SB0X, Arg1, REGA)
                 If ((Arg4 == 0x02))
                 {
@@ -15760,7 +15395,7 @@ DefinitionBlock ("dsdt.aml", "DSDT", 2, "ALASKA", "A M I ", 0x01072009)
         {
             Zero
         })
-        Index (PKG, Zero) = Arg0
+        PKG [Zero] = Arg0
         Return (PKG) /* \PKG1.PKG_ */
     }
 
@@ -15772,9 +15407,9 @@ DefinitionBlock ("dsdt.aml", "DSDT", 2, "ALASKA", "A M I ", 0x01072009)
             Zero, 
             Zero
         })
-        Index (PKG, Zero) = Arg0
-        Index (PKG, One) = Arg1
-        Index (PKG, 0x02) = Arg2
+        PKG [Zero] = Arg0
+        PKG [One] = Arg1
+        PKG [0x02] = Arg2
         Return (PKG) /* \PKG3.PKG_ */
     }
 
@@ -15900,25 +15535,19 @@ DefinitionBlock ("dsdt.aml", "DSDT", 2, "ALASKA", "A M I ", 0x01072009)
                                          0x21                                             /* ! */
                                     })
                                 }
-                                Else
+                                ElseIf ((_T_0 == 0x05))
                                 {
-                                    If ((_T_0 == 0x05))
+                                    Return (Buffer (One)
                                     {
-                                        Return (Buffer (One)
-                                        {
-                                             0x03                                             /* . */
-                                        })
-                                    }
-                                    Else
+                                         0x03                                             /* . */
+                                    })
+                                }
+                                ElseIf ((_T_0 == 0x06))
+                                {
+                                    Return (Buffer (One)
                                     {
-                                        If ((_T_0 == 0x06))
-                                        {
-                                            Return (Buffer (One)
-                                            {
-                                                 0x05                                             /* . */
-                                            })
-                                        }
-                                    }
+                                         0x05                                             /* . */
+                                    })
                                 }
 
                                 Break
@@ -16003,27 +15632,21 @@ DefinitionBlock ("dsdt.aml", "DSDT", 2, "ALASKA", "A M I ", 0x01072009)
                                          0x19                                             /* . */
                                     })
                                 }
-                                Else
+                                ElseIf ((_T_0 == 0x03))
                                 {
-                                    If ((_T_0 == 0x03))
+                                    Sleep (0x64)
+                                    Return (Buffer (One)
                                     {
-                                        Sleep (0x64)
-                                        Return (Buffer (One)
-                                        {
-                                             0x00                                             /* . */
-                                        })
-                                    }
-                                    Else
+                                         0x00                                             /* . */
+                                    })
+                                }
+                                ElseIf ((_T_0 == 0x04))
+                                {
+                                    Sleep (0x64)
+                                    Return (Buffer (One)
                                     {
-                                        If ((_T_0 == 0x04))
-                                        {
-                                            Sleep (0x64)
-                                            Return (Buffer (One)
-                                            {
-                                                 0x00                                             /* . */
-                                            })
-                                        }
-                                    }
+                                         0x00                                             /* . */
+                                    })
                                 }
 
                                 Break
@@ -16123,16 +15746,13 @@ DefinitionBlock ("dsdt.aml", "DSDT", 2, "ALASKA", "A M I ", 0x01072009)
                                      0x03                                             /* . */
                                 })
                             }
-                            Else
+                            ElseIf ((_T_0 == One))
                             {
-                                If ((_T_0 == One))
+                                While (One)
                                 {
-                                    While (One)
-                                    {
-                                        _T_1 = DerefOf (Index (Arg3, Zero))
-                                        If ((_T_1 == Zero)) {}
-                                        Break
-                                    }
+                                    _T_1 = DerefOf (Arg3 [Zero])
+                                    If ((_T_1 == Zero)) {}
+                                    Break
                                 }
                             }
 
@@ -16690,12 +16310,9 @@ DefinitionBlock ("dsdt.aml", "DSDT", 2, "ALASKA", "A M I ", 0x01072009)
                     OSYS = 0x07DF
                 }
             }
-            Else
+            ElseIf (MCTH (_OS, "Linux"))
             {
-                If (MCTH (_OS, "Linux"))
-                {
-                    OSYS = 0x03E8
-                }
+                OSYS = 0x03E8
             }
 
             If (CondRefOf (\_PR.DTSE))
@@ -16722,8 +16339,8 @@ DefinitionBlock ("dsdt.aml", "DSDT", 2, "ALASKA", "A M I ", 0x01072009)
             While (Local0)
             {
                 Local0--
-                If ((DerefOf (Index (BUF0, Local0)) != DerefOf (Index (BUF1, Local0
-                    ))))
+                If ((DerefOf (BUF0 [Local0]) != DerefOf (BUF1 [Local0]
+                    )))
                 {
                     Return (Zero)
                 }
@@ -16831,19 +16448,19 @@ DefinitionBlock ("dsdt.aml", "DSDT", 2, "ALASKA", "A M I ", 0x01072009)
         })
         Method (GPRW, 2, NotSerialized)
         {
-            Index (PRWP, Zero) = Arg0
+            PRWP [Zero] = Arg0
             Local0 = (SS1 << One)
             Local0 |= (SS2 << 0x02)
             Local0 |= (SS3 << 0x03)
             Local0 |= (SS4 << 0x04)
             If (((One << Arg1) & Local0))
             {
-                Index (PRWP, One) = Arg1
+                PRWP [One] = Arg1
             }
             Else
             {
                 Local0 >>= One
-                FindSetLeftBit (Local0, Index (PRWP, One))
+                FindSetLeftBit (Local0, PRWP [One])
             }
 
             Return (PRWP) /* \PRWP */
@@ -16959,21 +16576,18 @@ DefinitionBlock ("dsdt.aml", "DSDT", 2, "ALASKA", "A M I ", 0x01072009)
                                      0x02                                             /* . */
                                 })
                             }
-                            Else
+                            ElseIf ((_T_0 == One))
                             {
-                                If ((_T_0 == One))
-                                {
-                                    Index (BUFX, Zero) = SEC0 /* \SEC0 */
-                                    Index (BUFX, One) = SEC1 /* \SEC1 */
-                                    Index (BUFX, 0x02) = SEC2 /* \SEC2 */
-                                    Index (BUFX, 0x03) = SEC3 /* \SEC3 */
-                                    Index (BUFX, 0x04) = SEC4 /* \SEC4 */
-                                    Index (BUFX, 0x05) = SEC5 /* \SEC5 */
-                                    Index (BUFX, 0x06) = SEC6 /* \SEC6 */
-                                    Index (BUFX, 0x07) = SEC7 /* \SEC7 */
-                                    Index (BUFX, 0x08) = SEC8 /* \SEC8 */
-                                    Return (BUFX) /* \_SB_.EPC_._DSM.BUFX */
-                                }
+                                BUFX [Zero] = SEC0 /* \SEC0 */
+                                BUFX [One] = SEC1 /* \SEC1 */
+                                BUFX [0x02] = SEC2 /* \SEC2 */
+                                BUFX [0x03] = SEC3 /* \SEC3 */
+                                BUFX [0x04] = SEC4 /* \SEC4 */
+                                BUFX [0x05] = SEC5 /* \SEC5 */
+                                BUFX [0x06] = SEC6 /* \SEC6 */
+                                BUFX [0x07] = SEC7 /* \SEC7 */
+                                BUFX [0x08] = SEC8 /* \SEC8 */
+                                Return (BUFX) /* \_SB_.EPC_._DSM.BUFX */
                             }
 
                             Break
@@ -17064,54 +16678,33 @@ DefinitionBlock ("dsdt.aml", "DSDT", 2, "ALASKA", "A M I ", 0x01072009)
             {
                 Local0 = Zero
             }
-            Else
+            ElseIf ((_T_0 == 0x02F8))
             {
-                If ((_T_0 == 0x02F8))
-                {
-                    Local0 = One
-                }
-                Else
-                {
-                    If ((_T_0 == 0x0220))
-                    {
-                        Local0 = 0x02
-                    }
-                    Else
-                    {
-                        If ((_T_0 == 0x0228))
-                        {
-                            Local0 = 0x03
-                        }
-                        Else
-                        {
-                            If ((_T_0 == 0x0238))
-                            {
-                                Local0 = 0x04
-                            }
-                            Else
-                            {
-                                If ((_T_0 == 0x02E8))
-                                {
-                                    Local0 = 0x05
-                                }
-                                Else
-                                {
-                                    If ((_T_0 == 0x0338))
-                                    {
-                                        Local0 = 0x06
-                                    }
-                                    Else
-                                    {
-                                        If ((_T_0 == 0x03E8))
-                                        {
-                                            Local0 = 0x07
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
+                Local0 = One
+            }
+            ElseIf ((_T_0 == 0x0220))
+            {
+                Local0 = 0x02
+            }
+            ElseIf ((_T_0 == 0x0228))
+            {
+                Local0 = 0x03
+            }
+            ElseIf ((_T_0 == 0x0238))
+            {
+                Local0 = 0x04
+            }
+            ElseIf ((_T_0 == 0x02E8))
+            {
+                Local0 = 0x05
+            }
+            ElseIf ((_T_0 == 0x0338))
+            {
+                Local0 = 0x06
+            }
+            ElseIf ((_T_0 == 0x03E8))
+            {
+                Local0 = 0x07
             }
 
             Break
@@ -17140,217 +16733,190 @@ DefinitionBlock ("dsdt.aml", "DSDT", 2, "ALASKA", "A M I ", 0x01072009)
                     CALE = One
                 }
             }
-            Else
+            ElseIf ((_T_0 == One))
             {
-                If ((_T_0 == One))
+                CBLE = Zero
+                Local0 = UXDV (Arg2)
+                If ((Local0 != 0xFF))
                 {
-                    CBLE = Zero
-                    Local0 = UXDV (Arg2)
-                    If ((Local0 != 0xFF))
-                    {
-                        CBDR = Local0
-                    }
+                    CBDR = Local0
+                }
 
+                If (Arg1)
+                {
+                    CBLE = One
+                }
+            }
+            ElseIf ((_T_0 == 0x02))
+            {
+                LTLE = Zero
+                If ((Arg2 == 0x0378))
+                {
+                    LTDR = Zero
+                }
+
+                If ((Arg2 == 0x0278))
+                {
+                    LTDR = One
+                }
+
+                If ((Arg2 == 0x03BC))
+                {
+                    LTDR = 0x02
+                }
+
+                If (Arg1)
+                {
+                    LTLE = One
+                }
+            }
+            ElseIf ((_T_0 == 0x03))
+            {
+                FDLE = Zero
+                If ((Arg2 == 0x03F0))
+                {
+                    FDDR = Zero
+                }
+
+                If ((Arg2 == 0x0370))
+                {
+                    FDDR = One
+                }
+
+                If (Arg1)
+                {
+                    FDLE = One
+                }
+            }
+            ElseIf ((_T_0 == 0x08))
+            {
+                If ((Arg2 == 0x0200))
+                {
                     If (Arg1)
                     {
-                        CBLE = One
-                    }
-                }
-                Else
-                {
-                    If ((_T_0 == 0x02))
-                    {
-                        LTLE = Zero
-                        If ((Arg2 == 0x0378))
-                        {
-                            LTDR = Zero
-                        }
-
-                        If ((Arg2 == 0x0278))
-                        {
-                            LTDR = One
-                        }
-
-                        If ((Arg2 == 0x03BC))
-                        {
-                            LTDR = 0x02
-                        }
-
-                        If (Arg1)
-                        {
-                            LTLE = One
-                        }
+                        GLLE = One
                     }
                     Else
                     {
-                        If ((_T_0 == 0x03))
-                        {
-                            FDLE = Zero
-                            If ((Arg2 == 0x03F0))
-                            {
-                                FDDR = Zero
-                            }
+                        GLLE = Zero
+                    }
+                }
 
-                            If ((Arg2 == 0x0370))
-                            {
-                                FDDR = One
-                            }
+                If ((Arg2 == 0x0208))
+                {
+                    If (Arg1)
+                    {
+                        GHLE = One
+                    }
+                    Else
+                    {
+                        GHLE = Zero
+                    }
+                }
+            }
+            ElseIf ((_T_0 == 0x09))
+            {
+                If ((Arg2 == 0x0200))
+                {
+                    If (Arg1)
+                    {
+                        GLLE = One
+                    }
+                    Else
+                    {
+                        GLLE = Zero
+                    }
+                }
 
-                            If (Arg1)
-                            {
-                                FDLE = One
-                            }
-                        }
-                        Else
-                        {
-                            If ((_T_0 == 0x08))
-                            {
-                                If ((Arg2 == 0x0200))
-                                {
-                                    If (Arg1)
-                                    {
-                                        GLLE = One
-                                    }
-                                    Else
-                                    {
-                                        GLLE = Zero
-                                    }
-                                }
+                If ((Arg2 == 0x0208))
+                {
+                    If (Arg1)
+                    {
+                        GHLE = One
+                    }
+                    Else
+                    {
+                        GHLE = Zero
+                    }
+                }
+            }
+            ElseIf ((_T_0 == 0x0A))
+            {
+                If (((Arg2 == 0x60) || (Arg2 == 0x64)))
+                {
+                    If (Arg1)
+                    {
+                        KCLE = One
+                    }
+                    Else
+                    {
+                        KCLE = Zero
+                    }
+                }
+            }
+            ElseIf ((_T_0 == 0x0B))
+            {
+                If (((Arg2 == 0x62) || (Arg2 == 0x66)))
+                {
+                    If (Arg1)
+                    {
+                        MCLE = One
+                    }
+                    Else
+                    {
+                        MCLE = Zero
+                    }
+                }
+            }
+            ElseIf ((_T_0 == 0x0C))
+            {
+                If ((Arg2 == 0x2E))
+                {
+                    If (Arg1)
+                    {
+                        C1LE = One
+                    }
+                    Else
+                    {
+                        C1LE = Zero
+                    }
+                }
 
-                                If ((Arg2 == 0x0208))
-                                {
-                                    If (Arg1)
-                                    {
-                                        GHLE = One
-                                    }
-                                    Else
-                                    {
-                                        GHLE = Zero
-                                    }
-                                }
-                            }
-                            Else
-                            {
-                                If ((_T_0 == 0x09))
-                                {
-                                    If ((Arg2 == 0x0200))
-                                    {
-                                        If (Arg1)
-                                        {
-                                            GLLE = One
-                                        }
-                                        Else
-                                        {
-                                            GLLE = Zero
-                                        }
-                                    }
+                If ((Arg2 == 0x4E))
+                {
+                    If (Arg1)
+                    {
+                        C2LE = One
+                    }
+                    Else
+                    {
+                        C2LE = Zero
+                    }
+                }
+            }
+            ElseIf ((_T_0 == 0x0D))
+            {
+                If ((Arg2 == 0x2E))
+                {
+                    If (Arg1)
+                    {
+                        C1LE = One
+                    }
+                    Else
+                    {
+                        C1LE = Zero
+                    }
+                }
 
-                                    If ((Arg2 == 0x0208))
-                                    {
-                                        If (Arg1)
-                                        {
-                                            GHLE = One
-                                        }
-                                        Else
-                                        {
-                                            GHLE = Zero
-                                        }
-                                    }
-                                }
-                                Else
-                                {
-                                    If ((_T_0 == 0x0A))
-                                    {
-                                        If (((Arg2 == 0x60) || (Arg2 == 0x64)))
-                                        {
-                                            If (Arg1)
-                                            {
-                                                KCLE = One
-                                            }
-                                            Else
-                                            {
-                                                KCLE = Zero
-                                            }
-                                        }
-                                    }
-                                    Else
-                                    {
-                                        If ((_T_0 == 0x0B))
-                                        {
-                                            If (((Arg2 == 0x62) || (Arg2 == 0x66)))
-                                            {
-                                                If (Arg1)
-                                                {
-                                                    MCLE = One
-                                                }
-                                                Else
-                                                {
-                                                    MCLE = Zero
-                                                }
-                                            }
-                                        }
-                                        Else
-                                        {
-                                            If ((_T_0 == 0x0C))
-                                            {
-                                                If ((Arg2 == 0x2E))
-                                                {
-                                                    If (Arg1)
-                                                    {
-                                                        C1LE = One
-                                                    }
-                                                    Else
-                                                    {
-                                                        C1LE = Zero
-                                                    }
-                                                }
-
-                                                If ((Arg2 == 0x4E))
-                                                {
-                                                    If (Arg1)
-                                                    {
-                                                        C2LE = One
-                                                    }
-                                                    Else
-                                                    {
-                                                        C2LE = Zero
-                                                    }
-                                                }
-                                            }
-                                            Else
-                                            {
-                                                If ((_T_0 == 0x0D))
-                                                {
-                                                    If ((Arg2 == 0x2E))
-                                                    {
-                                                        If (Arg1)
-                                                        {
-                                                            C1LE = One
-                                                        }
-                                                        Else
-                                                        {
-                                                            C1LE = Zero
-                                                        }
-                                                    }
-
-                                                    If ((Arg2 == 0x4E))
-                                                    {
-                                                        If (Arg1)
-                                                        {
-                                                            C2LE = One
-                                                        }
-                                                        Else
-                                                        {
-                                                            C2LE = Zero
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
+                If ((Arg2 == 0x4E))
+                {
+                    If (Arg1)
+                    {
+                        C2LE = One
+                    }
+                    Else
+                    {
+                        C2LE = Zero
                     }
                 }
             }
@@ -21053,206 +20619,206 @@ DefinitionBlock ("dsdt.aml", "DSDT", 2, "ALASKA", "A M I ", 0x01072009)
                         {
                             If ((SPST & 0x0F))
                             {
-                                Index (DerefOf (Index (DEVY, 0x05)), One) = One
+                                DerefOf (DEVY [0x05]) [One] = One
                             }
 
                             If (CondRefOf (\_SB.PCI0.RP01.PXSX))
                             {
                                 If ((^^PCI0.RP01.PXSX.PAHC () || ^^PCI0.RP01.PXSX.PNVM ()))
                                 {
-                                    Index (DerefOf (Index (DEVY, 0x15)), One) = One
+                                    DerefOf (DEVY [0x15]) [One] = One
                                 }
                             }
 
                             If ((^^PCI0.RP02.PXSX.PAHC () || ^^PCI0.RP02.PXSX.PNVM ()))
                             {
-                                Index (DerefOf (Index (DEVY, 0x16)), One) = One
+                                DerefOf (DEVY [0x16]) [One] = One
                             }
 
                             If ((^^PCI0.RP03.PXSX.PAHC () || ^^PCI0.RP03.PXSX.PNVM ()))
                             {
-                                Index (DerefOf (Index (DEVY, 0x17)), One) = One
+                                DerefOf (DEVY [0x17]) [One] = One
                             }
 
                             If ((^^PCI0.RP04.PXSX.PAHC () || ^^PCI0.RP04.PXSX.PNVM ()))
                             {
-                                Index (DerefOf (Index (DEVY, 0x18)), One) = One
+                                DerefOf (DEVY [0x18]) [One] = One
                             }
 
                             If (CondRefOf (\_SB.PCI0.RP05.PXSX))
                             {
                                 If ((^^PCI0.RP05.PXSX.PAHC () || ^^PCI0.RP05.PXSX.PNVM ()))
                                 {
-                                    Index (DerefOf (Index (DEVY, 0x19)), One) = One
+                                    DerefOf (DEVY [0x19]) [One] = One
                                 }
                             }
 
                             If ((^^PCI0.RP06.PXSX.PAHC () || ^^PCI0.RP06.PXSX.PNVM ()))
                             {
-                                Index (DerefOf (Index (DEVY, 0x1A)), One) = One
+                                DerefOf (DEVY [0x1A]) [One] = One
                             }
 
                             If ((^^PCI0.RP07.PXSX.PAHC () || ^^PCI0.RP07.PXSX.PNVM ()))
                             {
-                                Index (DerefOf (Index (DEVY, 0x1B)), One) = One
+                                DerefOf (DEVY [0x1B]) [One] = One
                             }
 
                             If ((^^PCI0.RP08.PXSX.PAHC () || ^^PCI0.RP08.PXSX.PNVM ()))
                             {
-                                Index (DerefOf (Index (DEVY, 0x1C)), One) = One
+                                DerefOf (DEVY [0x1C]) [One] = One
                             }
 
                             If (CondRefOf (\_SB.PCI0.RP09.PXSX))
                             {
                                 If ((^^PCI0.RP09.PXSX.PAHC () || ^^PCI0.RP09.PXSX.PNVM ()))
                                 {
-                                    Index (DerefOf (Index (DEVY, 0x1D)), One) = One
+                                    DerefOf (DEVY [0x1D]) [One] = One
                                 }
                             }
 
                             If ((^^PCI0.RP10.PXSX.PAHC () || ^^PCI0.RP10.PXSX.PNVM ()))
                             {
-                                Index (DerefOf (Index (DEVY, 0x1E)), One) = One
+                                DerefOf (DEVY [0x1E]) [One] = One
                             }
 
                             If ((^^PCI0.RP11.PXSX.PAHC () || ^^PCI0.RP11.PXSX.PNVM ()))
                             {
-                                Index (DerefOf (Index (DEVY, 0x1F)), One) = One
+                                DerefOf (DEVY [0x1F]) [One] = One
                             }
 
                             If ((^^PCI0.RP12.PXSX.PAHC () || ^^PCI0.RP12.PXSX.PNVM ()))
                             {
-                                Index (DerefOf (Index (DEVY, 0x20)), One) = One
+                                DerefOf (DEVY [0x20]) [One] = One
                             }
 
                             If ((^^PCI0.RP13.PXSX.PAHC () || ^^PCI0.RP13.PXSX.PNVM ()))
                             {
-                                Index (DerefOf (Index (DEVY, 0x21)), One) = One
+                                DerefOf (DEVY [0x21]) [One] = One
                             }
 
                             If ((^^PCI0.RP14.PXSX.PAHC () || ^^PCI0.RP14.PXSX.PNVM ()))
                             {
-                                Index (DerefOf (Index (DEVY, 0x22)), One) = One
+                                DerefOf (DEVY [0x22]) [One] = One
                             }
 
                             If ((^^PCI0.RP15.PXSX.PAHC () || ^^PCI0.RP15.PXSX.PNVM ()))
                             {
-                                Index (DerefOf (Index (DEVY, 0x23)), One) = One
+                                DerefOf (DEVY [0x23]) [One] = One
                             }
 
                             If ((^^PCI0.RP16.PXSX.PAHC () || ^^PCI0.RP16.PXSX.PNVM ()))
                             {
-                                Index (DerefOf (Index (DEVY, 0x24)), One) = One
+                                DerefOf (DEVY [0x24]) [One] = One
                             }
 
                             If ((^^PCI0.RP17.PXSX.PAHC () || ^^PCI0.RP17.PXSX.PNVM ()))
                             {
-                                Index (DerefOf (Index (DEVY, 0x25)), One) = One
+                                DerefOf (DEVY [0x25]) [One] = One
                             }
 
                             If ((^^PCI0.RP18.PXSX.PAHC () || ^^PCI0.RP18.PXSX.PNVM ()))
                             {
-                                Index (DerefOf (Index (DEVY, 0x26)), One) = One
+                                DerefOf (DEVY [0x26]) [One] = One
                             }
 
                             If ((^^PCI0.RP19.PXSX.PAHC () || ^^PCI0.RP19.PXSX.PNVM ()))
                             {
-                                Index (DerefOf (Index (DEVY, 0x27)), One) = One
+                                DerefOf (DEVY [0x27]) [One] = One
                             }
 
                             If ((^^PCI0.RP20.PXSX.PAHC () || ^^PCI0.RP20.PXSX.PNVM ()))
                             {
-                                Index (DerefOf (Index (DEVY, 0x28)), One) = One
+                                DerefOf (DEVY [0x28]) [One] = One
                             }
                         }
 
                         If (((PEPC & 0x04) == Zero))
                         {
-                            Index (DerefOf (Index (DEVY, 0x06)), One) = Zero
+                            DerefOf (DEVY [0x06]) [One] = Zero
                         }
 
                         If (((PEPC & 0x08) == Zero))
                         {
-                            Index (DerefOf (Index (DEVY, 0x07)), One) = Zero
+                            DerefOf (DEVY [0x07]) [One] = Zero
                         }
 
                         If (((PEPC & 0x10) == Zero)) {}
                         If (((PEPC & 0x20) == Zero))
                         {
-                            Index (DerefOf (Index (DEVY, 0x08)), One) = Zero
+                            DerefOf (DEVY [0x08]) [One] = Zero
                         }
 
                         If (((PEPC & 0x40) == Zero))
                         {
-                            Index (DerefOf (Index (DEVY, 0x09)), One) = Zero
+                            DerefOf (DEVY [0x09]) [One] = Zero
                         }
 
                         If (((PEPC & 0x80) == Zero))
                         {
-                            Index (DerefOf (Index (DEVY, 0x0A)), One) = Zero
+                            DerefOf (DEVY [0x0A]) [One] = Zero
                         }
 
                         If (((PEPC & 0x0100) == Zero))
                         {
-                            Index (DerefOf (Index (DEVY, 0x0B)), One) = Zero
+                            DerefOf (DEVY [0x0B]) [One] = Zero
                         }
 
                         If (((PEPC & 0x0200) == Zero))
                         {
-                            Index (DerefOf (Index (DEVY, 0x04)), One) = Zero
+                            DerefOf (DEVY [0x04]) [One] = Zero
                         }
 
                         If (((PEPC & 0x0400) == Zero))
                         {
-                            Index (DerefOf (Index (DEVY, Zero)), One) = Zero
-                            Index (DerefOf (Index (DEVY, One)), One) = Zero
-                            Index (DerefOf (Index (DEVY, 0x02)), One) = Zero
-                            Index (DerefOf (Index (DEVY, 0x03)), One) = Zero
+                            DerefOf (DEVY [Zero]) [One] = Zero
+                            DerefOf (DEVY [One]) [One] = Zero
+                            DerefOf (DEVY [0x02]) [One] = Zero
+                            DerefOf (DEVY [0x03]) [One] = Zero
                         }
 
                         If (((PEPC & 0x0800) == Zero))
                         {
-                            Index (DerefOf (Index (DEVY, 0x0C)), One) = Zero
+                            DerefOf (DEVY [0x0C]) [One] = Zero
                         }
 
                         If (((PEPC & 0x1000) == Zero))
                         {
-                            Index (DerefOf (Index (DEVY, 0x0D)), One) = Zero
+                            DerefOf (DEVY [0x0D]) [One] = Zero
                         }
 
                         If (((PEPC & 0x2000) == Zero))
                         {
-                            Index (DerefOf (Index (DEVY, 0x0E)), One) = Zero
+                            DerefOf (DEVY [0x0E]) [One] = Zero
                         }
 
                         If (((PEPC & 0x4000) == Zero))
                         {
-                            Index (DerefOf (Index (DEVY, 0x0F)), One) = Zero
+                            DerefOf (DEVY [0x0F]) [One] = Zero
                         }
 
                         If (((PEPC & 0x8000) == Zero))
                         {
-                            Index (DerefOf (Index (DEVY, 0x10)), One) = Zero
+                            DerefOf (DEVY [0x10]) [One] = Zero
                         }
 
                         If (((PEPC & 0x00010000) == Zero))
                         {
-                            Index (DerefOf (Index (DEVY, 0x11)), One) = Zero
+                            DerefOf (DEVY [0x11]) [One] = Zero
                         }
 
                         If (((PEPC & 0x00020000) == Zero))
                         {
-                            Index (DerefOf (Index (DEVY, 0x12)), One) = Zero
+                            DerefOf (DEVY [0x12]) [One] = Zero
                         }
 
                         If (((PEPC & 0x00040000) == Zero))
                         {
-                            Index (DerefOf (Index (DEVY, 0x13)), One) = Zero
+                            DerefOf (DEVY [0x13]) [One] = Zero
                         }
 
                         If (((PEPC & 0x00080000) == Zero))
                         {
-                            Index (DerefOf (Index (DEVY, 0x14)), One) = Zero
+                            DerefOf (DEVY [0x14]) [One] = Zero
                         }
 
                         If ((OSYS >= 0x07DF))
@@ -21296,16 +20862,13 @@ DefinitionBlock ("dsdt.aml", "DSDT", 2, "ALASKA", "A M I ", 0x01072009)
             {
                 Return (0x01013469)
             }
+            ElseIf ((TTDP == Zero))
+            {
+                Return (0x310CD041)
+            }
             Else
             {
-                If ((TTDP == Zero))
-                {
-                    Return (0x310CD041)
-                }
-                Else
-                {
-                    Return ("MSFT0101")
-                }
+                Return ("MSFT0101")
             }
         }
 
@@ -21361,36 +20924,27 @@ DefinitionBlock ("dsdt.aml", "DSDT", 2, "ALASKA", "A M I ", 0x01072009)
                 LTFC = 0x1000
                 Return (CRST) /* \_SB_.TPM_.CRST */
             }
-            Else
+            ElseIf ((DTPT == One))
             {
-                If ((DTPT == One))
-                {
-                    CreateDWordField (CRSD, \_SB.TPM._Y30._BAS, MTFE)  // _BAS: Base Address
-                    CreateDWordField (CRSD, \_SB.TPM._Y30._LEN, LTFE)  // _LEN: Length
-                    MTFE = 0xFED40000
-                    LTFE = 0x0880
-                    Return (CRSD) /* \_SB_.TPM_.CRSD */
-                }
-                Else
-                {
-                    If ((TTPF == One))
-                    {
-                        CreateDWordField (CRSI, \_SB.TPM._Y31._BAS, MTFD)  // _BAS: Base Address
-                        CreateDWordField (CRSI, \_SB.TPM._Y31._LEN, LTFD)  // _LEN: Length
-                        MTFD = 0xFED40000
-                        LTFD = 0x5000
-                        Return (CRSI) /* \_SB_.TPM_.CRSI */
-                    }
-                    Else
-                    {
-                        If ((TTPF == Zero))
-                        {
-                            CreateDWordField (CRSI, \_SB.TPM._Y31._BAS, MTFF)  // _BAS: Base Address
-                            MTFF = TPMM /* \TPMM */
-                            Return (CRSI) /* \_SB_.TPM_.CRSI */
-                        }
-                    }
-                }
+                CreateDWordField (CRSD, \_SB.TPM._Y30._BAS, MTFE)  // _BAS: Base Address
+                CreateDWordField (CRSD, \_SB.TPM._Y30._LEN, LTFE)  // _LEN: Length
+                MTFE = 0xFED40000
+                LTFE = 0x0880
+                Return (CRSD) /* \_SB_.TPM_.CRSD */
+            }
+            ElseIf ((TTPF == One))
+            {
+                CreateDWordField (CRSI, \_SB.TPM._Y31._BAS, MTFD)  // _BAS: Base Address
+                CreateDWordField (CRSI, \_SB.TPM._Y31._LEN, LTFD)  // _LEN: Length
+                MTFD = 0xFED40000
+                LTFD = 0x5000
+                Return (CRSI) /* \_SB_.TPM_.CRSI */
+            }
+            ElseIf ((TTPF == Zero))
+            {
+                CreateDWordField (CRSI, \_SB.TPM._Y31._BAS, MTFF)  // _BAS: Base Address
+                MTFF = TPMM /* \TPMM */
+                Return (CRSI) /* \_SB_.TPM_.CRSI */
             }
         }
 
@@ -21427,17 +20981,14 @@ DefinitionBlock ("dsdt.aml", "DSDT", 2, "ALASKA", "A M I ", 0x01072009)
 
                 Return (Zero)
             }
-            Else
+            ElseIf ((TTDP == One))
             {
-                If ((TTDP == One))
+                If (TPMF)
                 {
-                    If (TPMF)
-                    {
-                        Return (0x0F)
-                    }
-
-                    Return (Zero)
+                    Return (0x0F)
                 }
+
+                Return (Zero)
             }
         }
 
@@ -21464,39 +21015,31 @@ DefinitionBlock ("dsdt.aml", "DSDT", 2, "ALASKA", "A M I ", 0x01072009)
                          0x03                                             /* . */
                     })
                 }
-                Else
+                ElseIf ((_T_0 == One))
                 {
-                    If ((_T_0 == One))
+                    TIMR = Zero
+                    If ((AMDT == One))
                     {
-                        TIMR = Zero
-                        If ((AMDT == One))
+                        While (((BEGN == One) && (TIMR < 0x0200)))
                         {
-                            While (((BEGN == One) && (TIMR < 0x0200)))
+                            If ((BEGN == One))
                             {
-                                If ((BEGN == One))
-                                {
-                                    Sleep (One)
-                                    TIMR++
-                                }
+                                Sleep (One)
+                                TIMR++
                             }
-
-                            Return (Zero)
                         }
-                        Else
-                        {
-                            If ((((HSTS & 0x02) | (HSTS & One)) == 
-                                0x03))
-                            {
-                                HCMD = One
-                            }
-                            Else
-                            {
-                                FERR = One
-                                BEGN = Zero
-                            }
 
-                            Return (Zero)
-                        }
+                        Return (Zero)
+                    }
+                    ElseIf ((((HSTS & 0x02) | (HSTS & One)
+                        ) == 0x03))
+                    {
+                        HCMD = One
+                    }
+                    Else
+                    {
+                        FERR = One
+                        BEGN = Zero
                     }
                 }
 
@@ -21519,29 +21062,26 @@ DefinitionBlock ("dsdt.aml", "DSDT", 2, "ALASKA", "A M I ", 0x01072009)
                          0x03                                             /* . */
                     })
                 }
-                Else
+                ElseIf ((_T_0 == One))
                 {
-                    If ((_T_0 == One))
+                    Name (TPMV, Package (0x02)
                     {
-                        Name (TPMV, Package (0x02)
+                        One, 
+                        Package (0x02)
                         {
                             One, 
-                            Package (0x02)
-                            {
-                                One, 
-                                0x20
-                            }
-                        })
-                        If ((_STA () == Zero))
-                        {
-                            Return (Package (0x01)
-                            {
-                                Zero
-                            })
+                            0x20
                         }
-
-                        Return (TPMV) /* \_SB_.TPM_.CRYF.TPMV */
+                    })
+                    If ((_STA () == Zero))
+                    {
+                        Return (Package (0x01)
+                        {
+                            Zero
+                        })
                     }
+
+                    Return (TPMV) /* \_SB_.TPM_.CRYF.TPMV */
                 }
 
                 Break
@@ -21578,256 +21118,223 @@ DefinitionBlock ("dsdt.aml", "DSDT", 2, "ALASKA", "A M I ", 0x01072009)
                              0xFF, 0x01                                       /* .. */
                         })
                     }
-                    Else
+                    ElseIf ((_T_0 == One))
                     {
-                        If ((_T_0 == One))
+                        Return ("1.2")
+                    }
+                    ElseIf ((_T_0 == 0x02))
+                    {
+                        ToInteger (DerefOf (Arg3 [Zero]), TMF2) /* \TMF2 */
+                        TMF1 = OFST /* \OFST */
+                        TMF1 |= 0x1200 /* \TMF1 */
+                        SMI = TMF1 /* \TMF1 */
+                        TMF1 = SMI /* \_SB_.TPM_.SMI_ */
+                        TMF1 >>= 0x08
+                        If ((TMF1 == 0xFF))
                         {
-                            Return ("1.2")
+                            Return (0x02)
+                        }
+
+                        TMF2 <<= 0x08
+                        TMF2 |= OFST /* \TMF2 */
+                        SMI = TMF2 /* \TMF2 */
+                        TMF1 = SMI /* \_SB_.TPM_.SMI_ */
+                        TMF1 >>= 0x08
+                        If ((TMF1 == 0xFF))
+                        {
+                            Return (0x02)
+                        }
+
+                        If ((TMF1 == 0xFF))
+                        {
+                            Return (One)
+                        }
+
+                        Return (Zero)
+                    }
+                    ElseIf ((_T_0 == 0x03))
+                    {
+                        Name (PPI1, Package (0x02)
+                        {
+                            Zero, 
+                            Zero
+                        })
+                        TMF1 = OFST /* \OFST */
+                        TMF1 |= 0x1100 /* \TMF1 */
+                        SMI = TMF1 /* \TMF1 */
+                        TMF1 = SMI /* \_SB_.TPM_.SMI_ */
+                        TMF1 >>= 0x08
+                        If ((TMF1 == 0xFF))
+                        {
+                            Return (One)
+                        }
+
+                        PPI1 [One] = TMF1 /* \TMF1 */
+                        Return (PPI1) /* \_SB_.TPM_._DSM.PPI1 */
+                    }
+                    ElseIf ((_T_0 == 0x04))
+                    {
+                        Return (TRST) /* \TRST */
+                    }
+                    ElseIf ((_T_0 == 0x05))
+                    {
+                        Name (PPI2, Package (0x03)
+                        {
+                            Zero, 
+                            Zero, 
+                            Zero
+                        })
+                        TMF1 = OFST /* \OFST */
+                        TMF1 |= 0x2100 /* \TMF1 */
+                        SMI = TMF1 /* \TMF1 */
+                        TMF1 = SMI /* \_SB_.TPM_.SMI_ */
+                        TMF1 >>= 0x08
+                        If ((TMF1 == 0xFF))
+                        {
+                            Return (0x02)
+                        }
+
+                        PPI2 [One] = TMF1 /* \TMF1 */
+                        TMF1 = OFST /* \OFST */
+                        TMF1 |= 0x3100 /* \TMF1 */
+                        SMI = TMF1 /* \TMF1 */
+                        TMF1 = SMI /* \_SB_.TPM_.SMI_ */
+                        TMF1 >>= 0x08
+                        If ((TMF1 == 0xFF))
+                        {
+                            Return (0x02)
+                        }
+
+                        If ((TMF1 == 0xF0))
+                        {
+                            TMF1 = OFST /* \OFST */
+                            TMF1 |= 0x5100 /* \TMF1 */
+                            SMI = TMF1 /* \TMF1 */
+                            TMF1 = SMI /* \_SB_.TPM_.SMI_ */
+                            TMF1 >>= 0x08
+                            If ((TMF1 == 0xFF))
+                            {
+                                PPI2 [0x02] = 0xFFFFFFF0
+                                Return (PPI2) /* \_SB_.TPM_._DSM.PPI2 */
+                            }
+                        }
+                        ElseIf ((TMF1 == 0xF1))
+                        {
+                            TMF1 = OFST /* \OFST */
+                            TMF1 |= 0x5100 /* \TMF1 */
+                            SMI = TMF1 /* \TMF1 */
+                            TMF1 = SMI /* \_SB_.TPM_.SMI_ */
+                            TMF1 >>= 0x08
+                            If ((TMF1 == 0xFF))
+                            {
+                                PPI2 [0x02] = 0xFFFFFFF1
+                                Return (PPI2) /* \_SB_.TPM_._DSM.PPI2 */
+                            }
                         }
                         Else
                         {
-                            If ((_T_0 == 0x02))
-                            {
-                                ToInteger (DerefOf (Index (Arg3, Zero)), TMF2) /* \TMF2 */
-                                TMF1 = OFST /* \OFST */
-                                TMF1 |= 0x1200 /* \TMF1 */
-                                SMI = TMF1 /* \TMF1 */
-                                TMF1 = SMI /* \_SB_.TPM_.SMI_ */
-                                TMF1 >>= 0x08
-                                If ((TMF1 == 0xFF))
-                                {
-                                    Return (0x02)
-                                }
-
-                                TMF2 <<= 0x08
-                                TMF2 |= OFST /* \TMF2 */
-                                SMI = TMF2 /* \TMF2 */
-                                TMF1 = SMI /* \_SB_.TPM_.SMI_ */
-                                TMF1 >>= 0x08
-                                If ((TMF1 == 0xFF))
-                                {
-                                    Return (0x02)
-                                }
-
-                                If ((TMF1 == 0xFF))
-                                {
-                                    Return (One)
-                                }
-
-                                Return (Zero)
-                            }
-                            Else
-                            {
-                                If ((_T_0 == 0x03))
-                                {
-                                    Name (PPI1, Package (0x02)
-                                    {
-                                        Zero, 
-                                        Zero
-                                    })
-                                    TMF1 = OFST /* \OFST */
-                                    TMF1 |= 0x1100 /* \TMF1 */
-                                    SMI = TMF1 /* \TMF1 */
-                                    TMF1 = SMI /* \_SB_.TPM_.SMI_ */
-                                    TMF1 >>= 0x08
-                                    If ((TMF1 == 0xFF))
-                                    {
-                                        Return (One)
-                                    }
-
-                                    Index (PPI1, One) = TMF1 /* \TMF1 */
-                                    Return (PPI1) /* \_SB_.TPM_._DSM.PPI1 */
-                                }
-                                Else
-                                {
-                                    If ((_T_0 == 0x04))
-                                    {
-                                        Return (TRST) /* \TRST */
-                                    }
-                                    Else
-                                    {
-                                        If ((_T_0 == 0x05))
-                                        {
-                                            Name (PPI2, Package (0x03)
-                                            {
-                                                Zero, 
-                                                Zero, 
-                                                Zero
-                                            })
-                                            TMF1 = OFST /* \OFST */
-                                            TMF1 |= 0x2100 /* \TMF1 */
-                                            SMI = TMF1 /* \TMF1 */
-                                            TMF1 = SMI /* \_SB_.TPM_.SMI_ */
-                                            TMF1 >>= 0x08
-                                            If ((TMF1 == 0xFF))
-                                            {
-                                                Return (0x02)
-                                            }
-
-                                            Index (PPI2, One) = TMF1 /* \TMF1 */
-                                            TMF1 = OFST /* \OFST */
-                                            TMF1 |= 0x3100 /* \TMF1 */
-                                            SMI = TMF1 /* \TMF1 */
-                                            TMF1 = SMI /* \_SB_.TPM_.SMI_ */
-                                            TMF1 >>= 0x08
-                                            If ((TMF1 == 0xFF))
-                                            {
-                                                Return (0x02)
-                                            }
-
-                                            If ((TMF1 == 0xF0))
-                                            {
-                                                TMF1 = OFST /* \OFST */
-                                                TMF1 |= 0x5100 /* \TMF1 */
-                                                SMI = TMF1 /* \TMF1 */
-                                                TMF1 = SMI /* \_SB_.TPM_.SMI_ */
-                                                TMF1 >>= 0x08
-                                                If ((TMF1 == 0xFF))
-                                                {
-                                                    Index (PPI2, 0x02) = 0xFFFFFFF0
-                                                    Return (PPI2) /* \_SB_.TPM_._DSM.PPI2 */
-                                                }
-                                            }
-                                            Else
-                                            {
-                                                If ((TMF1 == 0xF1))
-                                                {
-                                                    TMF1 = OFST /* \OFST */
-                                                    TMF1 |= 0x5100 /* \TMF1 */
-                                                    SMI = TMF1 /* \TMF1 */
-                                                    TMF1 = SMI /* \_SB_.TPM_.SMI_ */
-                                                    TMF1 >>= 0x08
-                                                    If ((TMF1 == 0xFF))
-                                                    {
-                                                        Index (PPI2, 0x02) = 0xFFFFFFF1
-                                                        Return (PPI2) /* \_SB_.TPM_._DSM.PPI2 */
-                                                    }
-                                                }
-                                                Else
-                                                {
-                                                    Index (PPI2, 0x02) = TMF1 /* \TMF1 */
-                                                }
-                                            }
-
-                                            Return (PPI2) /* \_SB_.TPM_._DSM.PPI2 */
-                                        }
-                                        Else
-                                        {
-                                            If ((_T_0 == 0x06))
-                                            {
-                                                Return (0x03)
-                                            }
-                                            Else
-                                            {
-                                                If ((_T_0 == 0x07))
-                                                {
-                                                    ToInteger (DerefOf (Index (Arg3, Zero)), TMF2) /* \TMF2 */
-                                                    TMF1 = OFST /* \OFST */
-                                                    TMF1 |= 0x1200 /* \TMF1 */
-                                                    SMI = TMF1 /* \TMF1 */
-                                                    TMF1 = SMI /* \_SB_.TPM_.SMI_ */
-                                                    TMF1 >>= 0x08
-                                                    If ((TMF1 == 0xFF))
-                                                    {
-                                                        Return (0x02)
-                                                    }
-
-                                                    TMF2 <<= 0x08
-                                                    TMF2 |= OFST /* \TMF2 */
-                                                    SMI = TMF2 /* \TMF2 */
-                                                    TMF1 = SMI /* \_SB_.TPM_.SMI_ */
-                                                    TMF1 >>= 0x08
-                                                    If ((TMF1 == 0xFF))
-                                                    {
-                                                        Return (0x02)
-                                                    }
-
-                                                    If ((TMF1 == 0xF1))
-                                                    {
-                                                        Return (One)
-                                                    }
-
-                                                    Return (Zero)
-                                                }
-                                                Else
-                                                {
-                                                    If ((_T_0 == 0x08))
-                                                    {
-                                                        ToInteger (DerefOf (Index (Arg3, Zero)), TMF2) /* \TMF2 */
-                                                        TMF1 = OFST /* \OFST */
-                                                        TMF1 |= 0x4300 /* \TMF1 */
-                                                        SMI = TMF1 /* \TMF1 */
-                                                        TMF1 = SMI /* \_SB_.TPM_.SMI_ */
-                                                        TMF2 <<= 0x08
-                                                        TMF2 |= OFST /* \TMF2 */
-                                                        SMI = TMF2 /* \TMF2 */
-                                                        TMF1 = SMI /* \_SB_.TPM_.SMI_ */
-                                                        TMF1 >>= 0x08
-                                                        Return (TMF1) /* \TMF1 */
-                                                    }
-                                                    Else
-                                                    {
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
+                            PPI2 [0x02] = TMF1 /* \TMF1 */
                         }
+
+                        Return (PPI2) /* \_SB_.TPM_._DSM.PPI2 */
+                    }
+                    ElseIf ((_T_0 == 0x06))
+                    {
+                        Return (0x03)
+                    }
+                    ElseIf ((_T_0 == 0x07))
+                    {
+                        ToInteger (DerefOf (Arg3 [Zero]), TMF2) /* \TMF2 */
+                        TMF1 = OFST /* \OFST */
+                        TMF1 |= 0x1200 /* \TMF1 */
+                        SMI = TMF1 /* \TMF1 */
+                        TMF1 = SMI /* \_SB_.TPM_.SMI_ */
+                        TMF1 >>= 0x08
+                        If ((TMF1 == 0xFF))
+                        {
+                            Return (0x02)
+                        }
+
+                        TMF2 <<= 0x08
+                        TMF2 |= OFST /* \TMF2 */
+                        SMI = TMF2 /* \TMF2 */
+                        TMF1 = SMI /* \_SB_.TPM_.SMI_ */
+                        TMF1 >>= 0x08
+                        If ((TMF1 == 0xFF))
+                        {
+                            Return (0x02)
+                        }
+
+                        If ((TMF1 == 0xF1))
+                        {
+                            Return (One)
+                        }
+
+                        Return (Zero)
+                    }
+                    ElseIf ((_T_0 == 0x08))
+                    {
+                        ToInteger (DerefOf (Arg3 [Zero]), TMF2) /* \TMF2 */
+                        TMF1 = OFST /* \OFST */
+                        TMF1 |= 0x4300 /* \TMF1 */
+                        SMI = TMF1 /* \TMF1 */
+                        TMF1 = SMI /* \_SB_.TPM_.SMI_ */
+                        TMF2 <<= 0x08
+                        TMF2 |= OFST /* \TMF2 */
+                        SMI = TMF2 /* \TMF2 */
+                        TMF1 = SMI /* \_SB_.TPM_.SMI_ */
+                        TMF1 >>= 0x08
+                        Return (TMF1) /* \TMF1 */
+                    }
+                    Else
+                    {
                     }
 
                     Break
                 }
             }
-            Else
+            ElseIf ((Arg0 == ToUUID ("376054ed-cc13-4675-901c-4756d7f2d45d")))
             {
-                If ((Arg0 == ToUUID ("376054ed-cc13-4675-901c-4756d7f2d45d")))
+                While (One)
                 {
-                    While (One)
+                    _T_1 = ToInteger (Arg2)
+                    If ((_T_1 == Zero))
                     {
-                        _T_1 = ToInteger (Arg2)
-                        If ((_T_1 == Zero))
+                        Return (Buffer (One)
                         {
-                            Return (Buffer (One)
-                            {
-                                 0x03                                             /* . */
-                            })
-                        }
-                        Else
-                        {
-                            If ((_T_1 == One))
-                            {
-                                TMF1 = OFST /* \OFST */
-                                TMF1 |= 0x2200 /* \TMF1 */
-                                SMI = TMF1 /* \TMF1 */
-                                TMF1 = SMI /* \_SB_.TPM_.SMI_ */
-                                TMF1 >>= 0x08
-                                If ((TMF1 == 0xFF))
-                                {
-                                    Return (0x02)
-                                }
-
-                                ToInteger (DerefOf (Index (Arg3, Zero)), TMF1) /* \TMF1 */
-                                TMF1 <<= 0x08
-                                TMF1 |= OFST /* \TMF1 */
-                                SMI = TMF1 /* \TMF1 */
-                                TMF1 = SMI /* \_SB_.TPM_.SMI_ */
-                                TMF1 >>= 0x08
-                                If ((TMF1 == 0xFF))
-                                {
-                                    Return (0x02)
-                                }
-
-                                Return (Zero)
-                            }
-                            Else
-                            {
-                            }
-                        }
-
-                        Break
+                             0x03                                             /* . */
+                        })
                     }
+                    ElseIf ((_T_1 == One))
+                    {
+                        TMF1 = OFST /* \OFST */
+                        TMF1 |= 0x2200 /* \TMF1 */
+                        SMI = TMF1 /* \TMF1 */
+                        TMF1 = SMI /* \_SB_.TPM_.SMI_ */
+                        TMF1 >>= 0x08
+                        If ((TMF1 == 0xFF))
+                        {
+                            Return (0x02)
+                        }
+
+                        ToInteger (DerefOf (Arg3 [Zero]), TMF1) /* \TMF1 */
+                        TMF1 <<= 0x08
+                        TMF1 |= OFST /* \TMF1 */
+                        SMI = TMF1 /* \TMF1 */
+                        TMF1 = SMI /* \_SB_.TPM_.SMI_ */
+                        TMF1 >>= 0x08
+                        If ((TMF1 == 0xFF))
+                        {
+                            Return (0x02)
+                        }
+
+                        Return (Zero)
+                    }
+                    Else
+                    {
+                    }
+
+                    Break
                 }
             }
 
@@ -22251,8 +21758,8 @@ DefinitionBlock ("dsdt.aml", "DSDT", 2, "ALASKA", "A M I ", 0x01072009)
                 Zero, 
                 Zero
             })
-            Index (PKG, Zero) = Arg0
-            Index (PKG, One) = Arg1
+            PKG [Zero] = Arg0
+            PKG [One] = Arg1
             Return (PKG) /* \_SB_.PKG2.PKG_ */
         }
 
@@ -22286,16 +21793,13 @@ DefinitionBlock ("dsdt.aml", "DSDT", 2, "ALASKA", "A M I ", 0x01072009)
                     WMIF = Zero
                     Return (Zero)
                 }
+                ElseIf (^^PCI0.LPCB.EC.ECOK)
+                {
+                    Return (^^PCI0.LPCB.EC.LSTE) /* \_SB_.PCI0.LPCB.EC__.LSTE */
+                }
                 Else
                 {
-                    If (^^PCI0.LPCB.EC.ECOK)
-                    {
-                        Return (^^PCI0.LPCB.EC.LSTE) /* \_SB_.PCI0.LPCB.EC__.LSTE */
-                    }
-                    Else
-                    {
-                        Return (One)
-                    }
+                    Return (One)
                 }
             }
 
@@ -22341,12 +21845,9 @@ DefinitionBlock ("dsdt.aml", "DSDT", 2, "ALASKA", "A M I ", 0x01072009)
                 If ((^^WMI.HKDR == Zero))
                 {
                     If ((\_TZ.TZ0.PPFG || (^^PCI0.LPCB.EC.B15C || GPSF))) {}
-                    Else
+                    ElseIf ((PSF1 & 0x30))
                     {
-                        If ((PSF1 & 0x30))
-                        {
-                            ADJP (Zero)
-                        }
+                        ADJP (Zero)
                     }
                 }
 
@@ -22374,56 +21875,44 @@ DefinitionBlock ("dsdt.aml", "DSDT", 2, "ALASKA", "A M I ", 0x01072009)
                 {
                     Local7 = 0x02
                 }
+                ElseIf (^^PCI0.LPCB.EC.B15C)
+                {
+                    Local7 = 0x02
+                }
+                ElseIf (^^PCI0.LPCB.EC.SLFG)
+                {
+                    Local7 = One
+                }
                 Else
                 {
-                    If (^^PCI0.LPCB.EC.B15C)
+                    While (One)
                     {
-                        Local7 = 0x02
-                    }
-                    Else
-                    {
-                        If (^^PCI0.LPCB.EC.SLFG)
+                        _T_0 = (PSF1 & 0x30)
+                        If ((_T_0 == Zero))
+                        {
+                            Local7 = Zero
+                        }
+                        ElseIf ((_T_0 == 0x10))
                         {
                             Local7 = One
                         }
-                        Else
+                        ElseIf ((_T_0 == 0x20))
                         {
-                            While (One)
+                            If (ACFG)
                             {
-                                _T_0 = (PSF1 & 0x30)
-                                If ((_T_0 == Zero))
-                                {
-                                    Local7 = Zero
-                                }
-                                Else
-                                {
-                                    If ((_T_0 == 0x10))
-                                    {
-                                        Local7 = One
-                                    }
-                                    Else
-                                    {
-                                        If ((_T_0 == 0x20))
-                                        {
-                                            If (ACFG)
-                                            {
-                                                Local7 = Zero
-                                            }
-                                            Else
-                                            {
-                                                Local7 = One
-                                            }
-                                        }
-                                        Else
-                                        {
-                                            Local7 = Zero
-                                        }
-                                    }
-                                }
-
-                                Break
+                                Local7 = Zero
+                            }
+                            Else
+                            {
+                                Local7 = One
                             }
                         }
+                        Else
+                        {
+                            Local7 = Zero
+                        }
+
+                        Break
                     }
                 }
 
@@ -22443,7 +21932,7 @@ DefinitionBlock ("dsdt.aml", "DSDT", 2, "ALASKA", "A M I ", 0x01072009)
                     }
                     Else
                     {
-                        Local6 = \_PR.CPU0._PSS /* External reference */
+                        Local6 = \_PR.CPU0._PSS ()
                         Local2 = SizeOf (Local6)
                         PSSN = (0x80000000 | Local2)
                     }
@@ -22456,98 +21945,83 @@ DefinitionBlock ("dsdt.aml", "DSDT", 2, "ALASKA", "A M I ", 0x01072009)
                         {
                             Local0 = Zero
                         }
-                        Else
+                        ElseIf ((_T_1 == One))
                         {
-                            If ((_T_1 == One))
+                            If ((Local2 > 0x02))
                             {
+                                If ((\_PR.CFGD & 0x0100))
+                                {
+                                    Local2--
+                                }
+
                                 If ((Local2 > 0x02))
                                 {
+                                    Local3 = Local2
+                                    Local0 = (Local2 >> One)
+                                    Local0++
+                                    Local3--
+                                    If ((Local3 == Local0))
+                                    {
+                                        Local0--
+                                    }
+
                                     If ((\_PR.CFGD & 0x0100))
                                     {
-                                        Local2--
-                                    }
-
-                                    If ((Local2 > 0x02))
-                                    {
-                                        Local3 = Local2
-                                        Local0 = (Local2 >> One)
                                         Local0++
-                                        Local3--
-                                        If ((Local3 == Local0))
-                                        {
-                                            Local0--
-                                        }
-
-                                        If ((\_PR.CFGD & 0x0100))
-                                        {
-                                            Local0++
-                                        }
-                                    }
-                                    Else
-                                    {
-                                        Local0 = Local2
                                     }
                                 }
                                 Else
                                 {
-                                    If (Local2)
-                                    {
-                                        Local2--
-                                        Local0 = Local2
-                                    }
-                                    Else
-                                    {
-                                        Local0 = Zero
-                                    }
+                                    Local0 = Local2
                                 }
+                            }
+                            ElseIf (Local2)
+                            {
+                                Local2--
+                                Local0 = Local2
                             }
                             Else
                             {
-                                If ((_T_1 == 0x02))
+                                Local0 = Zero
+                            }
+                        }
+                        ElseIf ((_T_1 == 0x02))
+                        {
+                            Local2--
+                            Local0 = Local2
+                        }
+                        ElseIf ((_T_1 == 0x03))
+                        {
+                            Local0 = One
+                            If ((ACFG == Zero))
+                            {
+                                If ((\_PR.CFGD & 0x0100))
                                 {
                                     Local2--
-                                    Local0 = Local2
                                 }
-                                Else
+
+                                Local3 = Local2
+                                Local0 = (Local2 >> One)
+                                Local0++
+                                Local3--
+                                If ((Local3 == Local0))
                                 {
-                                    If ((_T_1 == 0x03))
-                                    {
-                                        Local0 = One
-                                        If ((ACFG == Zero))
-                                        {
-                                            If ((\_PR.CFGD & 0x0100))
-                                            {
-                                                Local2--
-                                            }
+                                    Local0--
+                                }
 
-                                            Local3 = Local2
-                                            Local0 = (Local2 >> One)
-                                            Local0++
-                                            Local3--
-                                            If ((Local3 == Local0))
-                                            {
-                                                Local0--
-                                            }
-
-                                            If ((\_PR.CFGD & 0x0100))
-                                            {
-                                                Local0++
-                                            }
-                                        }
-                                    }
-                                    Else
-                                    {
-                                        If ((_T_1 == 0x04))
-                                        {
-                                            Local0 = One
-                                        }
-                                        Else
-                                        {
-                                            Local0 = Zero
-                                        }
-                                    }
+                                If ((\_PR.CFGD & 0x0100))
+                                {
+                                    Local0++
                                 }
                             }
+                        }
+                        ElseIf ((_T_1 == 0x04))
+                        {
+                            Local0 = One
+                        }
+                        Else
+                        {
+                            Local0 = Zero
                         }
 
                         Break
@@ -22569,15 +22043,12 @@ DefinitionBlock ("dsdt.aml", "DSDT", 2, "ALASKA", "A M I ", 0x01072009)
                             RPPC = (Local1 | 0x80000000)
                         }
                     }
-                    Else
+                    ElseIf ((RPPC & 0x80000000))
                     {
-                        If ((RPPC & 0x80000000))
+                        Local1 = (RPPC & 0xFFFF)
+                        If (((Local1 >= Local0) && (Local1 < Local6)))
                         {
-                            Local1 = (RPPC & 0xFFFF)
-                            If (((Local1 >= Local0) && (Local1 < Local6)))
-                            {
-                                Local0 = Local1
-                            }
+                            Local0 = Local1
                         }
                     }
 
@@ -22587,7 +22058,7 @@ DefinitionBlock ("dsdt.aml", "DSDT", 2, "ALASKA", "A M I ", 0x01072009)
                         GPEC = One
                     }
 
-                    If (\_PR.CPU0._PPC)
+                    If (\_PR.CPU0._PPC ())
                     {
                         Local1 = One
                     }
@@ -22637,23 +22108,17 @@ DefinitionBlock ("dsdt.aml", "DSDT", 2, "ALASKA", "A M I ", 0x01072009)
                         {
                             Local0 = 0x03
                         }
+                        ElseIf ((_T_2 == One))
+                        {
+                            Local0 = 0x02
+                        }
+                        ElseIf ((_T_2 == 0x02))
+                        {
+                            Local0 = 0x02
+                        }
                         Else
                         {
-                            If ((_T_2 == One))
-                            {
-                                Local0 = 0x02
-                            }
-                            Else
-                            {
-                                If ((_T_2 == 0x02))
-                                {
-                                    Local0 = 0x02
-                                }
-                                Else
-                                {
-                                    Local0 = 0x03
-                                }
-                            }
+                            Local0 = 0x03
                         }
 
                         Break
@@ -22713,13 +22178,13 @@ DefinitionBlock ("dsdt.aml", "DSDT", 2, "ALASKA", "A M I ", 0x01072009)
             })
             Method (IVBI, 0, NotSerialized)
             {
-                Index (PBIF, One) = 0xFFFFFFFF
-                Index (PBIF, 0x02) = 0xFFFFFFFF
-                Index (PBIF, 0x04) = 0xFFFFFFFF
-                Index (PBIF, 0x09) = " "
-                Index (PBIF, 0x0A) = " "
-                Index (PBIF, 0x0B) = " "
-                Index (PBIF, 0x0C) = " "
+                PBIF [One] = 0xFFFFFFFF
+                PBIF [0x02] = 0xFFFFFFFF
+                PBIF [0x04] = 0xFFFFFFFF
+                PBIF [0x09] = " "
+                PBIF [0x0A] = " "
+                PBIF [0x0B] = " "
+                PBIF [0x0C] = " "
                 BFCC = Zero
             }
 
@@ -22728,20 +22193,20 @@ DefinitionBlock ("dsdt.aml", "DSDT", 2, "ALASKA", "A M I ", 0x01072009)
                 If (^^PCI0.LPCB.EC.BAT0)
                 {
                     Local0 = (^^PCI0.LPCB.EC.BDC0 & 0xFFFF)
-                    Index (PBIF, One) = Local0
+                    PBIF [One] = Local0
                     Local0 = (^^PCI0.LPCB.EC.BFC0 & 0xFFFF)
-                    Index (PBIF, 0x02) = Local0
+                    PBIF [0x02] = Local0
                     BFCC = Local0
                     Local0 = (^^PCI0.LPCB.EC.BDV0 & 0xFFFF)
-                    Index (PBIF, 0x04) = Local0
+                    PBIF [0x04] = Local0
                     Local0 = (^^PCI0.LPCB.EC.BCW0 & 0xFFFF)
-                    Index (PBIF, 0x05) = Local0
+                    PBIF [0x05] = Local0
                     Local0 = (^^PCI0.LPCB.EC.BCL0 & 0xFFFF)
-                    Index (PBIF, 0x06) = Local0
-                    Index (PBIF, 0x09) = "BAT"
-                    Index (PBIF, 0x0A) = "0001"
-                    Index (PBIF, 0x0B) = "LION"
-                    Index (PBIF, 0x0C) = "Notebook"
+                    PBIF [0x06] = Local0
+                    PBIF [0x09] = "BAT"
+                    PBIF [0x0A] = "0001"
+                    PBIF [0x0B] = "LION"
+                    PBIF [0x0C] = "Notebook"
                 }
                 Else
                 {
@@ -22772,10 +22237,10 @@ DefinitionBlock ("dsdt.aml", "DSDT", 2, "ALASKA", "A M I ", 0x01072009)
             })
             Method (IVBS, 0, NotSerialized)
             {
-                Index (PBST, Zero) = Zero
-                Index (PBST, One) = 0xFFFFFFFF
-                Index (PBST, 0x02) = 0xFFFFFFFF
-                Index (PBST, 0x03) = 0x2710
+                PBST [Zero] = Zero
+                PBST [One] = 0xFFFFFFFF
+                PBST [0x02] = 0xFFFFFFFF
+                PBST [0x03] = 0x2710
             }
 
             Method (UPBS, 0, NotSerialized)
@@ -22806,10 +22271,10 @@ DefinitionBlock ("dsdt.aml", "DSDT", 2, "ALASKA", "A M I ", 0x01072009)
 
                     Local2 = (^^PCI0.LPCB.EC.BRC0 & 0xFFFF)
                     Local3 = (^^PCI0.LPCB.EC.BPV0 & 0xFFFF)
-                    Index (PBST, Zero) = Local0
-                    Index (PBST, One) = Local1
-                    Index (PBST, 0x02) = Local2
-                    Index (PBST, 0x03) = Local3
+                    PBST [Zero] = Local0
+                    PBST [One] = Local1
+                    PBST [0x02] = Local2
+                    PBST [0x03] = Local3
                     If ((BFCC != ^^PCI0.LPCB.EC.BFC0))
                     {
                         Notify (BAT0, 0x81) // Information Change
@@ -23460,29 +22925,23 @@ DefinitionBlock ("dsdt.aml", "DSDT", 2, "ALASKA", "A M I ", 0x01072009)
 
                                 RBUF = RHMB /* \_SB_.WMI_.GCMD.RHMB */
                             }
-                            Else
+                            ElseIf ((_T_0 == 0x02))
                             {
-                                If ((_T_0 == 0x02))
+                                Field (RH2M, ByteAcc, Lock, Preserve)
                                 {
-                                    Field (RH2M, ByteAcc, Lock, Preserve)
-                                    {
-                                        RHMW,   16
-                                    }
-
-                                    RBUF = RHMW /* \_SB_.WMI_.GCMD.RHMW */
+                                    RHMW,   16
                                 }
-                                Else
+
+                                RBUF = RHMW /* \_SB_.WMI_.GCMD.RHMW */
+                            }
+                            ElseIf ((_T_0 == 0x04))
+                            {
+                                Field (RH2M, ByteAcc, Lock, Preserve)
                                 {
-                                    If ((_T_0 == 0x04))
-                                    {
-                                        Field (RH2M, ByteAcc, Lock, Preserve)
-                                        {
-                                            RHMD,   32
-                                        }
-
-                                        RBUF = RHMD /* \_SB_.WMI_.GCMD.RHMD */
-                                    }
+                                    RHMD,   32
                                 }
+
+                                RBUF = RHMD /* \_SB_.WMI_.GCMD.RHMD */
                             }
 
                             Break
@@ -23793,28 +23252,22 @@ DefinitionBlock ("dsdt.aml", "DSDT", 2, "ALASKA", "A M I ", 0x01072009)
                                 ^^AC.ADJP (Zero)
                             }
                         }
-                        Else
+                        ElseIf ((_T_0 == One))
                         {
-                            If ((_T_0 == One))
+                            P80H = 0x5F
+                            If (^^PCI0.LPCB.EC.ECOK)
                             {
-                                P80H = 0x5F
-                                If (^^PCI0.LPCB.EC.ECOK)
-                                {
-                                    PSF1 = ((PSF1 & 0xFFFFFFFFFFFFFFCF) | 0x10)
-                                    ^^AC.ADJP (Zero)
-                                }
+                                PSF1 = ((PSF1 & 0xFFFFFFFFFFFFFFCF) | 0x10)
+                                ^^AC.ADJP (Zero)
                             }
-                            Else
+                        }
+                        ElseIf ((_T_0 == 0x02))
+                        {
+                            P80H = 0x6F
+                            If (^^PCI0.LPCB.EC.ECOK)
                             {
-                                If ((_T_0 == 0x02))
-                                {
-                                    P80H = 0x6F
-                                    If (^^PCI0.LPCB.EC.ECOK)
-                                    {
-                                        PSF1 = ((PSF1 & 0xFFFFFFFFFFFFFFCF) | 0x20)
-                                        ^^AC.ADJP (Zero)
-                                    }
-                                }
+                                PSF1 = ((PSF1 & 0xFFFFFFFFFFFFFFCF) | 0x20)
+                                ^^AC.ADJP (Zero)
                             }
                         }
 
@@ -23877,19 +23330,13 @@ DefinitionBlock ("dsdt.aml", "DSDT", 2, "ALASKA", "A M I ", 0x01072009)
                             ^^LID0.WMIF = One
                             Notify (LID0, 0x80) // Status Change
                         }
-                        Else
+                        ElseIf ((_T_1 == One))
                         {
-                            If ((_T_1 == One))
-                            {
-                                Notify (SLPB, 0x80) // Status Change
-                            }
-                            Else
-                            {
-                                If ((_T_1 == 0x02))
-                                {
-                                    Notify (PWRB, 0x80) // Status Change
-                                }
-                            }
+                            Notify (SLPB, 0x80) // Status Change
+                        }
+                        ElseIf ((_T_1 == 0x02))
+                        {
+                            Notify (PWRB, 0x80) // Status Change
                         }
 
                         Break
@@ -23987,262 +23434,39 @@ DefinitionBlock ("dsdt.aml", "DSDT", 2, "ALASKA", "A M I ", 0x01072009)
                                 ^^PCI0.LPCB.EC.FCMD = 0xC4
                             }
                         }
-                        Else
+                        ElseIf (((LKFG & 0x02) == Zero))
                         {
-                            If (((LKFG & 0x02) == Zero))
-                            {
-                                If (((Local7 >= Zero) && (Local7 <= One)))
-                                {
-                                    Local0 = Zero
-                                    Local1 = Zero
-                                    Local0 = (ARGS & 0x07)
-                                    Local0 |= ((ARGS >> One) & 0x38)
-                                    Local0 |= ((ARGS >> 0x02) & 0x01C0)
-                                    If ((ARGS & 0x40))
-                                    {
-                                        Local1 |= 0x0251
-                                    }
-
-                                    If ((ARGS & 0x20))
-                                    {
-                                        Local1 |= 0x04A2
-                                    }
-
-                                    If ((ARGS & 0x10))
-                                    {
-                                        Local1 |= 0x090C
-                                    }
-
-                                    ^^PCI0.LPCB.EC.FDAT = Local0
-                                    ^^PCI0.LPCB.EC.FBUF = (Local0 >> 0x08)
-                                    ^^PCI0.LPCB.EC.FCMD = 0xC2
-                                    ^^PCI0.LPCB.EC.FDAT = Local1
-                                    ^^PCI0.LPCB.EC.FBUF = (Local1 >> 0x08)
-                                    ^^PCI0.LPCB.EC.FCMD = 0xC7
-                                    ^^PCI0.LPCB.EC.FDAT = 0x02
-                                    ^^PCI0.LPCB.EC.FBUF = Local2
-                                    ^^PCI0.LPCB.EC.FCMD = 0xC4
-                                }
-                            }
-
-                            If ((Local7 == Zero))
-                            {
-                                If ((LKFG & 0x02))
-                                {
-                                    Local0 = Zero
-                                    Local0 = (ARGS & 0x07)
-                                    Local0 |= ((ARGS >> One) & 0x38)
-                                    Local0 |= ((ARGS >> 0x02) & 0x01C0)
-                                }
-
-                                If (((LKFG & 0x0C) == 0x04)) {}
-                                Else
-                                {
-                                    ^^PCI0.LPCB.EC.FDAT = Local0
-                                    ^^PCI0.LPCB.EC.FBUF = (Local0 >> 0x08)
-                                    ^^PCI0.LPCB.EC.FCMD = 0xC2
-                                }
-                            }
-
-                            If ((Local7 == One))
-                            {
-                                If (((LKFG & 0x0C) == 0x04)) {}
-                                Else
-                                {
-                                    ^^PCI0.LPCB.EC.FDAT = 0x03
-                                    ^^PCI0.LPCB.EC.FBUF = Local3
-                                    ^^PCI0.LPCB.EC.FCMD = 0xC4
-                                }
-                            }
-
-                            If ((Local7 == 0x02))
-                            {
-                                If (((LKFG & 0x0C) == 0x04)) {}
-                                Else
-                                {
-                                    ^^PCI0.LPCB.EC.FDAT = 0x04
-                                    ^^PCI0.LPCB.EC.FBUF = Local3
-                                    ^^PCI0.LPCB.EC.FCMD = 0xC4
-                                }
-                            }
-
-                            If ((Local7 == 0x03))
-                            {
-                                If (((LKFG & 0x0C) == 0x04)) {}
-                                Else
-                                {
-                                    ^^PCI0.LPCB.EC.FDAT = 0x06
-                                    ^^PCI0.LPCB.EC.FBUF = Local3
-                                    ^^PCI0.LPCB.EC.FBF1 = Local4
-                                    ^^PCI0.LPCB.EC.FCMD = 0xC4
-                                }
-                            }
-
-                            If ((Local7 == 0x0C)) {}
-                            If ((Local7 == 0x0D))
-                            {
-                                If (((LKFG & 0x0C) == 0x04)) {}
-                                Else
-                                {
-                                    ^^PCI0.LPCB.EC.FDAT = 0x02
-                                    ^^PCI0.LPCB.EC.FBUF = Local2
-                                    ^^PCI0.LPCB.EC.FCMD = 0xC4
-                                }
-                            }
-
-                            If ((Local7 == 0x0E))
+                            If (((Local7 >= Zero) && (Local7 <= One)))
                             {
                                 Local0 = Zero
-                                If ((ARGS & 0x04))
+                                Local1 = Zero
+                                Local0 = (ARGS & 0x07)
+                                Local0 |= ((ARGS >> One) & 0x38)
+                                Local0 |= ((ARGS >> 0x02) & 0x01C0)
+                                If ((ARGS & 0x40))
                                 {
-                                    Local0 |= One
-                                }
-
-                                If ((ARGS & 0x02))
-                                {
-                                    Local0 |= 0x02
-                                }
-
-                                If ((ARGS & One))
-                                {
-                                    Local0 |= 0x04
+                                    Local1 |= 0x0251
                                 }
 
                                 If ((ARGS & 0x20))
                                 {
-                                    Local0 |= 0x10
+                                    Local1 |= 0x04A2
                                 }
 
                                 If ((ARGS & 0x10))
                                 {
-                                    Local0 |= 0x20
+                                    Local1 |= 0x090C
                                 }
 
-                                If ((ARGS & 0x08))
-                                {
-                                    Local0 |= 0x08
-                                }
-
-                                If ((ARGS & 0x0100))
-                                {
-                                    Local0 |= 0x40
-                                }
-
-                                If ((ARGS & 0x80))
-                                {
-                                    Local0 |= 0x80
-                                }
-
-                                If ((ARGS & 0x40))
-                                {
-                                    Local0 |= 0x0100
-                                }
-
-                                If ((ARGS & 0x0800))
-                                {
-                                    Local0 |= 0x0200
-                                }
-
-                                If ((ARGS & 0x0400))
-                                {
-                                    Local0 |= 0x0400
-                                }
-
-                                If ((ARGS & 0x0200))
-                                {
-                                    Local0 |= 0x0800
-                                }
-
-                                If ((ARGS & 0x1000))
-                                {
-                                    Local0 |= 0x1000
-                                }
-
-                                If ((ARGS & 0x2000))
-                                {
-                                    Local0 |= 0x2000
-                                }
-
-                                If ((ARGS & 0x4000))
-                                {
-                                    Local0 |= 0x4000
-                                }
-
-                                If ((ARGS & 0x8000))
-                                {
-                                    Local0 |= 0x8000
-                                }
-
-                                If ((ARGS & 0x00010000))
-                                {
-                                    Local0 |= 0x00010000
-                                }
-
-                                If ((ARGS & 0x00020000))
-                                {
-                                    Local0 |= 0x00020000
-                                }
-
-                                If ((ARGS & 0x00040000))
-                                {
-                                    Local0 |= 0x00040000
-                                }
-
-                                If (((LKFG & 0x0C) == 0x04)) {}
-                                Else
-                                {
-                                    ^^PCI0.LPCB.EC.FDAT = Local0
-                                    ^^PCI0.LPCB.EC.FBUF = (Local0 >> 0x08)
-                                    ^^PCI0.LPCB.EC.FBF1 = (Local0 >> 0x10)
-                                    ^^PCI0.LPCB.EC.FCMD = 0xC7
-                                }
-                            }
-
-                            If ((Local7 == 0x0F))
-                            {
-                                Local5 = Zero
-                                Local6 = Zero
-                                Local3 = (ARGS & 0xFF)
-                                Local2 = ((ARGS >> 0x08) & 0xFF)
-                                Local1 = ((ARGS >> 0x10) & 0xFF)
-                                If ((Local4 < 0x03))
-                                {
-                                    Local0 = (Local4 + 0x03)
-                                    Local5 = 0x05
-                                    Local6 = 0xCA
-                                }
-                                Else
-                                {
-                                    If ((Local4 == 0x03))
-                                    {
-                                        Local0 = 0x07
-                                        Local5 = 0x05
-                                        Local6 = 0xCA
-                                    }
-                                    Else
-                                    {
-                                        If ((Local4 == 0x04))
-                                        {
-                                            Local0 = 0x06
-                                            Local5 = 0x04
-                                            Local1 = (ARGS & 0xFF)
-                                            Local6 = 0xCA
-                                        }
-                                    }
-                                }
-
-                                If (Local6)
-                                {
-                                    If (((LKFG & 0x0C) == 0x04)) {}
-                                    Else
-                                    {
-                                        ^^PCI0.LPCB.EC.FDAT = Local0
-                                        ^^PCI0.LPCB.EC.FBUF = Local1
-                                        ^^PCI0.LPCB.EC.FBF1 = Local2
-                                        ^^PCI0.LPCB.EC.FBF2 = Local3
-                                        ^^PCI0.LPCB.EC.FCMD = Local6
-                                    }
-                                }
+                                ^^PCI0.LPCB.EC.FDAT = Local0
+                                ^^PCI0.LPCB.EC.FBUF = (Local0 >> 0x08)
+                                ^^PCI0.LPCB.EC.FCMD = 0xC2
+                                ^^PCI0.LPCB.EC.FDAT = Local1
+                                ^^PCI0.LPCB.EC.FBUF = (Local1 >> 0x08)
+                                ^^PCI0.LPCB.EC.FCMD = 0xC7
+                                ^^PCI0.LPCB.EC.FDAT = 0x02
+                                ^^PCI0.LPCB.EC.FBUF = Local2
+                                ^^PCI0.LPCB.EC.FCMD = 0xC4
                             }
                         }
                     }
@@ -24429,29 +23653,23 @@ DefinitionBlock ("dsdt.aml", "DSDT", 2, "ALASKA", "A M I ", 0x01072009)
 
                                 WHMB = ARGB /* \_SB_.WMI_.SCMD.ARGB */
                             }
-                            Else
+                            ElseIf ((_T_2 == 0x02))
                             {
-                                If ((_T_2 == 0x02))
+                                Field (WH2M, ByteAcc, Lock, Preserve)
                                 {
-                                    Field (WH2M, ByteAcc, Lock, Preserve)
-                                    {
-                                        WHMW,   16
-                                    }
-
-                                    WHMW = ARGW /* \_SB_.WMI_.SCMD.ARGW */
+                                    WHMW,   16
                                 }
-                                Else
+
+                                WHMW = ARGW /* \_SB_.WMI_.SCMD.ARGW */
+                            }
+                            ElseIf ((_T_2 == 0x04))
+                            {
+                                Field (WH2M, ByteAcc, Lock, Preserve)
                                 {
-                                    If ((_T_2 == 0x04))
-                                    {
-                                        Field (WH2M, ByteAcc, Lock, Preserve)
-                                        {
-                                            WHMD,   32
-                                        }
-
-                                        WHMD = ARGD /* \_SB_.WMI_.SCMD.ARGD */
-                                    }
+                                    WHMD,   32
                                 }
+
+                                WHMD = ARGD /* \_SB_.WMI_.SCMD.ARGD */
                             }
 
                             Break
@@ -24461,7 +23679,7 @@ DefinitionBlock ("dsdt.aml", "DSDT", 2, "ALASKA", "A M I ", 0x01072009)
                             0xF8)))
                         {
                             Local4 = (0xF8 - Local1)
-                            ^^PCI0.LPCB.EC.FCMD = DerefOf (Index (WBUF, Local4))
+                            ^^PCI0.LPCB.EC.FCMD = DerefOf (WBUF [Local4])
                         }
 
                         Local0 = 0x75
@@ -24493,23 +23711,20 @@ DefinitionBlock ("dsdt.aml", "DSDT", 2, "ALASKA", "A M I ", 0x01072009)
                             PRM0 = 0x0C
                             SSMP = 0xE0
                         }
-                        Else
+                        ElseIf ((_T_3 == 0x06))
                         {
-                            If ((_T_3 == 0x06))
+                            BTCP = ((Local2 & 0xFF00) >> 0x08)
+                            BSCP = (Local2 & 0xFF)
+                            If ((BSCP >= BTCP))
                             {
-                                BTCP = ((Local2 & 0xFF00) >> 0x08)
-                                BSCP = (Local2 & 0xFF)
-                                If ((BSCP >= BTCP))
-                                {
-                                    BSCP = 0x5F
-                                    BTCP = 0x64
-                                }
+                                BSCP = 0x5F
+                                BTCP = 0x64
+                            }
 
-                                If (^^PCI0.LPCB.EC.ECOK)
-                                {
-                                    ^^PCI0.LPCB.EC.FBUF = BSCP /* \BSCP */
-                                    ^^PCI0.LPCB.EC.FDAT = BTCP /* \BTCP */
-                                }
+                            If (^^PCI0.LPCB.EC.ECOK)
+                            {
+                                ^^PCI0.LPCB.EC.FBUF = BSCP /* \BSCP */
+                                ^^PCI0.LPCB.EC.FDAT = BTCP /* \BTCP */
                             }
                         }
 
@@ -24558,216 +23773,174 @@ DefinitionBlock ("dsdt.aml", "DSDT", 2, "ALASKA", "A M I ", 0x01072009)
                                 Local0 = Ones
                             }
                         }
-                        Else
+                        ElseIf ((_T_4 == 0x05))
                         {
-                            If ((_T_4 == 0x05))
+                            If (^^PCI0.LPCB.EC.ECOK)
                             {
-                                If (^^PCI0.LPCB.EC.ECOK)
+                                If (Local2)
                                 {
-                                    If (Local2)
-                                    {
-                                        ^^PCI0.LPCB.EC.ECKS |= 0x10
-                                    }
-                                    Else
-                                    {
-                                        ^^PCI0.LPCB.EC.ECKS &= 0xEF
-                                    }
+                                    ^^PCI0.LPCB.EC.ECKS |= 0x10
                                 }
                                 Else
                                 {
-                                    Local0 = Ones
+                                    ^^PCI0.LPCB.EC.ECKS &= 0xEF
                                 }
                             }
                             Else
                             {
-                                If ((_T_4 == 0x07))
+                                Local0 = Ones
+                            }
+                        }
+                        ElseIf ((_T_4 == 0x07))
+                        {
+                            If (^^PCI0.LPCB.EC.ECOK)
+                            {
+                                Local4 = Zero
+                                Local5 = Zero
+                                Local6 = Zero
+                                Local7 = Zero
+                                If (Local2)
                                 {
-                                    If (^^PCI0.LPCB.EC.ECOK)
+                                    Local4 = (Local2 & 0xFF)
+                                    Local5 = ((Local2 >> 0x08) & 0xFF)
+                                    Local6 = ((Local2 >> 0x10) & 0xFF)
+                                    Local3 = (((Local6 - 0x32) * 0x0A) / ((TJMX - 
+                                        0x0A) - Local4))
+                                    Local3 <<= 0x03
+                                    Local7 = (Local3 / 0x0A)
+                                    If (((Local3 - (Local7 * 0x0A)) > 0x04))
                                     {
-                                        Local4 = Zero
-                                        Local5 = Zero
-                                        Local6 = Zero
-                                        Local7 = Zero
-                                        If (Local2)
-                                        {
-                                            Local4 = (Local2 & 0xFF)
-                                            Local5 = ((Local2 >> 0x08) & 0xFF)
-                                            Local6 = ((Local2 >> 0x10) & 0xFF)
-                                            Local3 = (((Local6 - 0x32) * 0x0A) / ((TJMX - 
-                                                0x0A) - Local4))
-                                            Local3 <<= 0x03
-                                            Local7 = (Local3 / 0x0A)
-                                            If (((Local3 - (Local7 * 0x0A)) > 0x04))
-                                            {
-                                                Local7++
-                                            }
-
-                                            Local3 = One
-                                        }
-                                        Else
-                                        {
-                                            Local3 = Zero
-                                        }
-
-                                        ^^PCI0.LPCB.EC.FDAT = Local3
-                                        ^^PCI0.LPCB.EC.FBUF = Local4
-                                        ^^PCI0.LPCB.EC.FBF1 = Local5
-                                        ^^PCI0.LPCB.EC.FBF2 = Local6
-                                        ^^PCI0.LPCB.EC.FBF3 = Local7
-                                        ^^PCI0.LPCB.EC.FCMD = 0xCC
+                                        Local7++
                                     }
-                                    Else
-                                    {
-                                        Local0 = Ones
-                                    }
+
+                                    Local3 = One
                                 }
                                 Else
                                 {
-                                    If ((_T_4 == 0x09))
-                                    {
-                                        If (^^PCI0.LPCB.EC.ECOK)
-                                        {
-                                            Local2 = (ARGS & 0xFF)
-                                            ^^PCI0.LPCB.EC.FDAT = 0x07
-                                            ^^PCI0.LPCB.EC.FBUF = Local2
-                                            ^^PCI0.LPCB.EC.FCMD = 0xCE
-                                        }
-                                    }
-                                    Else
-                                    {
-                                        If ((_T_4 == 0x0A))
-                                        {
-                                            If (^^PCI0.LPCB.EC.ECOK)
-                                            {
-                                                Local4 = (Local2 & 0xFF)
-                                                ^^PCI0.LPCB.EC.FDAT = Local4
-                                                ^^PCI0.LPCB.EC.FCMD = 0xCF
-                                            }
-                                            Else
-                                            {
-                                                Local0 = Ones
-                                            }
-                                        }
-                                        Else
-                                        {
-                                            If ((_T_4 == 0x0B))
-                                            {
-                                                SVGA = (Local2 & 0xFF)
-                                                PRM0 = 0x0E
-                                                SSMP = 0xE0
-                                            }
-                                            Else
-                                            {
-                                                If ((_T_4 == 0x0D))
-                                                {
-                                                    While (One)
-                                                    {
-                                                        _T_5 = ToInteger (Local2)
-                                                        If ((_T_5 == Zero))
-                                                        {
-                                                            ^^PCI0.SBUS.SWRB (0xE6, Zero, 0x86)
-                                                        }
-                                                        Else
-                                                        {
-                                                            If ((_T_5 == One))
-                                                            {
-                                                                ^^PCI0.SBUS.SWRB (0xE6, Zero, 0x82)
-                                                            }
-                                                            Else
-                                                            {
-                                                                If ((_T_5 == 0x02))
-                                                                {
-                                                                    ^^PCI0.SBUS.SWRB (0xE6, Zero, 0x86)
-                                                                    ^^PCI0.SBUS.SWRB (0xE6, 0x04, 0x11)
-                                                                    ^^PCI0.SBUS.SWRB (0xE6, 0x05, 0x02)
-                                                                    ^^PCI0.SBUS.SWRB (0xE6, 0x07, 0x22)
-                                                                    ^^PCI0.SBUS.SWRB (0xE6, 0x08, 0x82)
-                                                                    ^^PCI0.SBUS.SWRB (0xE6, 0x09, 0x22)
-                                                                    ^^PCI0.SBUS.SWRB (0xE6, Zero, 0x82)
-                                                                }
-                                                                Else
-                                                                {
-                                                                    If ((_T_5 == 0x03))
-                                                                    {
-                                                                        ^^PCI0.SBUS.SWRB (0xE6, Zero, 0x86)
-                                                                        ^^PCI0.SBUS.SWRB (0xE6, 0x04, 0xAA)
-                                                                        ^^PCI0.SBUS.SWRB (0xE6, 0x05, 0x23)
-                                                                        ^^PCI0.SBUS.SWRB (0xE6, 0x07, 0x40)
-                                                                        ^^PCI0.SBUS.SWRB (0xE6, 0x08, 0x84)
-                                                                        ^^PCI0.SBUS.SWRB (0xE6, 0x09, Zero)
-                                                                        ^^PCI0.SBUS.SWRB (0xE6, Zero, 0x82)
-                                                                    }
-                                                                    Else
-                                                                    {
-                                                                        If ((_T_5 == 0x04))
-                                                                        {
-                                                                            ^^PCI0.SBUS.SWRB (0xE6, Zero, 0x86)
-                                                                            ^^PCI0.SBUS.SWRB (0xE6, 0x04, 0x88)
-                                                                            ^^PCI0.SBUS.SWRB (0xE6, 0x05, 0x03)
-                                                                            ^^PCI0.SBUS.SWRB (0xE6, 0x07, 0x23)
-                                                                            ^^PCI0.SBUS.SWRB (0xE6, 0x08, 0x82)
-                                                                            ^^PCI0.SBUS.SWRB (0xE6, 0x09, 0x22)
-                                                                            ^^PCI0.SBUS.SWRB (0xE6, Zero, 0x82)
-                                                                        }
-                                                                        Else
-                                                                        {
-                                                                            If ((_T_5 == 0x05))
-                                                                            {
-                                                                                ^^PCI0.SBUS.SWRB (0xE6, Zero, 0x86)
-                                                                                ^^PCI0.SBUS.SWRB (0xE6, 0x04, 0xAA)
-                                                                                ^^PCI0.SBUS.SWRB (0xE6, 0x05, 0x22)
-                                                                                ^^PCI0.SBUS.SWRB (0xE6, 0x07, 0x33)
-                                                                                ^^PCI0.SBUS.SWRB (0xE6, 0x08, 0x84)
-                                                                                ^^PCI0.SBUS.SWRB (0xE6, 0x09, Zero)
-                                                                                ^^PCI0.SBUS.SWRB (0xE6, Zero, 0x82)
-                                                                            }
-                                                                            Else
-                                                                            {
-                                                                                If ((_T_5 == 0x06))
-                                                                                {
-                                                                                    ^^PCI0.SBUS.SWRB (0xE6, 0x0B, 0x82)
-                                                                                    ^^PCI0.SBUS.SWRB (0xE6, 0x0B, 0x92)
-                                                                                }
-                                                                            }
-                                                                        }
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
-
-                                                        Break
-                                                    }
-                                                }
-                                                Else
-                                                {
-                                                    If ((_T_4 == 0x0E))
-                                                    {
-                                                        ^^PCI0.LPCB.EC.XFAN = (Local2 & 0xFF)
-                                                    }
-                                                    Else
-                                                    {
-                                                        If ((_T_4 == 0x0F))
-                                                        {
-                                                            Local0 = (Local2 & 0xFF)
-                                                            If (Local0)
-                                                            {
-                                                                ^^PCI0.LPCB.EC.FDAT = 0x02
-                                                                ^^PCI0.LPCB.EC.FBUF = One
-                                                                ^^PCI0.LPCB.EC.FCMD = 0xCD
-                                                            }
-                                                            Else
-                                                            {
-                                                                ^^PCI0.LPCB.EC.FDAT = 0x02
-                                                                ^^PCI0.LPCB.EC.FBUF = Zero
-                                                                ^^PCI0.LPCB.EC.FCMD = 0xCD
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
+                                    Local3 = Zero
                                 }
+
+                                ^^PCI0.LPCB.EC.FDAT = Local3
+                                ^^PCI0.LPCB.EC.FBUF = Local4
+                                ^^PCI0.LPCB.EC.FBF1 = Local5
+                                ^^PCI0.LPCB.EC.FBF2 = Local6
+                                ^^PCI0.LPCB.EC.FBF3 = Local7
+                                ^^PCI0.LPCB.EC.FCMD = 0xCC
+                            }
+                            Else
+                            {
+                                Local0 = Ones
+                            }
+                        }
+                        ElseIf ((_T_4 == 0x09))
+                        {
+                            If (^^PCI0.LPCB.EC.ECOK)
+                            {
+                                Local2 = (ARGS & 0xFF)
+                                ^^PCI0.LPCB.EC.FDAT = 0x07
+                                ^^PCI0.LPCB.EC.FBUF = Local2
+                                ^^PCI0.LPCB.EC.FCMD = 0xCE
+                            }
+                        }
+                        ElseIf ((_T_4 == 0x0A))
+                        {
+                            If (^^PCI0.LPCB.EC.ECOK)
+                            {
+                                Local4 = (Local2 & 0xFF)
+                                ^^PCI0.LPCB.EC.FDAT = Local4
+                                ^^PCI0.LPCB.EC.FCMD = 0xCF
+                            }
+                            Else
+                            {
+                                Local0 = Ones
+                            }
+                        }
+                        ElseIf ((_T_4 == 0x0B))
+                        {
+                            SVGA = (Local2 & 0xFF)
+                            PRM0 = 0x0E
+                            SSMP = 0xE0
+                        }
+                        ElseIf ((_T_4 == 0x0D))
+                        {
+                            While (One)
+                            {
+                                _T_5 = ToInteger (Local2)
+                                If ((_T_5 == Zero))
+                                {
+                                    ^^PCI0.SBUS.SWRB (0xE6, Zero, 0x86)
+                                }
+                                ElseIf ((_T_5 == One))
+                                {
+                                    ^^PCI0.SBUS.SWRB (0xE6, Zero, 0x82)
+                                }
+                                ElseIf ((_T_5 == 0x02))
+                                {
+                                    ^^PCI0.SBUS.SWRB (0xE6, Zero, 0x86)
+                                    ^^PCI0.SBUS.SWRB (0xE6, 0x04, 0x11)
+                                    ^^PCI0.SBUS.SWRB (0xE6, 0x05, 0x02)
+                                    ^^PCI0.SBUS.SWRB (0xE6, 0x07, 0x22)
+                                    ^^PCI0.SBUS.SWRB (0xE6, 0x08, 0x82)
+                                    ^^PCI0.SBUS.SWRB (0xE6, 0x09, 0x22)
+                                    ^^PCI0.SBUS.SWRB (0xE6, Zero, 0x82)
+                                }
+                                ElseIf ((_T_5 == 0x03))
+                                {
+                                    ^^PCI0.SBUS.SWRB (0xE6, Zero, 0x86)
+                                    ^^PCI0.SBUS.SWRB (0xE6, 0x04, 0xAA)
+                                    ^^PCI0.SBUS.SWRB (0xE6, 0x05, 0x23)
+                                    ^^PCI0.SBUS.SWRB (0xE6, 0x07, 0x40)
+                                    ^^PCI0.SBUS.SWRB (0xE6, 0x08, 0x84)
+                                    ^^PCI0.SBUS.SWRB (0xE6, 0x09, Zero)
+                                    ^^PCI0.SBUS.SWRB (0xE6, Zero, 0x82)
+                                }
+                                ElseIf ((_T_5 == 0x04))
+                                {
+                                    ^^PCI0.SBUS.SWRB (0xE6, Zero, 0x86)
+                                    ^^PCI0.SBUS.SWRB (0xE6, 0x04, 0x88)
+                                    ^^PCI0.SBUS.SWRB (0xE6, 0x05, 0x03)
+                                    ^^PCI0.SBUS.SWRB (0xE6, 0x07, 0x23)
+                                    ^^PCI0.SBUS.SWRB (0xE6, 0x08, 0x82)
+                                    ^^PCI0.SBUS.SWRB (0xE6, 0x09, 0x22)
+                                    ^^PCI0.SBUS.SWRB (0xE6, Zero, 0x82)
+                                }
+                                ElseIf ((_T_5 == 0x05))
+                                {
+                                    ^^PCI0.SBUS.SWRB (0xE6, Zero, 0x86)
+                                    ^^PCI0.SBUS.SWRB (0xE6, 0x04, 0xAA)
+                                    ^^PCI0.SBUS.SWRB (0xE6, 0x05, 0x22)
+                                    ^^PCI0.SBUS.SWRB (0xE6, 0x07, 0x33)
+                                    ^^PCI0.SBUS.SWRB (0xE6, 0x08, 0x84)
+                                    ^^PCI0.SBUS.SWRB (0xE6, 0x09, Zero)
+                                    ^^PCI0.SBUS.SWRB (0xE6, Zero, 0x82)
+                                }
+                                ElseIf ((_T_5 == 0x06))
+                                {
+                                    ^^PCI0.SBUS.SWRB (0xE6, 0x0B, 0x82)
+                                    ^^PCI0.SBUS.SWRB (0xE6, 0x0B, 0x92)
+                                }
+
+                                Break
+                            }
+                        }
+                        ElseIf ((_T_4 == 0x0E))
+                        {
+                            ^^PCI0.LPCB.EC.XFAN = (Local2 & 0xFF)
+                        }
+                        ElseIf ((_T_4 == 0x0F))
+                        {
+                            Local0 = (Local2 & 0xFF)
+                            If (Local0)
+                            {
+                                ^^PCI0.LPCB.EC.FDAT = 0x02
+                                ^^PCI0.LPCB.EC.FBUF = One
+                                ^^PCI0.LPCB.EC.FCMD = 0xCD
+                            }
+                            Else
+                            {
+                                ^^PCI0.LPCB.EC.FDAT = 0x02
+                                ^^PCI0.LPCB.EC.FBUF = Zero
+                                ^^PCI0.LPCB.EC.FCMD = 0xCD
                             }
                         }
 
@@ -24827,52 +24000,49 @@ DefinitionBlock ("dsdt.aml", "DSDT", 2, "ALASKA", "A M I ", 0x01072009)
                     {
                         Return (GCMD (Arg0, Arg1, Arg2))
                     }
-                    Else
+                    ElseIf ((Match (Package (0x26)
+                                    {
+                                        0x13, 
+                                        0x14, 
+                                        0x1D, 
+                                        0x1F, 
+                                        0x20, 
+                                        0x21, 
+                                        0x22, 
+                                        0x26, 
+                                        0x27, 
+                                        0x2A, 
+                                        0x2C, 
+                                        0x31, 
+                                        0x46, 
+                                        0x47, 
+                                        0x48, 
+                                        0x49, 
+                                        0x4A, 
+                                        0x4C, 
+                                        0x4E, 
+                                        0x4F, 
+                                        0x55, 
+                                        0x56, 
+                                        0x57, 
+                                        0x5A, 
+                                        0x5B, 
+                                        0x5E, 
+                                        0x65, 
+                                        0x66, 
+                                        0x67, 
+                                        0x68, 
+                                        0x69, 
+                                        0x6A, 
+                                        0x6B, 
+                                        0x6C, 
+                                        0x74, 
+                                        0x75, 
+                                        0x76, 
+                                        0x79
+                                    }, MEQ, _T_0, MTR, Zero, Zero) != Ones))
                     {
-                        If ((Match (Package (0x26)
-                                        {
-                                            0x13, 
-                                            0x14, 
-                                            0x1D, 
-                                            0x1F, 
-                                            0x20, 
-                                            0x21, 
-                                            0x22, 
-                                            0x26, 
-                                            0x27, 
-                                            0x2A, 
-                                            0x2C, 
-                                            0x31, 
-                                            0x46, 
-                                            0x47, 
-                                            0x48, 
-                                            0x49, 
-                                            0x4A, 
-                                            0x4C, 
-                                            0x4E, 
-                                            0x4F, 
-                                            0x55, 
-                                            0x56, 
-                                            0x57, 
-                                            0x5A, 
-                                            0x5B, 
-                                            0x5E, 
-                                            0x65, 
-                                            0x66, 
-                                            0x67, 
-                                            0x68, 
-                                            0x69, 
-                                            0x6A, 
-                                            0x6B, 
-                                            0x6C, 
-                                            0x74, 
-                                            0x75, 
-                                            0x76, 
-                                            0x79
-                                        }, MEQ, _T_0, MTR, Zero, Zero) != Ones))
-                        {
-                            Return (SCMD (Arg0, Arg1, Arg2))
-                        }
+                        Return (SCMD (Arg0, Arg1, Arg2))
                     }
 
                     Break
@@ -24926,16 +24096,13 @@ DefinitionBlock ("dsdt.aml", "DSDT", 2, "ALASKA", "A M I ", 0x01072009)
                             {
                                 ECOS = One
                             }
+                            ElseIf ((OSYS == 0x07D9))
+                            {
+                                ECOS = 0x08
+                            }
                             Else
                             {
-                                If ((OSYS == 0x07D9))
-                                {
-                                    ECOS = 0x08
-                                }
-                                Else
-                                {
-                                    ECOS = Zero
-                                }
+                                ECOS = Zero
                             }
                         }
                         Else
@@ -24947,12 +24114,9 @@ DefinitionBlock ("dsdt.aml", "DSDT", 2, "ALASKA", "A M I ", 0x01072009)
                         {
                             WINF |= One
                         }
-                        Else
+                        ElseIf ((OSYS == 0x03E8))
                         {
-                            If ((OSYS == 0x03E8))
-                            {
-                                WINF |= One
-                            }
+                            WINF |= One
                         }
 
                         Local0 = INF2 /* \_SB_.PCI0.LPCB.EC__.INF2 */
@@ -25266,13 +24430,10 @@ DefinitionBlock ("dsdt.aml", "DSDT", 2, "ALASKA", "A M I ", 0x01072009)
                         Notify (GFX0, 0x80) // Status Change
                     }
                 }
-                Else
+                ElseIf (^^^^WMI.HKDR)
                 {
-                    If (^^^^WMI.HKDR)
-                    {
-                        ^^^^WMI.EVNT = 0x94
-                        Notify (WMI, 0xD0) // Hardware-Specific
-                    }
+                    ^^^^WMI.EVNT = 0x94
+                    Notify (WMI, 0xD0) // Hardware-Specific
                 }
             }
 
@@ -25292,29 +24453,19 @@ DefinitionBlock ("dsdt.aml", "DSDT", 2, "ALASKA", "A M I ", 0x01072009)
                             Notify (^^^GFX0.DD1F, 0x87) // Device-Specific
                         }
                     }
-                    Else
+                    ElseIf ((PSF0 & 0x10))
                     {
-                        If ((PSF0 & 0x10))
-                        {
-                            Notify (^^^PEG0.PEGP.LCD0, 0x87) // Device-Specific
-                        }
-                        Else
-                        {
-                            If ((^^^GFX0.CDDS == 0x0410))
-                            {
-                                0x1F
-                                Notify (^^^GFX0.DD1F, 0x87) // Device-Specific
-                            }
-                        }
+                        Notify (^^^PEG0.PEGP.LCD0, 0x87) // Device-Specific
+                    }
+                    ElseIf ((^^^GFX0.CDDS (0x0410) == 0x1F))
+                    {
+                        Notify (^^^GFX0.DD1F, 0x87) // Device-Specific
                     }
                 }
-                Else
+                ElseIf (^^^^WMI.HKDR)
                 {
-                    If (^^^^WMI.HKDR)
-                    {
-                        ^^^^WMI.EVNT = (OEM2 + 0xE0)
-                        Notify (WMI, 0xD0) // Hardware-Specific
-                    }
+                    ^^^^WMI.EVNT = (OEM2 + 0xE0)
+                    Notify (WMI, 0xD0) // Hardware-Specific
                 }
             }
 
@@ -25334,29 +24485,19 @@ DefinitionBlock ("dsdt.aml", "DSDT", 2, "ALASKA", "A M I ", 0x01072009)
                             Notify (^^^GFX0.DD1F, 0x86) // Device-Specific
                         }
                     }
-                    Else
+                    ElseIf ((PSF0 & 0x10))
                     {
-                        If ((PSF0 & 0x10))
-                        {
-                            Notify (^^^PEG0.PEGP.LCD0, 0x86) // Device-Specific
-                        }
-                        Else
-                        {
-                            If ((^^^GFX0.CDDS == 0x0410))
-                            {
-                                0x1F
-                                Notify (^^^GFX0.DD1F, 0x86) // Device-Specific
-                            }
-                        }
+                        Notify (^^^PEG0.PEGP.LCD0, 0x86) // Device-Specific
+                    }
+                    ElseIf ((^^^GFX0.CDDS (0x0410) == 0x1F))
+                    {
+                        Notify (^^^GFX0.DD1F, 0x86) // Device-Specific
                     }
                 }
-                Else
+                ElseIf (^^^^WMI.HKDR)
                 {
-                    If (^^^^WMI.HKDR)
-                    {
-                        ^^^^WMI.EVNT = (OEM2 + 0xE0)
-                        Notify (WMI, 0xD0) // Hardware-Specific
-                    }
+                    ^^^^WMI.EVNT = (OEM2 + 0xE0)
+                    Notify (WMI, 0xD0) // Hardware-Specific
                 }
             }
 
@@ -25383,13 +24524,10 @@ DefinitionBlock ("dsdt.aml", "DSDT", 2, "ALASKA", "A M I ", 0x01072009)
                         Notify (WMI, 0xD0) // Hardware-Specific
                     }
                 }
-                Else
+                ElseIf (^^^^WMI.HKDR)
                 {
-                    If (^^^^WMI.HKDR)
-                    {
-                        ^^^^WMI.EVNT = 0x85
-                        Notify (WMI, 0xD0) // Hardware-Specific
-                    }
+                    ^^^^WMI.EVNT = 0x85
+                    Notify (WMI, 0xD0) // Hardware-Specific
                 }
             }
 
@@ -25454,13 +24592,9 @@ DefinitionBlock ("dsdt.aml", "DSDT", 2, "ALASKA", "A M I ", 0x01072009)
                 {
                     Notify (^^^PEG0.PEGP.LCD0, 0x88) // Device-Specific
                 }
-                Else
+                ElseIf ((^^^GFX0.CDDS (0x0410) == 0x1F))
                 {
-                    If ((^^^GFX0.CDDS == 0x0410))
-                    {
-                        0x1F
-                        Notify (^^^GFX0.DD1F, 0x88) // Device-Specific
-                    }
+                    Notify (^^^GFX0.DD1F, 0x88) // Device-Specific
                 }
 
                 If (^^^^WMI.HKDR)
@@ -25479,13 +24613,10 @@ DefinitionBlock ("dsdt.aml", "DSDT", 2, "ALASKA", "A M I ", 0x01072009)
                     {
                         Notify (LID0, 0x80) // Status Change
                     }
-                    Else
+                    ElseIf (^^^^WMI.HKDR)
                     {
-                        If (^^^^WMI.HKDR)
-                        {
-                            ^^^^WMI.EVNT = 0xC0
-                            Notify (WMI, 0xD0) // Hardware-Specific
-                        }
+                        ^^^^WMI.EVNT = 0xC0
+                        Notify (WMI, 0xD0) // Hardware-Specific
                     }
                 }
                 Else
@@ -25514,13 +24645,9 @@ DefinitionBlock ("dsdt.aml", "DSDT", 2, "ALASKA", "A M I ", 0x01072009)
                 {
                     Notify (^^^PEG0.PEGP.LCD0, 0x88) // Device-Specific
                 }
-                Else
+                ElseIf ((^^^GFX0.CDDS (0x0410) == 0x1F))
                 {
-                    If ((^^^GFX0.CDDS == 0x0410))
-                    {
-                        0x1F
-                        Notify (^^^GFX0.DD1F, 0x88) // Device-Specific
-                    }
+                    Notify (^^^GFX0.DD1F, 0x88) // Device-Specific
                 }
 
                 If (^^^^WMI.HKDR)
@@ -25581,20 +24708,15 @@ DefinitionBlock ("dsdt.aml", "DSDT", 2, "ALASKA", "A M I ", 0x01072009)
                         BBST = Zero
                         Local1 = (NVBB & 0x0F)
                     }
+                    ElseIf ((Local0 & 0x2000))
+                    {
+                        Local1 = (((NVBB >> 0x08) & 0xFF) + (NVBB & 0xFF
+                            ))
+                        Local1--
+                    }
                     Else
                     {
-                        If ((Local0 & 0x2000))
-                        {
-                            Local1 = (((NVBB >> 0x08) & 0xFF) + (NVBB & 0xFF
-                                ))
-                            Local1--
-                        }
-                        Else
-                        {
-                            Local1 = (NVBB & 0x0F)
-                        }
-
-                        BBST = (((NVBB >> 0x04) & 0xF0) | Local1)
+                        Local1 = (NVBB & 0x0F)
                     }
 
                     Notify (^^^PEG0.PEGP, (Local1 | 0xD0))
@@ -25691,15 +24813,12 @@ DefinitionBlock ("dsdt.aml", "DSDT", 2, "ALASKA", "A M I ", 0x01072009)
                             Notify (WMI, 0xD0) // Hardware-Specific
                         }
                     }
-                    Else
+                    ElseIf ((_T_0 == 0xCB))
                     {
-                        If ((_T_0 == 0xCB))
+                        If (^^^^WMI.HKDR)
                         {
-                            If (^^^^WMI.HKDR)
-                            {
-                                ^^^^WMI.EVNT = 0xBB
-                                Notify (WMI, 0xD0) // Hardware-Specific
-                            }
+                            ^^^^WMI.EVNT = 0xBB
+                            Notify (WMI, 0xD0) // Hardware-Specific
                         }
                     }
 
