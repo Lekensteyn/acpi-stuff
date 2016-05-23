@@ -1,0 +1,77 @@
+# Show LNKS register value. Observed values 7 (8GT/s) 5 and 3/0 (2.5GT/s)
+dd bs=1 count=1 skip=$((0xE0008216)) if=/dev/mem 2>/dev/null | xxd -p -b
+
+When it is at 0, will hang...
+
+# Read PCI config space without triggering RPM (-A intel-conf1)
+spci -H1 -s 00:01.0 -vvvnnxxxx
+
+# Read PCI config space from XBAS+0x8000 (00:01.0)
+dd bs=1 count=4096 skip=$((0xE0008000)) if=/dev/mem 2>/dev/null | xxd -g1 | sed -r 's/  .*$//;s/^0*([0-9a-f]{2})/\1/;1i 00:01.0 ' | lspci -nnvvvxxxxF/dev/stdin
+# Enable RPM (auto = enable auto RPM, on = always on, disable RPM)
+echo > /sys/bus/pci/devices/0000\:00\:01.0/power/control auto
+
+# Must "on" before "rescan" or device will not be found.
+
+
+# Show ACPI methods as they are called; boot with
+# acpi.debug_layer=0x10 acpi.debug_level=0x702 acpi.aml_debug_output=1
+journalctl -afkn99999 -o short-precise | grep 'Execute method'
+
+\CPEX (0x5FF9BD98+0xE7) is initially 0x000506E3 (no nouveau loaded, PEG0 in D0)
+dd bs=1 count=4 skip=$((0x5ff9be7f)) if=/dev/mem 2>/dev/null | xxd -p -e # CPEX
+
+# \_SB.PCI0.P0LD ("P0 Link Disable"?) (bit 4)
+dd bs=1 count=1 skip=$((0xE00080b0)) if=/dev/mem 2>/dev/null | xxd -p
+# Write bit P0LD (was 0x40, write 0x50)
+printf '\x40' | dd bs=1 count=1 seek=$((0xE00080b0)) of=/dev/mem
+
+# \_SB.PCI0.P0L0 (bit 7)
+dd bs=1 count=1 skip=$((0xE00080bc)) if=/dev/mem 2>/dev/null | xxd -p
+# \_SB.PCI0.Q0L0 (bit 0)
+dd bs=1 count=1 skip=$((0xE0008249)) if=/dev/mem 2>/dev/null | xxd -p
+
+# see bbswitch TODO, this is related to NVOP(0x05, 0)
+dd bs=1 count=5 skip=$((0x5FF97F98+0x20)) if=/dev/mem 2>/dev/null | xxd -p # LDES (DKST) DACE DHPE DHPS
+# see bbswitch TODO, this is related to NVOP(0x1B, 0)
+dd bs=1 count=1 skip=$((0x5FF9BD98+0x89)) if=/dev/mem 2>/dev/null | xxd -p # SGFL
+
+
+_Q0A toggle touchpad (Fn+F1)
+_Q0B toggle backlight (Fn+F2)
+_Q0C mute (Fn+F3)
+_Q50 keyboard backlight (Fn+F4)
+_Q0E volume down (Fn+F5)
+_Q0F volume up (Fn+F6)
+(Switch screens, Fn+F7 does not trigger EC event)
+_Q11 brightness down (Fn+F8)
+_Q12 brightness up (Fn+F9)
+_Q13 toggle USB webcam (Fn+F10)
+_Q0D sleep (Fn+F12)
+
+
+# This did not work, probably had to set some trace_debug_{level,layer}, see
+# https://www.kernel.org/doc/Documentation/acpi/method-tracing.txt
+echo > /sys/module/acpi/parameters/trace_method_name \\_SB.PCI0.PEG0.PG00._ON
+echo > /sys/module/acpi/parameters/trace_state opcode
+
+acpidbg
+Trace Opcode \_SB.PCI0.PEG0.PG00._ON
+echo > /sys/bus/pci/devices/0000\:00\:01.0/power/control on
+Trace Opcode \_SB.PCI0.PEG0.PG00._OFF
+echo > /sys/bus/pci/devices/0000\:00\:01.0/power/control auto
+
+# Process logs, tail command strips initial "Missed X kernel messages",
+# Then reduce log lines to essentials,
+# finally create log dir and extract chunks.
+journalctl -o short-precise -b -1 -a | tail -n+7 | sed -n '/: Missed /q;p' > jrnl.txt
+<jrnl.txt sed -r -n '/(Opcode|Method) (Begin|End)/{s/May .. //;s/\] execution\.$//;s/localhost.* : (Opcode|Method) (Begin |End( ))\[/\1 \2\3\3/;s/:([^0-9])/ \1/;p};/: Missed /q' > processed.txt
+mkdir log
+<processed.txt awk -vc=0 '{split($1, a, ":");t=a[2]*60+a[3]; if(l&&t-l>=2)c+=1; l=t; print >>"log/chunk"c".txt"}'
+# Same idea, but based on dmesg -w (assumes four digit uptime for fixed width)
+# (quits as soon as a kmsg overflow is detected: "[ 2666.190217]   extrace-0175"$
+<dmesg-power.txt sed -r -n '/extrace-[0-9]* $/q;/(Opcode|Method) (Begin|End)/{s/\] execution\.$//;s/\[ //;s/\].* : (Opcode|Method) (Begin |End( ))\[/ \1 \2\3\3/;s/:([^0-9])/ \1/p}' > processed.txt
+mkdir log2
+<processed.txt awk -vc=1 '{t=$0; if(l&&t-l>=2)c+=1; l=t; print >>"log2/chunk"c".txt"}'
+# Hacky cmd to show which files are non-unique, include the file size too
+ls -1v|grep -v '[13579]\.' | while read x; do cut -d' ' -f2- "$x" | md5sum | sed "s/-/$x/"; done | sort -n -k2.8 | sort -s -k1,1 | while read h f; do printf '%s %-12s %d\n' $h $f $(wc -c <$f); done

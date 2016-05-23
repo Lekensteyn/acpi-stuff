@@ -1,0 +1,60 @@
+P0VI,   16,     // byte 0x00  bit 0
+P0DI,   16,     // byte 0x02  bit 0
+Offset (0x06),  // byte 0x06  bit 0
+DSO0,   16,     // byte 0x06  bit 0
+Offset (0x34),  // byte 0x34  bit 0
+CPO0,    8,     // byte 0x34  bit 0
+Offset (0xB0),  // byte 0xB0  bit 0     [a0] PCI Express Capability Structure (7.8)
+    ,    4,     // byte 0xB0  bit 0
+P0LD,    1,     // byte 0xB0  bit 4     Link Disable (7.8.7)
+Offset (0xBC),  // byte 0xBC  bit 0
+    ,    5,     // byte 0xBC  bit 0
+P0L2,    1,     // byte 0xBC  bit 5
+P0L0,    1,     // byte 0xBC  bit 6
+Offset (0x11A), // byte 0x11A  bit 0    [100] Virtual Channel Capability (7.11)
+    ,    1,     // byte 0x11A  bit 0    [11A] VC Resource Status Register (7.11.8)
+P0VC,    1,     // byte 0x11A  bit 1    VC Negotiation Pending
+Offset (0x214), // byte 0x214  bit 0
+Offset (0x216), // byte 0x216  bit 0
+P0LS,    4,     // byte 0x216  bit 0
+Offset (0x248), // byte 0x248  bit 0
+    ,    7,     // byte 0x248  bit 0
+Q0L2,    1,     // byte 0x248  bit 7
+Q0L0,    1,     // byte 0x249  bit 0
+Offset (0x504), // byte 0x504  bit 0
+HST0,   32,     // byte 0x504  bit 0
+P0TR,    1,     // byte 0x508  bit 0
+Offset (0x91C), // byte 0x91C  bit 0
+    ,   31,     // byte 0x91C  bit 0
+BSP1,    1,     // byte 0x91F  bit 7
+Offset (0x93C), // byte 0x93C  bit 0
+    ,   31,     // byte 0x93C  bit 0
+BSP2,    1,     // byte 0x93F  bit 7
+Offset (0x95C), // byte 0x95C  bit 0
+    ,   31,     // byte 0x95C  bit 0
+BSP3,    1,     // byte 0x95F  bit 7
+Offset (0x97C), // byte 0x97C  bit 0
+    ,   31,     // byte 0x97C  bit 0
+BSP4,    1,     // byte 0x97F  bit 7
+Offset (0x99C), // byte 0x99C  bit 0
+    ,   31,     // byte 0x99C  bit 0
+BSP5,    1,     // byte 0x99F  bit 7
+Offset (0x9BC), // byte 0x9BC  bit 0
+    ,   31,     // byte 0x9BC  bit 0
+BSP6,    1,     // byte 0x9BF  bit 7
+Offset (0x9DC), // byte 0x9DC  bit 0
+    ,   31,     // byte 0x9DC  bit 0
+BSP7,    1,     // byte 0x9DF  bit 7
+Offset (0x9FC), // byte 0x9FC  bit 0
+    ,   31,     // byte 0x9FC  bit 0
+BSP8,    1,     // byte 0x9FF  bit 7
+Offset (0xC20), // byte 0xC20  bit 0
+    ,    4,     // byte 0xC20  bit 0
+P0AP,    2,     // byte 0xC20  bit 4
+Offset (0xC38), // byte 0xC38  bit 0
+    ,    3,     // byte 0xC38  bit 0
+P0RM,    1,     // byte 0xC38  bit 3
+Offset (0xC74), // byte 0xC74  bit 0
+P0LT,    4,     // byte 0xC74  bit 0
+Offset (0xD0C), // byte 0xD0C  bit 0
+LRV0,   32,     // byte 0xD0C  bit 0

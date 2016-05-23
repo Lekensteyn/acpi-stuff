@@ -1,0 +1,199 @@
+SSDT 3 (SaSsdt)
+PEBA - PCI Extended Base Address?
+PBUS - PCI Bus number
+PDEV - PCI Device number
+PFUN - PCI Function number
+
+data = MMRx(BaseAddress, BusNum, DevNo, Func, Arg4)
+       MMWx(BaseAddress, BusNum, DevNo, Func, Arg4, Data)
+\_SB.PCI0.MMRB - PCI Memory Read 8-bit byte
+\_SB.PCI0.MMWB - PCI Memory Write 8-bit byte
+\_SB.PCI0.MMRW - PCI Memory Read 16-bit word
+\_SB.PCI0.MMWW - PCI Memory Write 16-bit word
+\_SB.PCI0.MMRD - PCI Memory Read 32-bit double word
+\_SB.PCI0.MMWD - PCI Memory Write 32-bit double word
+\_SB.PCI0.GULC(BaseAddr) - Returns something
+\_SB.PCI0.LKEN - Link Enable
+\_SB.PCI0.LKDS - Link Disable
+
+\PCRR(AddrHigh, AddrLow) - read dword from SBRG + addr
+\PCRW(AddrHigh, AddrLow, dword) - write data
+\PCRO(AddrHigh, AddrLow, val) - *addr |= val
+\PCRA(AddrHigh, AddrLow, val) - *addr &= val
+\PCAO(AddrHigh, AddrLow, mask, val) - *addr = (addr & mask) | val
+
+\CCHK(portId, isOn)
+observed (0, 1) for \_SB.PCI0.PEG0.PG00.PGON
+returns 0 if vendor ID is Intel
+returns 0 iff SGPI(SGGP, PWE0, PWG0, PWA0) == 1
+else return 1
+
+\SGGP - Switchable Graphics .. Power? (0 means on; non-zero is off?)
+
+\SGPI(isOff, ...)
+if off, consult \_SB.GCOV(Arg2) which yields 1 bit
+if Arg3 == 0, invert result
+returns 0 or 1
+
+\_SB.GCOV(addr) - Get bit
+\_SB.SCOV(addr, bit) - Set bit
+
+// 00:01.0 PCI bridge [0604]: Intel Corporation Skylake PCIe Controller (x16) [8086:1901] (rev 07)
+OperationRegion (RPCX, SystemMemory, (\XBAS + 0x8000), 0x1000)
+Field (RPCX, ByteAcc, NoLock, Preserve)
+{
+    Offset (0x04),
+    CMDR,   8,          // Command
+    Offset (0x84),      // [80] Power Management version 3 [PCI PM 1.2]
+    D0ST,   2,          // Power State (Read current; Write 0=D0, 3=D3hot)
+    Offset (0xAA),      // [a0] 7.8. PCI Express Capability Structure [PCIe 3.0]
+    CEDR,   1,          // 7.8.5. Device Status - Correctable Error Detected
+    Offset (0xB0),      // 7.8.7. Link Control Register (Offset 10h)
+        ,   5,
+    RTLK,   1,          // Retrain Link (Read 0; Write 1=direct physical layer LTSSM to Recovery state)
+    Offset (0xC9),      // 7.8.16. Device Control 2 Register (Offset 28h)
+        ,   2,
+    LREN,   1,          // (bit 10) LTR Mechanism Enable
+    Offset (0x216),     // no idea what offset this is...
+    LNKS,   4           // link state?
+}
+
+XBAS is MMIO_BASE, used for reading from the PCIe extended config space.
+addr = MMIO_BASE + (bus << 20) | (deviceNum << 15) | (func << 12) | register
+Thus OPG0 (at XBAS+0x8000=0xE0000000+0x8000= 0xE0008000) is 00:01.0
+
+Wut... PCIe config space for 00:01.0 contains the AER capability at offset
+0x1c0, but it does not appear in the linked list...
+
+TODO read implementation note on page 633 on retrain bit:
+
+    When software changes Link control parameters and writes a 1b to the Retrain
+    Link bit in order to initiate Link training using the new parameter
+    settings, special care is required in order to avoid certain race
+    conditions. At any instant the LTSSM may transition to the Recovery or
+    Configuration state due to normal Link activity, without software awareness.
+    If the LTSSM is already in Recovery or Configuration when software writes
+    updated parameters to the Link Control register, as well as a 1b, to the
+    Retrain Link bit, the LTSSM might not use the updated parameter settings
+    with the current Link training, and the current Link training might not
+    achieve the results that software intended.
+
+    To avoid this potential race condition, it is highly recommended that
+    software use the following algorithm or something similar:
+
+    1. Software sets the relevant Link control parameters to the desired
+       settings without writing a 1b to the Retrain Link bit.
+    2. Software polls the Link Training bit in the Link Status register until
+       the value returned is 0b.
+    3. Software writes a 1b to the Retrain Link bit without changing any other
+       fields in the Link Control register.
+
+    The above algorithm guarantees that Link training will be based on the Link
+    control parameter settings that software intends.
+
+\_SB.PCI0.PGON
+Method (PGON, 1, Serialized) {
+    PION = Arg0
+    // ...
+    If ((OSYS != 0x07DF)) { /* Not Windows 2015 (Windows 10), see below */ }
+    Else {
+        LKEN (PION)
+    }
+    While ((\_SB.PCI0.PEG0.LNKS < 0x07)) {
+        Local0 = 0x20
+        While (Local0) {
+            If ((\_SB.PCI0.PEG0.LNKS < 0x07)) {
+                Stall (0x64)
+                Local0--
+            } Else { Break }
+        }
+        If ((Local0 == Zero)) {
+            \_SB.PCI0.PEG0.RTLK = One
+            Stall (0x64)
+        }
+    }
+    // ...
+}
+
+\_SB.PCI0.LKEN
+Method (LKEN, 1, NotSerialized) {
+    Local3 = (CPEX & 0x0F)  // CPEX at 0x5ff9be7f and has value 000506e3
+    If ((Local3 == Zero)) {
+        /* Similar to below, but with Q0L0 -> P0L0 (register 0xBC bit 6) */
+    } ElseIf ((Local3 != Zero)) {
+        If ((Arg0 == Zero)) {
+            Q0L0 = One      // register 0x249 bit 0; \_SB.PCI0.OPG0.Q0L0 00:01.0
+            Sleep (0x10)
+            Local0 = Zero
+            While (Q0L0) {
+                If ((Local0 > 0x04)) { Break }
+                Sleep (0x10)
+                Local0++
+            }
+        } else { /* other cases, but we are only interested in PGON(0) */ }
+    }
+}
+
+/* not Windows 2015 (Windows 10) case for PGON (see above) */
+If ((OSYS != 0x07DF)) {
+    If ((PION == Zero)) {
+        P0AP = Zero
+        P0RM = Zero
+    }
+    If ((PBGE != Zero)) { /* Observed to be false (PBGE == 0) */
+        If (SBDL (PION)) {
+            PUAB (PION)
+            CBDL = GUBC (PION)
+            MBDL = GMXB (PION)
+            If ((CBDL > MBDL)) {
+                CBDL = MBDL /* \_SB_.PCI0.MBDL */
+            }
+            PDUB (PION, CBDL)
+        }
+    }
+    If ((PION == Zero)) {
+        P0LD = Zero     /* Link Disable */
+        P0TR = One      /* Train? */
+        TCNT = Zero
+        While ((TCNT < LDLY)) { /* LDLY = 300 */
+            If ((P0VC == Zero)) {
+                /* VC Negotiation Pending 0 means VC negotation is complete. */
+                Break
+            }
+            Sleep (0x10)
+            TCNT += 0x10 /* At most 19 iterations, sleeping for 304ms. */
+        }
+    }
+}
+
+_OFF always runs the same opcodes (9fc067bb7fd8de07c8c5e5bfc3a11f85)
+PGON can behave differently
+5d51fb9a8f5b21617c789af0b63e6f69 chunk2.txt   149804
+ cfed28a531f2de3bdb53c7bed37afa29 chunk4.txt   153853
+ cfed28a531f2de3bdb53c7bed37afa29 chunk6.txt   153853
+5d51fb9a8f5b21617c789af0b63e6f69 chunk8.txt   149804
+ cfed28a531f2de3bdb53c7bed37afa29 chunk10.txt  153853
+5d51fb9a8f5b21617c789af0b63e6f69 chunk12.txt  149804
+5d51fb9a8f5b21617c789af0b63e6f69 chunk14.txt  149804
+ cfed28a531f2de3bdb53c7bed37afa29 chunk16.txt  153853
+  e5d38c6bc6f57d5a6c39f935196af634 chunk18.txt  153074
+  e5d38c6bc6f57d5a6c39f935196af634 chunk22.txt  153074
+5d51fb9a8f5b21617c789af0b63e6f69 chunk24.txt  149804
+ cfed28a531f2de3bdb53c7bed37afa29 chunk20.txt  153853
+5d51fb9a8f5b21617c789af0b63e6f69 chunk26.txt  149804
+   68c0fbd9610537cdb3b20b744b9e4eb1 chunk28.txt  157123
+(between 28 and 29, executed lspci>/dev/null)
+5d51fb9a8f5b21617c789af0b63e6f69 chunk30.txt  149804
+   f3de13f3c6e072776ba27181ac57fa54 chunk32.txt  153074
+   7e72d19a224fae9b2e50b2f587bda226 chunk34.txt  663389
+
+5d51fb9a8f5b21617c789af0b63e6f69    (2)  0x LNKS<7
+ cfed28a531f2de3bdb53c7bed37afa29   (4)  3x LKKS<7 (2x Decrement)
+  e5d38c6bc6f57d5a6c39f935196af634  (18) _Q1C; 2x _TMP while executing, like (2)
+   68c0fbd9610537cdb3b20b744b9e4eb1 (28) 3x LNKS<7 (like (4) + (18))
+   f3de13f3c6e072776ba27181ac57fa54 (32) _Q1C; 2x _TMP while executing, like (2)
+
+   7e72d19a224fae9b2e50b2f587bda226 (34) like (2), but DISASTER
+    6x While(Q0L0) (break because Local0>4)
+    29x LNKS<7 (infinite loop)
+    This was observed in a different trace as well.
