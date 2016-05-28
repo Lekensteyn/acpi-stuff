@@ -14,6 +14,7 @@ outputdir=${2:-extracted}
 # DSDT/SSDT signatures for binwalk
 magicfile="$HOME/.binwalk/magic/acpi"
 if [ ! -e "$magicfile" ]; then
+    echo "Writing $magicfile"
     mkdir -p "${magicfile%/*}"
     cat >"$magicfile" <<EOF
 # Match DSDT/SSDT, presumably smaller than 16 MiB (avoids false positives)
@@ -35,8 +36,13 @@ fi
 tmpdir=$(mktemp -d)
 trap 'rm -rf "$tmpdir"' EXIT
 binwalk -C "$tmpdir" -y lzma -y acpi -M -e -D acpi:aml "$fwimage" || exit 1
+amldir=$(find "$tmpdir" -type f -name "*.aml" -execdir pwd \; -quit)
+if [ -z "$amldir" ]; then
+    echo "No AML files found!"
+    exit 1
+fi
 mkdir -p "$outputdir"
-mv -vi "$tmpdir"/_*.extracted/_*.extracted/*.aml "$outputdir"/
+mv -vi "$amldir"/*.aml "$outputdir"/
 
 
 # Disassembly AML to ASL
