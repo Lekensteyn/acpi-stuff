@@ -1,0 +1,9 @@
+system-manufacturer   : Acer
+system-product-name   : Aspire 5745G
+system-version        : V1.15
+baseboard-manufacturer: Acer
+baseboard-product-name: ZR7
+baseboard-version     : Base Board Version
+bios-vendor           : INSYDE
+bios-version          : V1.15
+bios-release-date     : 07/27/2010
