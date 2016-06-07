@@ -8,11 +8,12 @@
 #include <linux/kernel.h>
 #include <linux/module.h>
 #include <linux/acpi.h>
+#include <linux/dmi.h>
 
 MODULE_AUTHOR("Peter Wu <peter@lekensteyn.nl>");
 MODULE_DESCRIPTION("Fix battery discharge rate reporting for Clevo B7130.");
 MODULE_LICENSE("GPL");
-MODULE_VERSION("0.1");
+MODULE_VERSION("0.2");
 
 static u8 batteryfix_aml[] = {
 	0x53, 0x53, 0x44, 0x54, 0x5b, 0x01, 0x00, 0x00, 0x02, 0x79, 0x00, 0x00,
@@ -48,6 +49,11 @@ static u8 batteryfix_aml[] = {
 
 static int __init clevo_battery_fix_init(void) {
 	acpi_status status;
+
+	if (!dmi_match(DMI_BOARD_NAME, "B7130                           ")) {
+		pr_info("Did not apply Clevo battery fix.\n");
+		return -ENODEV;
+	}
 
 	status = acpi_install_method(batteryfix_aml);
 	if (ACPI_FAILURE(status))
