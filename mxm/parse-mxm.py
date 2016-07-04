@@ -48,7 +48,7 @@ mxm_header_struct = Struct("MXMHeader",
 # Descriptor types (four MSB bits of the first byte)
 descriptor_struct = Nibble("_descriptor")
 
-structures = {
+structures_v30 = {
     # Output device structure (64-bit)
     0x0: ByteSwapped(BitStruct("OutputDevice",
         Padding(8),
@@ -168,11 +168,96 @@ structures = {
     ),
 }
 
+structures_v20 = {
+    # Output device structure (48-bit for MXM 2.1)
+    0x0: ByteSwapped(BitStruct("MXM21OutputDevice",
+        Bit("system_hot_plug_notify"),
+
+        Bit("polarity_for_gpio_device_detection"),
+        BitField("gpio_for_device_detection", 5),
+        Bit("system_dcc_method"),
+        BitField("gpio_for_dcc_select", 5),
+        Bit("system_output_method"),
+        Bit("polarity_for_gpio_output_select"),
+        BitField("gpio_for_output_select", 5),
+
+        # for digital connection only (27:19)
+        Padding(2),  # Digital Reserved (27:26)
+        Bit("digital_drive_strength"),
+        BitField("digital_audio_connection", 2),
+        Nibble("digital_connection"),
+
+        BitField("connector_location", 2),
+        BitField("connector_type", 5),
+        Nibble("ddc_aux_port"),
+        Nibble("device_type"),
+        descriptor_struct,
+    )),
+    # Thermal structure (32-bit)
+    0x2: ByteSwapped(BitStruct("Thermal",
+        Padding(12),
+        BitField("scale", 2),
+        BitField("value", 10),  # temperature in degrees Celsius
+        Nibble("type"),
+        descriptor_struct,
+    )),
+    # MXM GPIO device structure (32-bit plus 16-bit for each GPIO pin)
+    0x4: Struct("MXM21GPIODevice",
+        ByteSwapped(EmbeddedBitStruct(
+            BitField("num_entries", 4),
+            Padding(8),
+            Octet("i2c_address"),
+            Octet("type"),
+            descriptor_struct,
+        )),
+        Array(lambda ctx: ctx.num_entries,
+            ByteSwapped(BitStruct("gpio_pin_entries",
+                Octet("function"),
+                Padding(3),
+                BitField("logical_gpio_number", 5)
+            ))
+        )
+    ),
+    # Backlight control structure (64-bit)
+    0x6: ByteSwapped(BitStruct("MXM21BacklightControl",
+        Padding(6),
+        BitField("duty_cycle_frequency", 18),
+        BitField("min_duty_cycle", 16),
+        BitField("max_duty_cycle", 16),
+        Nibble("type"),
+        descriptor_struct,
+    )),
+}
+
+# upper nibble: version, lower nibble: actual descriptor type.
+structures = {}
+structures.update({(0x30 | k): v for k, v in structures_v30.items()})
+# 2.0 looks like 3.0 (actually, the other way round, but 3.0 was implemented
+# earlier), so just duplicate it and overwrite it as needed.
+structures.update({(0x20 | k): v for k, v in structures_v30.items()})
+structures.update({(0x20 | k): v for k, v in structures_v20.items()})
+
+# for debugging, find out what descriptor type is not recognized
+class S(dict):
+    def __init__(self, l):
+        for k, v in l.items():
+            self[k] = v
+    def get(self, key, default):
+        if key in self:
+            return self[key]
+        raise RuntimeError("Unsupported key: %r" % key)
+structures = S(structures)
 
 def is_end_of_mxm_structure_reached(obj, ctx):
     mxm_size = obj._end_pos - mxm_header_struct.sizeof()
     # Terminate of all of the MXM structure was read (ignore the checksum).
     return mxm_size >= ctx.length - 1
+
+# Quick hack to distinguish between MXM2 and MXM3 structures.
+def descriptor_key(ctx, version=None):
+    if version is None:
+        version = ctx._.version
+    return version * 0x10 + ctx.descriptor_type
 
 mxm_structure = Struct("MXMStructure",
     Embedded(mxm_header_struct),
@@ -180,7 +265,8 @@ mxm_structure = Struct("MXMStructure",
         is_end_of_mxm_structure_reached,
         Struct("descriptors",
             Embed(Peek(BitStruct(None, Padding(4), Nibble("descriptor_type")))),
-            Embed(Switch(None, lambda ctx: ctx.descriptor_type, structures)),
+            Embed(Switch(None, descriptor_key, structures)),
+            #Probe(), # for debugging
             Anchor("_end_pos")
         )
     ),
@@ -195,7 +281,7 @@ def parse_data(mxm_data):
     descriptors = s.pop('descriptors')
     print(s)
     for c in descriptors:
-        print("%s: " % structures[c.descriptor_type].name, end="")
+        print("%s: " % structures[descriptor_key(c, s.version)].name, end="")
         print(c)
 
 
