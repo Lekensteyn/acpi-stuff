@@ -36,13 +36,29 @@ fi
 tmpdir=$(mktemp -d)
 trap 'rm -rf "$tmpdir"' EXIT
 binwalk -C "$tmpdir" -y lzma -y acpi -M -e -D acpi:aml "$fwimage" || exit 1
-amldir=$(find "$tmpdir" -type f -name "*.aml" -execdir pwd \; -quit)
-if [ -z "$amldir" ]; then
+files=$(find "$tmpdir" -type f -name "*.aml")
+if [ -z "$files" ]; then
     echo "No AML files found!"
     exit 1
 fi
+ssdt_counter=0
+dsdt_counter=0
 mkdir -p "$outputdir"
-mv -vi "$amldir"/*.aml "$outputdir"/
+for file in $files; do
+    name=$(basename "$file" | cut -c1-4)
+    case "$name" in
+    SSDT)
+        name+=$((++ssdt_counter))
+        ;;
+    DSDT)
+        # Not expected to have multiple DSDT, but just in case...
+        [ $((++dsdt_counter)) -gt 1 ] || name+=$dsdt_counter
+        ;;
+    *) echo "Unrecognized name $name!"; exit 1 ;;
+    esac
+    name+=.aml
+    mv -vi "$file" "$outputdir/$name"
+done
 
 
 # Disassembly AML to ASL
