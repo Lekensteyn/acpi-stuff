@@ -35,9 +35,9 @@ function RWE {
 
 function pcitree {
     # Converts "Bus 00, Device 01, Function 02 - ..." to "00 01 2"
-    RWE pcitree | Select-String -Pattern '^Bus' | % {
-        $_ -replace 'Bus (\w+), Device (\w+), Function 0(\d+) .*', '$1 $2 $3'
-    }
+    RWE pcitree | Select-String -Pattern '^ *Bus' | % {
+        $_ -replace ' *Bus (\w+), Device (\w+), Function 0(\d+) .*', '$1 $2 $3'
+    } | sort
 }
 
 $commands = pcitree | % {
