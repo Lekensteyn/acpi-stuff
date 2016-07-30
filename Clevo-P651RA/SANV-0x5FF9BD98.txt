@@ -1,4 +1,4 @@
-ASLB,   32,    // byte 0x00  bit 0
+ASLB,   32,    // byte 0x00  bit 0  IGD OpRegion base address
 IMON,    8,    // byte 0x04  bit 0
 IGDS,    8,    // byte 0x05  bit 0
 IBTT,    8,    // byte 0x06  bit 0
@@ -38,7 +38,7 @@ NXD4,   32,    // byte 0x62  bit 0
 NXD5,   32,    // byte 0x66  bit 0
 NXD6,   32,    // byte 0x6A  bit 0
 NXD7,   32,    // byte 0x6E  bit 0
-NXD8,   32,    // byte 0x72  bit 0
+NXD8,   32,    // byte 0x72  bit 0  Next value of DID8 for _DGS method
 NXDX,   32,    // byte 0x76  bit 0
 LIDS,    8,    // byte 0x7A  bit 0
 KSV0,   32,    // byte 0x7B  bit 0
@@ -77,11 +77,11 @@ PWA2,    8,    // byte 0xB0  bit 0
 DLPW,   16,    // byte 0xB1  bit 0
 DLHR,   16,    // byte 0xB3  bit 0
 EECP,    8,    // byte 0xB5  bit 0
-XBAS,   32,    // byte 0xB6  bit 0
-GBAS,   16,    // byte 0xBA  bit 0
-NVGA,   32,    // byte 0xBC  bit 0
-NVHA,   32,    // byte 0xC0  bit 0
-AMDA,   32,    // byte 0xC4  bit 0
+XBAS,   32,    // byte 0xB6  bit 0  MMIO base address
+GBAS,   16,    // byte 0xBA  bit 0  GPIO base address
+NVGA,   32,    // byte 0xBC  bit 0  NVIG OpRegion address
+NVHA,   32,    // byte 0xC0  bit 0  NVHM OpRegion address
+AMDA,   32,    // byte 0xC4  bit 0  AMDA OpRegion address
 LTRX,    8,    // byte 0xC8  bit 0
 OBFX,    8,    // byte 0xC9  bit 0
 LTRY,    8,    // byte 0xCA  bit 0

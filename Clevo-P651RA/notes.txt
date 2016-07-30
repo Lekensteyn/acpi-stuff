@@ -13,8 +13,8 @@ data = MMRx(BaseAddress, BusNum, DevNo, Func, Arg4)
 \_SB.PCI0.MMRD - PCI Memory Read 32-bit double word
 \_SB.PCI0.MMWD - PCI Memory Write 32-bit double word
 \_SB.PCI0.GULC(BaseAddr) - Returns something
-\_SB.PCI0.LKEN - Link Enable
-\_SB.PCI0.LKDS - Link Disable
+\_SB.PCI0.LKEN - Link Enable (enter L0 state)
+\_SB.PCI0.LKDS - Link Disable (enter L2 state)
 
 \PCRR(AddrHigh, AddrLow) - read dword from SBRG + addr
 \PCRW(AddrHigh, AddrLow, dword) - write data
@@ -122,6 +122,8 @@ Method (LKEN, 1, NotSerialized) {
         /* Similar to below, but with Q0L0 -> P0L0 (register 0xBC bit 6) */
     } ElseIf ((Local3 != Zero)) {
         If ((Arg0 == Zero)) {
+            /* Enter L0 Activate state.
+             * (LKDS tries to enter L2, deep-energy-saving state.) */
             Q0L0 = One      // register 0x249 bit 0; \_SB.PCI0.OPG0.Q0L0 00:01.0
             Sleep (0x10)
             Local0 = Zero
@@ -137,8 +139,8 @@ Method (LKEN, 1, NotSerialized) {
 /* not Windows 2015 (Windows 10) case for PGON (see above) */
 If ((OSYS != 0x07DF)) {
     If ((PION == Zero)) {
-        P0AP = Zero
-        P0RM = Zero
+        P0AP = Zero  /* PGOF writes 3 */
+        P0RM = Zero  /* PGOF writes 1 */
     }
     If ((PBGE != Zero)) { /* Observed to be false (PBGE == 0) */
         If (SBDL (PION)) {
@@ -152,8 +154,8 @@ If ((OSYS != 0x07DF)) {
         }
     }
     If ((PION == Zero)) {
-        P0LD = Zero     /* Link Disable */
-        P0TR = One      /* Train? */
+        P0LD = Zero     /* Link Disable = 0, PGOF sets 1 instead. */
+        P0TR = One      /* Train? (PGOF does not set this). */
         TCNT = Zero
         While ((TCNT < LDLY)) { /* LDLY = 300 */
             If ((P0VC == Zero)) {
@@ -197,3 +199,63 @@ PGON can behave differently
     6x While(Q0L0) (break because Local0>4)
     29x LNKS<7 (infinite loop)
     This was observed in a different trace as well.
+
+The "if not Windows 10, do this fallback mechanism" is probably intended to
+cover pre-Windows 8 systems. On a MSI GE62 Apache Pro (GTX 960M) it would check
+for "if Windows 7 (2009), do this fallback" with similar code (but without the
+infinite loop, it still fails to power on though, Bumblebee #764).
+
+PCI changes since Windows 8:
+https://msdn.microsoft.com/en-us/library/windows/hardware/ff537451(v=vs.85).aspx
+- ACPI additions for FW latency optimizations (Since Win10)
+  https://pcisig.com/sites/default/files/specification_documents/ECN_fw_latency_optimization_final.pdf
+- Optimized Buffer Flush/Fill (OBFF)
+  https://pcisig.com/sites/default/files/specification_documents/ECN_OBFF_30apr09.pdf
+  (note: OBFF was observed to be Disabled for 00:01.0, 01:00:0 and 01:00.1 in
+   DevCtl2, but supported via WAKE#, Message and Message respectively in DevCap2.)
+- Latency Tolerance Reporting (LTR) Capability (Since Win8)
+  https://pcisig.com/sites/default/files/specification_documents/ECN_LatencyTolnReporting_14Aug08.pdf
+  (maybe this is significant?)
+
+Comparing lspci-modprobe-nouveau.txt lspci-nouveau-suspended.txt shows that the 
+SltSta.PresDet bit is clear for the PCIe port in the suspended case which does
+not happen on Windows. VC.NegoPending is set.
+Comparing lspci-osi-nouveau-sound-resumed.txt rwe-lspci/lspci-connected-hdmi.txt
+shows that MSI is disabled for the PCIe port. The child device has I/O- DisINTx-
+LnkCap.L1 <16us (instead of <4us). LnkCtl.ClockPM+.
+Comparing lspci-osi-nouveau-sound-resumed.txt lspci-modprobe-nouveau.txt shows
+no significant differences (<MAbort-, MSI data changed, audio device missing).
+
+
+VC Negotiation Pending: only valid when Link is in DL_Active state. If set by
+hardware, the VC resource has not completed negotiation. It is cleared by
+hardware on exit from the FC_INIT2 state.
+
+
+(based on lspci parsing of RWE logs)
+powersave triggered -> miniDP inserted:
+- 00:01.0: I/O+ Mem+ BusMaster+, D3 -> D0
+- 01:00.0: new
+- 01:00.1: new
+miniDP inserted -> detected:
+- 00:01.0: LnkCap.L1 <4us -> <16us
+- 01:00.1: Mem+ BusMaster+, IRQ 17, memory region 0 set
+miniDP detected -> disable:
+- 00:01:0: LnkSta.Speed 2.5GT/s -> 8GT/s
+- 01:00:0: LnkSta.Speed 2.5GT/s -> 8GT/s, LnkCap.L0s <512ns -> <1us, L1 <16us -> <4us
+- 01:00:1: LnkSta.Speed 2.5GT/s -> 8GT/s, LnkCap.L0s <512ns -> <1us
+miniDP disable -> disable (waited some secs):
+- 00:01:0: LnkSta.Speed 8GT/s -> 2.5GT/s
+- 01:00:0: LnkSta.Speed 8GT/s -> 2.5GT/s, LnkCap.L0s <1us -> <512ns, L1 <4us -> unlimited
+- 01:00:1: LnkSta.Speed 8GT/s -> 2.5GT/s, LnkCap.L0s <1us -> <512ns
+miniDP disable (waited some secs) -> miniDP unplug: (no changes)
+miniDP unplug -> miniDP unplug (waited some secs):
+- 01:00.1: gone
+miniDP NVCP open -> NVCP open Adjust 3D setting swith preview:
+- 00:01:0: LnkSta.Speed 2.5GT/s -> 8GT/s
+- 00:00:0: LnkSta.Speed 2.5GT/s -> 8GT/s, LnkCap.L0s <512ns -> <1us, L1 unlimited -> <4us
+
+
+Review whether there are changes in Win8 that cause the AMI BIOS change:
+Windows Hardware Certification Requirements for Client and Server Systems
+https://msdn.microsoft.com/en-us/library/windows/hardware/jj128256
