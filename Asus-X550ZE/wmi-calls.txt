@@ -1,0 +1,103 @@
+AGFN(0x00000000)
+                If ((Arg0 == Zero)) {
+                    // Read from SystemMemory...
+                    Return (AMLA) /* \AMLA */
+                }
+
+DSTS(0x00050014)
+does not exist?
+
+DSTS(0x00100053)
+does not exist?
+
+DSTS(0x00050021)
+= 0x8000
+
+DSTS(0x00120065)
+does not exist?
+
+OSVR(0x00000400)
+                OSFG = Arg0
+
+INIT()
+            WMIP = One
+                    Return (One)
+
+BSTS()
+                If (((^^PCI0.SBRG.EC0.RRAM (0x04FE) == 0x34) || (^^PCI0.SBRG.EC0.RRAM (0x04FE) == 0x39))) {
+                    Return (0x05)
+                } Else {
+                    Return (Zero)
+                }
+
+SFUN()
+                Local0 = 0x004A0855
+                Local0 |= 0x20
+                Return (Local0)
+
+
+8629
+DSTS(0x00100051)
+does not exist?
+
+WDOG(0x00000000)
+= 0
+
+GVOL(0x00000100)
+does not exist?
+
+9020 TODO not used in asus-wmi module!
+DSTS(0x00040015)
+        Return ((GALE (0x08) | 0x00050000))
+            Method (GALE, 1, NotSerialized) {
+                // ...
+                If ((Arg0 == 0x08)) {
+                    If ((LEDS && 0x08)) {
+                        Return (One)
+                    } Else {
+                        Return (Zero)
+                    }
+                }
+                // ...
+            }
+
+KBNI()
+= 1
+
+DSTS(0x00050021)
+= 0x8000
+
+DEVS(0x00050011, 0x02)
+            BLCT = One
+has side-effects for _Q10
+
+DSTS(0x00050014)
+does not exist?
+
+DSTS(0x00120061)
+does not exist?
+
+DSTS(0x00050014)
+does not exist?
+
+DSTS(0x00120061)
+does not exist?
+
+GDSP(0x00000080)
+= 1
+
+DSTS(0x00120065)
+does not exist?
+
+DSTS(0x00030001)
+                        Return ((GMLE (One) + 0x00050000))
+            Method (GMLE, 1, NotSerialized) {
+                If ((Arg0 == One)) {
+                    Return (One)
+                }
+                // ...
+            }
+
+/*
+s/0x\(..\),0x\(..\),0x\(..\),\(0x..\)\(,\?\)/\4\3\2\1\5 /
+*/
