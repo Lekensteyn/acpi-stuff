@@ -3,7 +3,7 @@
 # writing to "dbug.txt".
 
 args=(
--acpitable file=asus-dbg.aml
+-acpitable file=${ASLBASE:-asus}-dbg.aml
 
 -device isa-debugcon,iobase=0x404,chardev=dbug
 -chardev file,id=dbug,path=dbug.txt
