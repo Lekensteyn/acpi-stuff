@@ -1,0 +1,43 @@
+#!/bin/bash
+args=(
+-M q35,accel=kvm
+-smp 2
+-m 4G
+-cpu host,kvm=off
+
+-acpitable file=fakedev.aml
+-device isa-debugcon,iobase=0x404,chardev=dbug
+-chardev file,id=dbug,path=/dev/stdout
+
+-device isa-debugcon,iobase=0x403,chardev=dbugfw
+-chardev file,id=dbugfw,path=/dev/stdout
+
+-smbios type=0,date=01/01/2018
+-device ioh3420,id=rp1,bus=pcie.0,addr=1c.0,port=1
+-device vfio-pci,bus=rp1,host=01:00.0,romfile=vbios.rom,x-pci-sub-vendor-id=0x1028,x-pci-sub-device-id=0x07be
+#,x-vga=on
+#-vga none
+
+-netdev user,id=net0
+-device e1000,netdev=net0
+
+-vnc :0
+
+-trace vfio_pci_read_config,file=/dev/stdout
+-trace vfio_pci_write_config,file=/dev/stdout
+
+"$@"
+)
+case "$*" in
+*-cdrom*|*-drive*|*.qcow2*) ;;
+*)
+    args+=(
+        -cdrom archlinux-2018.07.01-x86_64.iso
+        #-drive file=w10.qcow2,format=qcow2
+    )
+    ;;
+esac
+
+
+echo qemu-system-x86_64 "${args[@]}"
+qemu-system-x86_64 "${args[@]}"
