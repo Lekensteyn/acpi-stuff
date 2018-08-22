@@ -164,8 +164,13 @@ DefinitionBlock("", "SSDT", 2, "OemId", "OemTblId", 0x00000001)
 
             // Expansion ROM Base Address
             Local1 = XADR
+            Local4 = Local1     // Save original value
             LOGM(ToHexString(Local1))
-            If ((XADR & 1) == 0) {
+            If (Local1 == 0) {
+                LOGM("Expansion ROM not mapped, forcing it.")
+                Local1 = 0xfd000000
+            }
+            If ((Local1 & 1) == 0) {
                 // Set Expansion ROM Enable
                 XADR = Local1 | 1
             }
@@ -185,8 +190,8 @@ DefinitionBlock("", "SSDT", 2, "OemId", "OemTblId", 0x00000001)
             Name (ROMD, Buffer (Arg1) {} )
             ROMD = TMPB
 
-            // Reset Expansion ROM Enable
-            XADR = Local1
+            // Restore original Expansion ROM Address
+            XADR = Local4
             Return (ROMD)
         }
 
