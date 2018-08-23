@@ -14,8 +14,8 @@ args=(
 
 -smbios type=0,date=01/01/2018
 -device ioh3420,id=rp1,bus=pcie.0,addr=1c.0,port=1
--device vfio-pci,bus=rp1,host=01:00.0,romfile=vbios.rom,x-pci-sub-vendor-id=0x1028,x-pci-sub-device-id=0x07be
-#,x-vga=on
+-device vfio-pci,bus=rp1,host=01:00.0,rombar=0,x-pci-sub-vendor-id=0x1028,x-pci-sub-device-id=0x07be
+-fw_cfg name=opt/nl.lekensteyn/vfio-vbios,file=vbios.rom
 #-vga none
 
 -netdev user,id=net0

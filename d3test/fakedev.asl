@@ -40,6 +40,59 @@ DefinitionBlock("", "SSDT", 2, "OemId", "OemTblId", 0x00000001)
     }
     // End debug in QEMU
 
+    // FWCFG interface, see QEMU docs/specs/fw_cfg.txt
+    Scope (\) {
+        OperationRegion (FCFG, SystemIO, 0x510, 2)
+        Field (FCFG, WordAcc, NoLock, Preserve)
+        {
+            FSEL,   16, // Selector Register
+        }
+        Field (FCFG, ByteAcc, NoLock, Preserve)
+        {
+            Offset (1),
+            FDAT,   8,  // Data Register
+        }
+
+        // FW_CFG - Read Arg0 bytes, returned into a Buffer.
+        Method (FRDB, 1, Serialized) {
+            Local1 = Buffer (Arg0) {}
+            For (Local0 = 0, Local0 < Arg0, Local0++)
+            {
+                Local1[Local0] = FDAT
+            }
+            Return (Local1)
+        }
+
+        // FW_CFG - Read a big-endian integer of Arg0 bytes.
+        Method (FRDI, 1, Serialized) {
+            Local1 = 0
+            For (Local0 = 0, Local0 < Arg0, Local0++)
+            {
+                Local1 = (Local1 << 8) | FDAT
+            }
+            Return (Local1)
+        }
+
+        // Reads the contents of file Arg0 and return it as a buffer.
+        // Returns Zero if the file was not found.
+        Method (FRDF, 1, Serialized) {
+            FSEL = 0x19                     // FW_CFG_FILE_DIR
+            Local0 = FRDI(4)                // files count
+            While (Local0 > 0) {
+                Local1 = FRDI(4)            // file size
+                Local2 = FRDI(2)            // write this to FSEL to select it
+                FRDI(2)                     // reserved
+                Local3 = ToString(FRDB(56)) // name
+                If (Local3 == Arg0) {
+                    FSEL = Local2
+                    Return (FRDB(Local1))
+                }
+                Local0--
+            }
+            Return (Zero)
+        }
+    }
+
     Scope (\_SB.PCI0)
     {
         PowerResource (PG00, 0x00, 0x0000)
@@ -134,64 +187,33 @@ DefinitionBlock("", "SSDT", 2, "OemId", "OemTblId", 0x00000001)
 
     Scope (\_SB.PCI0.SE0.NET)
     {
-        OperationRegion (PCI8, PCI_Config, 0x04, 0x2)
-        Field (PCI8, WordAcc, Lock, Preserve)
-        {
-            CMDR,   8,  // Command register (low)
-        }
-        OperationRegion (PCIC, PCI_Config, 0x30, 0x4)
-        Field (PCIC, DWordAcc, Lock, Preserve)
-        {
-            XADR,   32, // Expansion ROM Address
-        }
-
+        Name (ROMB, Buffer (0x40000) {})
+        Name (ROML, Zero)
         Method (_ROM, 2, Serialized)  // _ROM: Read-Only Memory
         {
             LOGM("_ROM")
             LOGM(ToHexString(Arg0))
             LOGM(ToHexString(Arg1))
             // Arg0: offset in ROM, Arg1: size to read (max 4K)
-            if (Arg1 > 0x1000) {
+            if (Arg0 + Arg1 > SizeOf (ROMB)) {
                 // nouveau cheats and tries to fetch more. Disallow that.
                 Return (Buffer(0x1000) {})
             }
 
-            // Can read only if memory space bit is set per spec.
-            Local0 = CMDR
-            if (Not (Local0 & 2)) {
-                CMDR = Local0 | 2
+            If (ROML == Zero) {
+                // Try to query the ROM file the first time.
+                Local0 = FRDF("opt/nl.lekensteyn/vfio-vbios")
+                If (ObjectType (Local0) == 3) {
+                    LOGM("Read VBIOS of size")
+                    LOGM(ToDecimalString(SizeOf(Local0)))
+                    ROMB = Local0
+                } Else {
+                    LOGM("Could not read VBIOS using FW_CFG")
+                }
+                ROML = One
             }
 
-            // Expansion ROM Base Address
-            Local1 = XADR
-            Local4 = Local1     // Save original value
-            LOGM(ToHexString(Local1))
-            If (Local1 == 0) {
-                LOGM("Expansion ROM not mapped, forcing it.")
-                Local1 = 0xfd000000
-            }
-            If ((Local1 & 1) == 0) {
-                // Set Expansion ROM Enable
-                XADR = Local1 | 1
-            }
-            Local1 &= 0xfffff800
-
-            // max 4k
-            Local0 = Arg0 & 0xfff
-
-            // XXX Hopefully Arg0 alignment is ok...
-            OperationRegion (XROM, SystemMemory, Local1 + Arg0 - Local0, 0x2000)
-            Field (XROM, DWORDAcc, NoLock, Preserve)
-            {
-                ROM4,   65536
-            }
-
-            CreateField(ROM4, 8 * Local0, 8 * Arg1, TMPB)
-            Name (ROMD, Buffer (Arg1) {} )
-            ROMD = TMPB
-
-            // Restore original Expansion ROM Address
-            XADR = Local4
+            CreateField(ROMB, 8 * Arg0, 8 * Arg1, ROMD)
             Return (ROMD)
         }
 
