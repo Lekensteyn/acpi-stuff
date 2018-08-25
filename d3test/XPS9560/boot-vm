@@ -21,10 +21,17 @@ args=(
 -netdev user,id=net0
 -device e1000,netdev=net0
 
+# For easier offline file sharing
+-device nec-usb-xhci
+
 -vnc :0
 
 -trace vfio_pci_read_config,file=/dev/stdout
 -trace vfio_pci_write_config,file=/dev/stdout
+
+# Patched to trace hw/pci-bridge/pcie_root_port.c
+-trace rp_read_config,file=/dev/stdout
+-trace rp_write_config,file=/dev/stdout
 
 "$@"
 )

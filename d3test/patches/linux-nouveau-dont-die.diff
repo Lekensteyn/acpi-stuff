@@ -1,0 +1,118 @@
+Add some checks to warn about disaster before it happens.
+
+Workaround (a gigantic hack) to prevent total lockups when runtime resuming or
+unbinding the driver. Does not clean some workqueues, leaks some other resources
+(TTM memory for example) and is known to cause an oops at some point (UAF?).
+
+Tested on top of Linux 4.18.1.
+
+diff --git a/drivers/gpu/drm/nouveau/include/nvkm/core/device.h b/drivers/gpu/drm/nouveau/include/nvkm/core/device.h
+--- a/drivers/gpu/drm/nouveau/include/nvkm/core/device.h
++++ b/drivers/gpu/drm/nouveau/include/nvkm/core/device.h
+@@ -248,12 +248,19 @@ struct nvkm_device *nvkm_device_find(u64 name);
+ int nvkm_device_list(u64 *name, int size);
+ 
+ /* privileged register interface accessor macros */
+-#define nvkm_rd08(d,a) ioread8((d)->pri + (a))
+-#define nvkm_rd16(d,a) ioread16_native((d)->pri + (a))
+-#define nvkm_rd32(d,a) ioread32_native((d)->pri + (a))
+-#define nvkm_wr08(d,a,v) iowrite8((v), (d)->pri + (a))
+-#define nvkm_wr16(d,a,v) iowrite16_native((v), (d)->pri + (a))
+-#define nvkm_wr32(d,a,v) iowrite32_native((v), (d)->pri + (a))
++static inline struct nvkm_device *_nvkm_device_check(struct nvkm_device *d)
++{
++    struct pci_dev *pdev = to_pci_dev(d->dev);
++    WARN_ONCE(pdev->current_state != PCI_D0,
++            "IO access while device is in D%d", pdev->current_state);
++    return d;
++}
++#define nvkm_rd08(d,a) ioread8(_nvkm_device_check((d))->pri + (a))
++#define nvkm_rd16(d,a) ioread16_native(_nvkm_device_check((d))->pri + (a))
++#define nvkm_rd32(d,a) ioread32_native(_nvkm_device_check((d))->pri + (a))
++#define nvkm_wr08(d,a,v) iowrite8((v), _nvkm_device_check((d))->pri + (a))
++#define nvkm_wr16(d,a,v) iowrite16_native((v), _nvkm_device_check((d))->pri + (a))
++#define nvkm_wr32(d,a,v) iowrite32_native((v), _nvkm_device_check((d))->pri + (a))
+ #define nvkm_mask(d,a,m,v) ({                                                  \
+ 	struct nvkm_device *_device = (d);                                     \
+ 	u32 _addr = (a), _temp = nvkm_rd32(_device, _addr);                    \
+diff --git a/drivers/gpu/drm/nouveau/nouveau_drm.c b/drivers/gpu/drm/nouveau/nouveau_drm.c
+--- a/drivers/gpu/drm/nouveau/nouveau_drm.c
++++ b/drivers/gpu/drm/nouveau/nouveau_drm.c
+@@ -616,15 +616,23 @@ static void
+ nouveau_drm_unload(struct drm_device *dev)
+ {
+ 	struct nouveau_drm *drm = nouveau_drm(dev);
++	u16 vendor_id;
+ 
+ 	if (nouveau_pmops_runtime()) {
+ 		pm_runtime_get_sync(dev->dev);
+ 		pm_runtime_forbid(dev->dev);
+ 	}
+ 
++	/* sanity check to avoid a full machine lockup. */
++	pci_read_config_word(to_pci_dev(dev->dev), PCI_VENDOR_ID, &vendor_id);
++	if (vendor_id == 0xffff) {
++		NV_ERROR(drm, "Unable to restore power in drm_unload!\n");
++	}
++
+ 	nouveau_led_fini(dev);
+ 	nouveau_fbcon_fini(dev);
+-	nouveau_accel_fini(drm);
++	if (vendor_id != 0xffff)
++		nouveau_accel_fini(drm);
+ 	nouveau_hwmon_fini(dev);
+ 	nouveau_debugfs_fini(drm);
+ 
+@@ -637,6 +645,9 @@ nouveau_drm_unload(struct drm_device *dev)
+ 	nouveau_ttm_fini(drm);
+ 	nouveau_vga_fini(drm);
+ 
++	if (vendor_id == 0xffff)
++		return;
++
+ 	nouveau_cli_fini(&drm->client);
+ 	nouveau_cli_fini(&drm->master);
+ 	kfree(drm);
+@@ -648,12 +659,20 @@ nouveau_drm_device_remove(struct drm_device *dev)
+ 	struct nouveau_drm *drm = nouveau_drm(dev);
+ 	struct nvkm_client *client;
+ 	struct nvkm_device *device;
++	u16 vendor_id;
+ 
+ 	dev->irq_enabled = false;
+ 	client = nvxx_client(&drm->client.base);
+ 	device = nvkm_device_find(client->device);
+ 	drm_put_dev(dev);
+ 
++	/* sanity check to avoid a full machine lockup. */
++	pci_read_config_word(to_pci_dev(dev->dev), PCI_VENDOR_ID, &vendor_id);
++	if (vendor_id == 0xffff) {
++		NV_ERROR(drm, "Unable to restore power in drm_device_remove!\n");
++		return;
++	}
++
+ 	nvkm_device_del(&device);
+ }
+ 
+@@ -853,6 +872,7 @@ nouveau_pmops_runtime_resume(struct device *dev)
+ 	struct drm_device *drm_dev = pci_get_drvdata(pdev);
+ 	struct nvif_device *device = &nouveau_drm(drm_dev)->client.device;
+ 	int ret;
++	u16 vendor_id;
+ 
+ 	if (!nouveau_pmops_runtime()) {
+ 		pm_runtime_forbid(dev);
+@@ -866,6 +886,13 @@ nouveau_pmops_runtime_resume(struct device *dev)
+ 		return ret;
+ 	pci_set_master(pdev);
+ 
++	/* sanity check to avoid a full machine lockup. */
++	pci_read_config_word(pdev, PCI_VENDOR_ID, &vendor_id);
++	if (vendor_id == 0xffff) {
++		NV_ERROR(nouveau_drm(drm_dev), "Unable to restore power!\n");
++		return -EIO;
++	}
++
+ 	ret = nouveau_do_resume(drm_dev, true);
+ 
+ 	/* do magic */

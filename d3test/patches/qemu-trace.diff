@@ -1,0 +1,119 @@
+Add additional PCI config space tracing functionality for the parent device.
+
+Make Linux pass the "bridge->is_hotplug_bridge" check in drivers/pci/pci.c,
+function "pci_bridge_d3_possible" and thereby enabling PCIe RPM by hiding the
+hotplug capability.
+
+Add a hack that pretends the device to be in D3 when the the PMCSR register is
+polled too many times (Windows 10 tries to read 100 times with 30ms intervals).
+
+Tested with QEMU v3.0.0-287-g13b7b18850.
+
+diff --git a/Makefile.objs b/Makefile.objs
+index ce9c79235e..e161d0f995 100644
+--- a/Makefile.objs
++++ b/Makefile.objs
+@@ -226,6 +226,7 @@ trace-events-subdirs += hw/misc/macio
+ trace-events-subdirs += hw/net
+ trace-events-subdirs += hw/nvram
+ trace-events-subdirs += hw/pci
++trace-events-subdirs += hw/pci-bridge
+ trace-events-subdirs += hw/pci-host
+ trace-events-subdirs += hw/ppc
+ trace-events-subdirs += hw/rdma
+diff --git a/hw/pci-bridge/pcie_root_port.c b/hw/pci-bridge/pcie_root_port.c
+index 45f9e8cd4a..a862326f81 100644
+--- a/hw/pci-bridge/pcie_root_port.c
++++ b/hw/pci-bridge/pcie_root_port.c
+@@ -15,6 +15,7 @@
+ #include "qemu/osdep.h"
+ #include "qapi/error.h"
+ #include "hw/pci/pcie_port.h"
++#include "trace.h"
+ 
+ static void rp_aer_vector_update(PCIDevice *d)
+ {
+@@ -25,12 +26,23 @@ static void rp_aer_vector_update(PCIDevice *d)
+     }
+ }
+ 
++static uint32_t rp_read_config(PCIDevice *d, uint32_t address, int len)
++{
++    uint32_t val;
++
++    val = pci_default_read_config(d, address, len);
++    trace_rp_read_config(d->name, address, len, val);
++
++    return val;
++}
++
+ static void rp_write_config(PCIDevice *d, uint32_t address,
+                             uint32_t val, int len)
+ {
+     uint32_t root_cmd =
+         pci_get_long(d->config + d->exp.aer_cap + PCI_ERR_ROOT_COMMAND);
+ 
++    trace_rp_write_config(d->name, address, val, len);
+     pci_bridge_write_config(d, address, val, len);
+     rp_aer_vector_update(d);
+     pcie_cap_slot_write_config(d, address, val, len);
+@@ -146,6 +158,7 @@ static void rp_class_init(ObjectClass *klass, void *data)
+     PCIDeviceClass *k = PCI_DEVICE_CLASS(klass);
+ 
+     k->is_bridge = 1;
++    k->config_read = rp_read_config;
+     k->config_write = rp_write_config;
+     k->realize = rp_realize;
+     k->exit = rp_exit;
+diff --git a/hw/pci-bridge/trace-events b/hw/pci-bridge/trace-events
+new file mode 100644
+index 0000000000..f922e124b1
+--- /dev/null
++++ b/hw/pci-bridge/trace-events
+@@ -0,0 +1,5 @@
++# See docs/devel/tracing.txt for syntax documentation.
++
++# hw/pci-bridge/pcie_root_port.c
++rp_read_config(const char *name, int addr, int len, int val) " (%s, @0x%x, len=0x%x) 0x%x"
++rp_write_config(const char *name, int addr, int val, int len) " (%s, @0x%x, 0x%x, len=0x%x)"
+diff --git a/hw/pci/pcie.c b/hw/pci/pcie.c
+index 6c91bd44a0..24286e6b12 100644
+--- a/hw/pci/pcie.c
++++ b/hw/pci/pcie.c
+@@ -403,7 +403,7 @@ void pcie_cap_slot_init(PCIDevice *dev, uint16_t slot)
+                                (slot << PCI_EXP_SLTCAP_PSN_SHIFT) |
+                                PCI_EXP_SLTCAP_EIP |
+                                PCI_EXP_SLTCAP_HPS |
+-                               PCI_EXP_SLTCAP_HPC |
++                               // PCI_EXP_SLTCAP_HPC |
+                                PCI_EXP_SLTCAP_PIP |
+                                PCI_EXP_SLTCAP_AIP |
+                                PCI_EXP_SLTCAP_ABP);
+diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
+index 056f3a887a..5e292a2901 100644
+--- a/hw/vfio/pci.c
++++ b/hw/vfio/pci.c
+@@ -1157,6 +1157,23 @@ uint32_t vfio_pci_read_config(PCIDevice *pdev, uint32_t addr, int len)
+ 
+     val = (emu_val & emu_bits) | (phys_val & ~emu_bits);
+ 
++    {
++        static uint32_t lastaddr = ~0U, count = 0;
++        if (lastaddr != addr) {
++            lastaddr = addr;
++            count = 0;
++        } else if (++count == 10) {
++            if (addr == 0x64) { // PMCSR
++                if ((val & 3) == 0) {
++                    // Assume polling for D3 state
++                    printf("HACK: forcing D3, val was %#x\n", val);
++                    fflush(stdout);
++                    val |= 3;
++                }
++            }
++        }
++    }
++
+     trace_vfio_pci_read_config(vdev->vbasedev.name, addr, len, val);
+ 
+     return val;
