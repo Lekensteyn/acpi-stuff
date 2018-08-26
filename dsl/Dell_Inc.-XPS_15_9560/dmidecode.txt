@@ -1,0 +1,9 @@
+system-manufacturer   : Dell Inc.
+system-product-name   : XPS 15 9560
+system-version        : Not Specified
+baseboard-manufacturer: Dell Inc.
+baseboard-product-name: 05FFDN
+baseboard-version     : A00
+bios-vendor           : Dell Inc.
+bios-version          : 1.7.1
+bios-release-date     : 01/25/2018
