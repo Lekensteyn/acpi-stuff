@@ -1,0 +1,104 @@
+Expose Power Management Capability in order to trace PMCSR.PowerState changes on
+the root port. Offsets and behavior are as documented at
+https://www.intel.com/content/dam/doc/datasheet/x58-express-chipset-datasheet.pdf
+
+diff --git a/hw/pci-bridge/ioh3420.c b/hw/pci-bridge/ioh3420.c
+index a451d74ee6..ac64a33139 100644
+--- a/hw/pci-bridge/ioh3420.c
++++ b/hw/pci-bridge/ioh3420.c
+@@ -35,6 +35,7 @@
+ #define IOH_EP_MSI_SUPPORTED_FLAGS      PCI_MSI_FLAGS_MASKBIT
+ #define IOH_EP_MSI_NR_VECTOR            2
+ #define IOH_EP_EXP_OFFSET               0x90
++#define IOH_EP_PM_OFFSET                0xe0
+ #define IOH_EP_AER_OFFSET               0x100
+ 
+ /*
+@@ -109,6 +110,7 @@ static void ioh3420_class_init(ObjectClass *klass, void *data)
+     rpc->interrupts_init = ioh3420_interrupts_init;
+     rpc->interrupts_uninit = ioh3420_interrupts_uninit;
+     rpc->exp_offset = IOH_EP_EXP_OFFSET;
++    rpc->pm_offset = IOH_EP_PM_OFFSET;
+     rpc->aer_offset = IOH_EP_AER_OFFSET;
+     rpc->ssvid_offset = IOH_EP_SSVID_OFFSET;
+     rpc->ssid = IOH_EP_SSVID_SSID;
+diff --git a/hw/pci-bridge/pcie_root_port.c b/hw/pci-bridge/pcie_root_port.c
+index a862326f81..6649510d38 100644
+--- a/hw/pci-bridge/pcie_root_port.c
++++ b/hw/pci-bridge/pcie_root_port.c
+@@ -48,6 +48,15 @@ static void rp_write_config(PCIDevice *d, uint32_t address,
+     pcie_cap_slot_write_config(d, address, val, len);
+     pcie_aer_write_config(d, address, val, len);
+     pcie_aer_root_write_config(d, address, val, len, root_cmd);
++    if (address == d->exp.pm_cap + PCI_PM_CTRL) {
++        pci_set_word_by_mask(d->config + d->exp.pm_cap + PCI_PM_CTRL,
++                             PCI_PM_CTRL_STATE_MASK, val);
++        /* Sticky PME Enable bit. */
++        if ((val & PCI_PM_CTRL_PME_ENABLE)) {
++            pci_word_test_and_set_mask(d->config + d->exp.pm_cap + PCI_PM_CTRL,
++                                       PCI_PM_CTRL_PME_ENABLE);
++        }
++    }
+ }
+ 
+ static void rp_reset(DeviceState *qdev)
+@@ -64,6 +73,34 @@ static void rp_reset(DeviceState *qdev)
+     pci_bridge_disable_base_limit(d);
+ }
+ 
++static int pci_cap_pm_init(PCIDevice *d, uint8_t offset)
++{
++    Error *local_error = NULL;
++    int pos;
++
++    pos = pci_add_capability(d, PCI_CAP_ID_PM, offset,
++                             PCI_PM_SIZEOF, &local_error);
++    if (pos < 0) {
++        error_report_err(local_error);
++        return pos;
++    }
++
++    d->exp.pm_cap = pos;
++
++    /* PM 1.2 compliant. PME support bits are set for PCI-PCI bridge structures
++     * representing ports on root complexes. */
++    pci_set_word(d->config + offset + PCI_PM_PMC,
++                 0x03 |
++                 PCI_PM_CAP_PME_D0 |
++                 PCI_PM_CAP_PME_D3 |
++                 PCI_PM_CAP_PME_D3cold);
++
++    pci_set_word(d->config + offset + PCI_PM_CTRL,
++                 PCI_PM_CTRL_NO_SOFT_RESET);
++
++    return pos;
++}
++
+ static void rp_realize(PCIDevice *d, Error **errp)
+ {
+     PCIEPort *p = PCIE_PORT(d);
+@@ -110,6 +147,12 @@ static void rp_realize(PCIDevice *d, Error **errp)
+         goto err_pcie_cap;
+     }
+ 
++    rc = pci_cap_pm_init(d, rpc->pm_offset);
++    if (rc < 0) {
++        error_setg(errp, "Can't add PM capability, error %d", rc);
++        goto err;
++    }
++
+     rc = pcie_aer_init(d, PCI_ERR_VER, rpc->aer_offset,
+                        PCI_ERR_SIZEOF, errp);
+     if (rc < 0) {
+diff --git a/include/hw/pci/pcie_port.h b/include/hw/pci/pcie_port.h
+index 0736014bfd..babdf7b22b 100644
+--- a/include/hw/pci/pcie_port.h
++++ b/include/hw/pci/pcie_port.h
+@@ -75,6 +75,7 @@ typedef struct PCIERootPortClass {
+     int aer_offset;
+     int ssvid_offset;
+     int ssid;
++    int pm_offset;
+ } PCIERootPortClass;
+ 
+ #endif /* QEMU_PCIE_PORT_H */
