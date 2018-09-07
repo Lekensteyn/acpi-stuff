@@ -271,9 +271,19 @@ def namify_caps(cfg, line_needle):
         if line_needle in line:
             m = re.search(r'@(0x[0-9a-f]+),', line)
             if m:
+                ml = re.search(r'len=(0x[0-9a-f]+)', line)
                 offset = int(m.group(1), 16)
-                label = caps_mapping.get(offset)
-                if label:
+                size = int(ml.group(1), 16) if ml else 1
+                labels = []
+                for relative_offset in range(size):
+                    label = caps_mapping.get(offset + relative_offset)
+                    if label:
+                        # Always add the first label (even if it is at an
+                        # offset, subsequently only add new registers).
+                        if not labels or not label.startswith('+'):
+                            labels.append(label)
+                if labels:
+                    label = ' | '.join(labels)
                     line = '%-100s %s' % (line, label)
                     #line += '\t\t%s' % label
         print(line)
