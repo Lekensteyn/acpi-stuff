@@ -102,6 +102,7 @@ pci_type1 = pci_header_common + (
     (0x30, 2, 'I/O Base Upper 16 Bits'),
     (0x32, 2, 'I/O Limit Upper 16 Bits'),
     (0x34, 1, 'Capabilities Pointer'),
+    (0x38, 4, 'Expansion ROM Base Address'),
     (0x3c, 1, 'Interrupt Line'),
     (0x3d, 1, 'Interrupt Pin'),
     (0x3e, 2, 'Bridge Control'),
